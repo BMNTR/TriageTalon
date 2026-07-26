@@ -21,15 +21,16 @@
 
 ## About The Project
 
-**TriageTalon 🦅** is a lightning-fast recon tool for Bug Bounty hunters. It automatically scans your scope domains, resolves subdomains, checks for weak security headers (grades C, D, F), and actively hunts for exposed sensitive files (like `.env` or `.git`).
+**TriageTalon** is a lightning-fast recon tool for Bug Bounty hunters. It automatically scans your scope domains, resolves subdomains, checks for weak security headers (grades C, D, F), and actively hunts for exposed sensitive files (like `.env` or `.git`).
 
 Instead of wasting time on hardened targets, TriageTalon filters your list so you only spend time on the most vulnerable assets.
 
 ## Features
-- ⚡ **Speed**: Powered by serverless edge functions. Scans usually complete in < 2 seconds.
-- 🎯 **Weakness Detection**: Automatically flags targets with poor security grades.
-- 🕵️ **Exposure Hunting**: Checks for exposed `.env` and `.git` config files instantly.
-- 🌐 **Subdomain Discovery**: Pulls live subdomains for pivoting.
+
+- **[::] Speed**: Powered by serverless edge functions. Scans usually complete in < 2 seconds.
+- **[::] Weakness Detection**: Automatically flags targets with poor security grades.
+- **[::] Exposure Hunting**: Checks for exposed `.env` and `.git` config files instantly.
+- **[::] Subdomain Discovery**: Pulls live subdomains for pivoting.
 
 ## Installation
 
