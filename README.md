@@ -98,11 +98,40 @@ pip install -r requirements.txt
 
 ## Usage Guide
 
-To use TriageTalon, you must obtain a **RapidAPI Key**. The free tier provides enough requests for daily bug bounty hunting.
+### Getting Your API Key
 
-1. Go to [Ultimate Attack Surface & Recon API](https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api).
-2. Click **Subscribe** (Free Tier).
-3. Copy your `x-rapidapi-key`.
+To use TriageTalon, you need a **free RapidAPI key**. Follow these steps:
+
+**Step 1: Create a RapidAPI Account**
+
+Go to [rapidapi.com](https://rapidapi.com/) and sign up for a free account. You can register using your email, Google, or GitHub account.
+
+**Step 2: Subscribe to the API**
+
+Visit the [Ultimate Attack Surface & Recon API](https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api) page and click the **Subscribe** button. Select the **Free Tier** (no credit card required). The free plan includes a generous monthly request quota for daily bug bounty hunting.
+
+**Step 3: Copy Your API Key**
+
+After subscribing, your API key is located in the **API Playground** on the right side of the page. Look for the field labeled `X-RapidAPI-Key` -- this is your key. Click the copy icon next to it.
+
+> **Tip:** You can test the API directly from the RapidAPI playground before using the CLI. Enter a domain in the `domain` parameter field and click **Test Endpoint** to see a live response.
+
+**Step 4: Use Your Key**
+
+Pass the key to TriageTalon using any of these methods:
+
+```bash
+# Option A: Pass directly via flag
+python recon.py -d target.com -k YOUR_API_KEY
+
+# Option B: Set as environment variable (recommended)
+export RAPIDAPI_KEY="YOUR_API_KEY"    # Linux/macOS
+$env:RAPIDAPI_KEY = "YOUR_API_KEY"    # Windows PowerShell
+python recon.py -d target.com
+
+# Option C: Hardcode in script (edit line 10 of recon.py)
+RAPIDAPI_KEY = "YOUR_API_KEY"
+```
 
 ### Basic Scanning
 
@@ -147,40 +176,22 @@ When dealing with a massive scope (e.g., hundreds of wildcard subdomains), feed 
 python recon.py -l targets.txt -k YOUR_API_KEY
 ```
 
----
+## Pro Tip: Global Alias
 
-## Advanced Integration
+Once your API key is configured (via env var or hardcode), you can create a global alias to run TriageTalon from anywhere:
 
-TriageTalon supports three methods for providing your API key, in order of priority:
-
-**1. CLI Flag (highest priority):**
 ```bash
-python recon.py -d target.com -k YOUR_API_KEY
-```
-
-**2. Environment Variable:**
-```bash
-# Linux / macOS
-export RAPIDAPI_KEY="YOUR_API_KEY"
-
-# Windows (PowerShell)
-$env:RAPIDAPI_KEY = "YOUR_API_KEY"
-
-# Then run without -k flag
-python recon.py -d target.com
-```
-
-**3. Hardcode in Script (lowest priority):**
-
-Open `recon.py` and replace the placeholder:
-```python
-RAPIDAPI_KEY = "YOUR_ACTUAL_API_KEY_HERE"
-```
-
-Once configured, you can alias it for global access:
-```bash
+# Linux / macOS (~/.bashrc or ~/.zshrc)
 alias talon="python3 /path/to/TriageTalon/recon.py"
+
+# Windows PowerShell ($PROFILE)
+function talon { python C:\path\to\TriageTalon\recon.py @args }
+```
+
+Now you can triage from any directory:
+```bash
 talon -d target.com
+talon -l scope.txt
 ```
 
 ---
