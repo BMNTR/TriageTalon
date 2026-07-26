@@ -581,11 +581,10 @@
         output.innerHTML = '<div class="spinner"></div><span class="g">[*] Initializing scan for ' + domain + '...</span>';
         
         try {
-            const response = await fetch(`https://ultimate-attack-surface-recon-api.p.rapidapi.com/recon?domain=${domain}`, {
+            const response = await fetch(`https://api.triagetalon.com/recon?domain=${domain}`, {
                 method: 'GET',
                 headers: {
-                    'x-rapidapi-key': apiKey,
-                    'x-rapidapi-host': 'ultimate-attack-surface-recon-api.p.rapidapi.com'
+                    'x-api-key': apiKey
                 }
             });
             
