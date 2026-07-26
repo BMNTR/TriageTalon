@@ -9,23 +9,12 @@
       <stop offset="0%" stop-color="#090505"/>
       <stop offset="100%" stop-color="#1c0f0f"/>
     </linearGradient>
-    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#ff3e00"/>
-      <stop offset="100%" stop-color="#ff8c00"/>
-    </linearGradient>
     
     <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
       <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ff3e00" stroke-width="0.5" opacity="0.05"/>
       <animateTransform attributeName="patternTransform" type="translate" values="0 0; 0 40" dur="3s" repeatCount="indefinite"/>
     </pattern>
 
-    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="6" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
     <filter id="drop-shadow" x="-10%" y="-10%" width="130%" height="130%">
       <feDropShadow dx="0" dy="15" stdDeviation="15" flood-color="#000000" flood-opacity="0.8"/>
     </filter>
@@ -52,7 +41,8 @@
   <!-- background -->
   <rect width="1200" height="300" fill="url(#bg)"/>
   <rect width="1200" height="300" fill="url(#grid)"/>
-  <rect x="0" y="0" width="1200" height="4" fill="url(#accent)"/>
+  <!-- Top Outliner (Solid Color, NO Gradient) -->
+  <rect x="0" y="0" width="1200" height="4" fill="#ff3e00"/>
 
   <!-- Radar graphic right side -->
   <g opacity="0.6" clip-path="url(#radar-clip)">
@@ -60,7 +50,7 @@
     <circle cx="1050" cy="150" r="110" fill="none" stroke="#ff3e00" stroke-width="1.5" opacity="0.2"/>
     <circle cx="1050" cy="150" r="75" fill="none" stroke="#ff3e00" stroke-width="1" opacity="0.2"/>
     <circle cx="1050" cy="150" r="40" fill="none" stroke="#ff3e00" stroke-width="1" opacity="0.2"/>
-    <circle cx="1050" cy="150" r="2" fill="#ffbd2e"/>
+    <circle cx="1050" cy="150" r="2" fill="#ff3e00"/>
     
     <line x1="1050" y1="30" x2="1050" y2="270" stroke="#ff3e00" stroke-width="1" opacity="0.2"/>
     <line x1="930" y1="150" x2="1170" y2="150" stroke="#ff3e00" stroke-width="1" opacity="0.2"/>
@@ -68,22 +58,19 @@
     <!-- Rotating Sweep Fan -->
     <g transform="translate(1050, 150)">
       <g>
-        <path d="M 0 0 L 0 -110 A 110 110 0 0 0 -110 0 Z" fill="#ff3e00" opacity="0.2"/>
+        <path d="M 0 0 L 0 -110 A 110 110 0 0 0 -110 0 Z" fill="url(#radarSweep)"/>
         <!-- Clean leading edge without glow -->
         <line x1="0" y1="0" x2="0" y2="-110" stroke="#ff8c00" stroke-width="2"/>
         <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="4s" repeatCount="indefinite"/>
       </g>
     </g>
 
-    <!-- Blip 1 (synchronized to 51.3 degrees at 0.57s) -->
-    <circle cx="1100" cy="110" r="5" fill="#ffbd2e" opacity="0">
-       <animate attributeName="opacity" values="0; 1; 0" keyTimes="0; 0.02; 1" dur="4s" begin="0.57s" repeatCount="indefinite"/>
-    </circle>
-    <circle cx="1100" cy="110" r="2" fill="#ffffff" opacity="0">
+    <!-- Blip 1 (synchronized to 51.3 degrees at 0.57s) - Solid Color, No White Core -->
+    <circle cx="1100" cy="110" r="5" fill="#ff3e00" opacity="0">
        <animate attributeName="opacity" values="0; 1; 0" keyTimes="0; 0.02; 1" dur="4s" begin="0.57s" repeatCount="indefinite"/>
     </circle>
 
-    <!-- Blip 2 (synchronized to 218.6 degrees at 2.43s) -->
+    <!-- Blip 2 (synchronized to 218.6 degrees at 2.43s) - Solid Color -->
     <circle cx="1010" cy="200" r="5" fill="#ff3e00" opacity="0">
        <animate attributeName="opacity" values="0; 1; 0" keyTimes="0; 0.02; 1" dur="4s" begin="2.43s" repeatCount="indefinite"/>
     </circle>
@@ -131,9 +118,10 @@
 
   <!-- title block -->
   <g transform="translate(85,80)">
-    <text x="0" y="0" class="font-sans" font-size="46" font-weight="800" fill="#f0f6fc" filter="url(#glow)">Triage<tspan fill="#ff3e00">Talon</tspan></text>
+    <text x="0" y="0" class="font-sans" font-size="46" font-weight="800" fill="#f0f6fc">Triage<tspan fill="#ff3e00">Talon</tspan></text>
   </g>
   <text x="85" y="270" class="font-mono" font-size="14" fill="#8b949e">lightning fast recon &#8226; attack surface filtering &#8226; 0-day hunting</text>
 
-  <rect x="0" y="296" width="1200" height="4" fill="url(#accent)"/>
+  <!-- Bottom Outliner (Solid Color, NO Gradient) -->
+  <rect x="0" y="296" width="1200" height="4" fill="#ff3e00"/>
 </svg>
