@@ -57,7 +57,9 @@ def scan_domain(domain, api_key):
 def display_result(result, verbose=False):
     """Display all scan results from API response."""
     # Security Grade & Subdomains
-    grade = result.get('security_headers', {}).get('grade', 'Unknown')
+    # API returns: data.security_analysis.security_score.grade
+    security_analysis = result.get('security_analysis', {})
+    grade = security_analysis.get('security_score', {}).get('grade', 'Unknown')
     subs = result.get('subdomains', {}).get('count', 0)
     print(f"    -> Grade: {grade} | Subdomains: {subs}")
     
@@ -65,13 +67,12 @@ def display_result(result, verbose=False):
         print(f"    -> [!] POTENTIAL TARGET: Weak security headers detected!")
 
     if verbose:
-        # DNS Records
-        dns = result.get('dns', {})
+        # DNS Records — API returns: data.dns_records (uppercase keys: A, MX, NS, TXT)
+        dns = result.get('dns_records', {})
         if dns:
-            a_records = dns.get('a', [])
-            mx_records = dns.get('mx', [])
-            ns_records = dns.get('ns', [])
-            txt_records = dns.get('txt', [])
+            a_records = dns.get('A', [])
+            mx_records = dns.get('MX', [])
+            ns_records = dns.get('NS', [])
             if a_records:
                 print(f"    -> DNS A: {', '.join(a_records[:3])}")
             if mx_records:
@@ -79,35 +80,36 @@ def display_result(result, verbose=False):
             if ns_records:
                 print(f"    -> DNS NS: {', '.join(str(r) for r in ns_records[:3])}")
 
-        # SPF/DMARC (Mail Security)
-        mail_sec = result.get('mail_security', {})
-        if mail_sec:
-            spf = mail_sec.get('spf', None)
-            dmarc = mail_sec.get('dmarc', None)
-            if spf is not None:
-                spf_status = "Present" if spf else "MISSING"
-                print(f"    -> SPF: {spf_status}")
-            if dmarc is not None:
-                dmarc_status = "Present" if dmarc else "MISSING"
-                print(f"    -> DMARC: {dmarc_status}")
+        # SPF/DMARC — API does not have mail_security field.
+        # SPF/DMARC info is inside dns_records.TXT records.
+        txt_records = dns.get('TXT', [])
+        if txt_records:
+            spf_record = next((r for r in txt_records if 'v=spf1' in r), None)
+            dmarc_record = next((r for r in txt_records if 'v=DMARC1' in r.upper()), None)
+            spf_status = "Present" if spf_record else "MISSING"
+            dmarc_status = "Present" if dmarc_record else "MISSING"
+            print(f"    -> SPF: {spf_status}")
+            print(f"    -> DMARC: {dmarc_status}")
 
-        # WHOIS / RDAP
+        # WHOIS / RDAP — API returns: data.whois with key expiry_date (not expiration_date)
         whois = result.get('whois', {})
         if whois:
             registrar = whois.get('registrar', '')
-            expiry = whois.get('expiration_date', '')
-            if registrar:
+            expiry = whois.get('expiry_date', '')
+            if registrar and registrar != 'Not Available':
                 print(f"    -> Registrar: {registrar}")
-            if expiry:
+            if expiry and expiry != 'Not Available':
                 print(f"    -> Expires: {expiry}")
 
-    # Sensitive Files
-    sensitive = result.get('sensitive_files', {})
+    # Sensitive Files — API returns: data.security_analysis.sensitive_files
+    sensitive = security_analysis.get('sensitive_files', {})
     exposures = 0
     for ftype, info in sensitive.items():
         if isinstance(info, dict) and info.get('found'):
             exposures += 1
-            print(f"    -> [!!!] CRITICAL: Exposed {ftype} found at {info.get('url')}")
+            risk = info.get('risk', '')
+            note = info.get('note', '')
+            print(f"    -> [!!!] {risk.upper()}: Exposed {ftype} detected! {note}")
     
     return grade, exposures
 
