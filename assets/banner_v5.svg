@@ -41,10 +41,10 @@
        <circle cx="1050" cy="150" r="120" />
     </clipPath>
 
-    <!-- New Intense Radar Sweep Gradient -->
+    <!-- Clean Radar Sweep Gradient -->
     <linearGradient id="radarSweep" x1="100%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#ffbd2e" stop-opacity="0.7"/>
-      <stop offset="15%" stop-color="#ff3e00" stop-opacity="0.4"/>
+      <stop offset="0%" stop-color="#ff8c00" stop-opacity="0.6"/>
+      <stop offset="15%" stop-color="#ff3e00" stop-opacity="0.3"/>
       <stop offset="100%" stop-color="#ff3e00" stop-opacity="0.0"/>
     </linearGradient>
   </defs>
@@ -69,25 +69,23 @@
     <g transform="translate(1050, 150)">
       <g>
         <path d="M 0 0 L 0 -110 A 110 110 0 0 0 -110 0 Z" fill="url(#radarSweep)"/>
-        <!-- Leading glowing line -->
-        <line x1="0" y1="0" x2="0" y2="-110" stroke="#ffbd2e" stroke-width="2.5" filter="url(#glow)"/>
-        <line x1="0" y1="0" x2="0" y2="-110" stroke="#ffffff" stroke-width="1"/>
-        
-        <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="2.5s" repeatCount="indefinite"/>
+        <!-- Clean leading edge without glow -->
+        <line x1="0" y1="0" x2="0" y2="-110" stroke="#ff8c00" stroke-width="2"/>
+        <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="4s" repeatCount="indefinite"/>
       </g>
     </g>
 
-    <!-- Blip 1 -->
-    <circle cx="1100" cy="110" r="5" fill="#ffbd2e" filter="url(#glow)" opacity="0">
-       <animate attributeName="opacity" values="0; 1; 0" dur="2.5s" begin="0.8s" repeatCount="indefinite"/>
+    <!-- Blip 1 (synchronized to 51.3 degrees at 0.57s) -->
+    <circle cx="1100" cy="110" r="5" fill="#ffbd2e" opacity="0">
+       <animate attributeName="opacity" values="0; 1; 0" keyTimes="0; 0.02; 1" dur="4s" begin="0.57s" repeatCount="indefinite"/>
     </circle>
     <circle cx="1100" cy="110" r="2" fill="#ffffff" opacity="0">
-       <animate attributeName="opacity" values="0; 1; 0" dur="2.5s" begin="0.8s" repeatCount="indefinite"/>
+       <animate attributeName="opacity" values="0; 1; 0" keyTimes="0; 0.02; 1" dur="4s" begin="0.57s" repeatCount="indefinite"/>
     </circle>
 
-    <!-- Blip 2 -->
-    <circle cx="1010" cy="200" r="5" fill="#ff3e00" filter="url(#glow)" opacity="0">
-       <animate attributeName="opacity" values="0; 1; 0" dur="2.5s" begin="1.6s" repeatCount="indefinite"/>
+    <!-- Blip 2 (synchronized to 218.6 degrees at 2.43s) -->
+    <circle cx="1010" cy="200" r="5" fill="#ff3e00" opacity="0">
+       <animate attributeName="opacity" values="0; 1; 0" keyTimes="0; 0.02; 1" dur="4s" begin="2.43s" repeatCount="indefinite"/>
     </circle>
   </g>
 
