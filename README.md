@@ -22,9 +22,10 @@
 - [Workflow Architecture](#workflow-architecture)
 - [Installation](#installation)
 - [Usage Guide](#usage-guide)
+  - [Getting Your API Key](#getting-your-api-key)
   - [Basic Scanning](#basic-scanning)
   - [Batch Processing](#batch-processing)
-- [Advanced Integration](#advanced-integration)
+- [Pro Tip: Global Alias](#pro-tip-global-alias)
 - [Disclaimer](#disclaimer)
 
 ---
@@ -108,11 +109,11 @@ Go to [rapidapi.com](https://rapidapi.com/) and sign up for a free account. You 
 
 **Step 2: Subscribe to the API**
 
-Visit the [Ultimate Attack Surface & Recon API](https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api) page and click the **Subscribe** button. Select the **Free Tier** (no credit card required). The free plan includes a generous monthly request quota for daily bug bounty hunting.
+Visit the [Ultimate Attack Surface & Recon API](https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api) page. Click the **Pricing** tab at the top of the page, then select the **Free Tier** and click **Subscribe** (no credit card required). You can check the exact monthly request limit on the Pricing tab.
 
 **Step 3: Copy Your API Key**
 
-After subscribing, your API key is located in the **API Playground** on the right side of the page. Look for the field labeled `X-RapidAPI-Key` -- this is your key. Click the copy icon next to it.
+After subscribing, go back to the **Endpoints** tab. On the right side of the page you will see the **API Playground** panel. Look for the field labeled `X-RapidAPI-Key` -- it should now be auto-filled with your key. Click the copy icon next to it.
 
 > **Tip:** You can test the API directly from the RapidAPI playground before using the CLI. Enter a domain in the `domain` parameter field and click **Test Endpoint** to see a live response.
 
@@ -121,10 +122,11 @@ After subscribing, your API key is located in the **API Playground** on the righ
 Pass the key to TriageTalon using any of these methods:
 
 ```bash
-# Option A: Pass directly via flag
+# Option A: Pass directly via flag (quickest for trying it out)
 python recon.py -d target.com -k YOUR_API_KEY
 
-# Option B: Set as environment variable (recommended)
+# Option B: Set as environment variable (recommended for daily use,
+# so you don't have to type your key every time)
 export RAPIDAPI_KEY="YOUR_API_KEY"    # Linux/macOS
 $env:RAPIDAPI_KEY = "YOUR_API_KEY"    # Windows PowerShell
 python recon.py -d target.com
@@ -141,7 +143,7 @@ Scan a single domain to get an immediate posture assessment:
 python recon.py -d hackerone.com -k YOUR_API_KEY
 ```
 
-**Expected Output:**
+**Expected Output** (illustrative -- actual values will vary depending on the target):
 ```text
 [*] TriageTalon initialized. Scanning 1 targets...
 
