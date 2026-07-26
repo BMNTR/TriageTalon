@@ -307,6 +307,35 @@
 
         .install-code .c { color: var(--accent); }
 
+        /* --- UTILS --- */
+        .copy-wrapper { position: relative; }
+        .copy-btn {
+            position: absolute; top: 1rem; right: 1rem;
+            background: var(--bg); border: 1px solid var(--border);
+            color: var(--text); padding: 0.4rem 0.8rem;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+            cursor: pointer; text-transform: uppercase; transition: all 0.2s;
+        }
+        .copy-btn:hover { color: var(--text-bright); border-color: var(--text); }
+        .reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .cursor { animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* --- LIVE TESTER --- */
+        .tester-container { max-width: 1200px; margin: 0 auto 4rem; padding: 0 3rem; }
+        .tester-box { border: 1px solid var(--border); background: var(--surface); padding: 3rem; }
+        .tester-box h2 { font-size: 1.5rem; color: var(--text-bright); margin-bottom: 0.5rem; }
+        .tester-box p { color: var(--text); margin-bottom: 2rem; font-size: 0.9rem; }
+        .tester-form { display: flex; gap: 1rem; margin-bottom: 2rem; align-items: flex-end; flex-wrap: wrap; }
+        .input-group { flex: 1; min-width: 250px; display: flex; flex-direction: column; gap: 0.5rem; }
+        .input-group label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--text); text-transform: uppercase; }
+        .input-group input { background: var(--bg); border: 1px solid var(--border); color: var(--text-bright); padding: 0.75rem 1rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; }
+        .input-group input:focus { outline: none; border-color: var(--accent); }
+        .tester-output { background: var(--bg); border: 1px solid var(--border); padding: 1.5rem; min-height: 200px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; overflow-x: auto; line-height: 1.8; }
+        .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255, 62, 0, 0.3); border-radius: 50%; border-top-color: var(--accent); animation: spin 1s ease-in-out infinite; vertical-align: middle; margin-right: 10px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
         /* --- FOOTER --- */
         footer {
             border-top: 1px solid var(--border);
@@ -360,7 +389,7 @@
             <div class="dot d2"></div>
             <div class="dot d3"></div>
         </div>
-        <div class="terminal-body">
+        <div class="terminal-body" id="hero-terminal-body">
             <div class="c">$ python recon.py -l scope.txt</div>
             <div class="g">[*] TriageTalon initialized. Scanning 3 targets...</div>
             <br>
@@ -379,7 +408,7 @@
     </div>
 </section>
 
-<div class="stats">
+<div class="stats reveal">
     <div class="stat">
         <div class="stat-num">&lt;2s</div>
         <div class="stat-label">Per Target</div>
@@ -398,7 +427,7 @@
     </div>
 </div>
 
-<div class="features">
+<div class="features reveal">
     <div class="feat">
         <div class="feat-idx">01</div>
         <h3>Security Grading</h3>
@@ -431,12 +460,34 @@
     </div>
 </div>
 
-<section class="install">
+<div class="tester-container reveal">
+    <div class="tester-box">
+        <h2>Live API Demo</h2>
+        <p>Test the RapidAPI integration directly from your browser. No backend required.</p>
+        <form class="tester-form" onsubmit="runTest(event)">
+            <div class="input-group">
+                <label>Target Domain</label>
+                <input type="text" id="testDomain" placeholder="hackerone.com" required>
+            </div>
+            <div class="input-group">
+                <label>RapidAPI Key</label>
+                <input type="password" id="testKey" placeholder="Your X-RapidAPI-Key" required>
+            </div>
+            <button type="submit" class="btn btn-accent btn-run">RUN SCAN</button>
+        </form>
+        <div class="tester-output" id="testOutput">
+            <span class="dim">Ready. Enter target and API key to begin.</span>
+        </div>
+    </div>
+</div>
+
+<section class="install reveal">
     <div>
         <h2>Three commands.<br>Zero config.</h2>
         <p>Clone the repo, install one dependency, and you're scanning. API key is free — no credit card, no trial period.</p>
     </div>
-    <div class="install-code">
+    <div class="install-code copy-wrapper">
+        <button class="copy-btn" id="copyBtn" onclick="copyInstallCode()">Copy</button>
         <div class="c">$ git clone https://github.com/BMNTR/TriageTalon.git</div>
         <div class="c">$ cd TriageTalon</div>
         <div class="c">$ pip install -r requirements.txt</div>
@@ -450,6 +501,135 @@
     <div>Built by <a href="https://github.com/BMNTR">BMNTR</a></div>
     <div>Powered by <a href="https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api">Ultimate Attack Surface API</a></div>
 </footer>
+
+<script>
+    // Feature 1: Scroll Reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, { threshold: 0.1 });
+    reveals.forEach(r => observer.observe(r));
+
+    // Feature 2: Copy to Clipboard
+    function copyInstallCode() {
+        const code = "git clone https://github.com/BMNTR/TriageTalon.git\ncd TriageTalon\npip install -r requirements.txt";
+        navigator.clipboard.writeText(code).then(() => {
+            const btn = document.getElementById('copyBtn');
+            btn.innerText = 'COPIED!';
+            setTimeout(() => btn.innerText = 'COPY', 2000);
+        }).catch(err => console.error('Failed to copy!', err));
+    }
+
+    // Feature 3: Terminal Animation
+    const heroLines = [
+        { text: "$ python recon.py -l scope.txt", class: "c", delay: 800 },
+        { text: "[*] TriageTalon initialized. Scanning 3 targets...", class: "g", delay: 400 },
+        { text: "<br>", delay: 200 },
+        { text: "[*] Scanning: shop.example.com", class: "g", delay: 500 },
+        { text: "&nbsp;&nbsp;&nbsp;&nbsp;-> Grade: A | Subdomains: 3", class: "dim", delay: 300 },
+        { text: "<br>", delay: 200 },
+        { text: "[*] Scanning: api.example.com", class: "g", delay: 500 },
+        { text: "&nbsp;&nbsp;&nbsp;&nbsp;-> Grade: B | Subdomains: 1", class: "dim", delay: 300 },
+        { text: "<br>", delay: 200 },
+        { text: "[*] Scanning: legacy.example.com", class: "g", delay: 500 },
+        { text: "&nbsp;&nbsp;&nbsp;&nbsp;-> Grade: F | Subdomains: 47", class: "w", delay: 400 },
+        { text: "&nbsp;&nbsp;&nbsp;&nbsp;-> [!] Weak security headers", class: "c", delay: 200 },
+        { text: "&nbsp;&nbsp;&nbsp;&nbsp;-> SPF: MISSING", class: "dim", delay: 200 },
+        { text: "&nbsp;&nbsp;&nbsp;&nbsp;-> [!!!] Exposed .env found", class: "c", delay: 200 }
+    ];
+
+    async function animateTerminal() {
+        const term = document.getElementById('hero-terminal-body');
+        term.innerHTML = '<span class="cursor">_</span>';
+        await new Promise(r => setTimeout(r, 1000));
+        
+        let currentHTML = '';
+        for(const line of heroLines) {
+            if(line.text === "<br>") {
+                currentHTML += "<br>";
+            } else {
+                if (line.text.startsWith("$")) {
+                    currentHTML += `<div class="${line.class}">`;
+                    for(let i=0; i<line.text.length; i++) {
+                        currentHTML += line.text[i];
+                        term.innerHTML = currentHTML + '<span class="cursor">_</span></div>';
+                        await new Promise(r => setTimeout(r, 20));
+                    }
+                    currentHTML += `</div>`;
+                } else {
+                    currentHTML += `<div class="${line.class}">${line.text}</div>`;
+                }
+            }
+            term.innerHTML = currentHTML + '<span class="cursor">_</span>';
+            await new Promise(r => setTimeout(r, line.delay));
+        }
+    }
+    
+    animateTerminal();
+
+    // Feature 4: Live API Tester
+    async function runTest(e) {
+        e.preventDefault();
+        const domain = document.getElementById('testDomain').value;
+        const apiKey = document.getElementById('testKey').value;
+        const output = document.getElementById('testOutput');
+        
+        output.innerHTML = '<div class="spinner"></div><span class="g">[*] Initializing scan for ' + domain + '...</span>';
+        
+        try {
+            const response = await fetch(`https://ultimate-attack-surface-recon-api.p.rapidapi.com/recon?domain=${domain}`, {
+                method: 'GET',
+                headers: {
+                    'x-rapidapi-key': apiKey,
+                    'x-rapidapi-host': 'ultimate-attack-surface-recon-api.p.rapidapi.com'
+                }
+            });
+            
+            if(response.status === 429) {
+                output.innerHTML = '<span class="c">[!] Error 429: Rate limit exceeded or free quota reached.</span>';
+                return;
+            }
+            
+            const data = await response.json();
+            
+            if(!response.ok) {
+                output.innerHTML = `<span class="c">[!] Error: ${data.message || response.statusText}</span>`;
+                return;
+            }
+
+            let html = `<span class="g">[*] Scanning: ${domain}</span><br>`;
+            const grade = data.security_headers?.grade || 'N/A';
+            html += `<span class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> Grade: ${grade} | Subdomains: ${data.subdomains?.count || 0}</span><br>`;
+            
+            if(['F', 'D', 'C'].includes(grade)) {
+                html += `<span class="w">&nbsp;&nbsp;&nbsp;&nbsp;-> [!] POTENTIAL TARGET: Weak security headers detected!</span><br>`;
+            }
+            
+            if(data.dns?.A) html += `<span class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> DNS A: ${data.dns.A.join(', ')}</span><br>`;
+            
+            const spf = data.mail_security?.spf?.exists ? 'Present' : 'MISSING';
+            html += `<span class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> SPF: ${spf}</span><br>`;
+            
+            if(data.sensitive_files && data.sensitive_files.length > 0) {
+                data.sensitive_files.forEach(f => {
+                    if(f.status === 200) {
+                        html += `<span class="c">&nbsp;&nbsp;&nbsp;&nbsp;-> [!!!] CRITICAL: Exposed ${f.file} found</span><br>`;
+                    }
+                });
+            }
+            
+            html += `<br><span class="g">[*] Scan completed successfully.</span>`;
+            output.innerHTML = html;
+            
+        } catch (err) {
+            output.innerHTML = `<span class="c">[!] Connection Error: ${err.message}</span>`;
+        }
+    }
+</script>
 
 <script type="application/ld+json">
 {
