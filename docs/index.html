@@ -607,8 +607,9 @@
             let html = `<span class="g">[*] Scanning: ${domain}</span><br>`;
             const grade = scanData.security_headers?.grade || 'N/A';
             const subCount = scanData.subdomains?.count || 0;
+            const scanDuration = data.scan_duration_seconds ? ` | Time: ${data.scan_duration_seconds}s` : '';
             
-            html += `<span class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> Grade: ${grade} | Subdomains: ${subCount}</span><br>`;
+            html += `<span class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> Grade: ${grade} | Subdomains: ${subCount}${scanDuration}</span><br>`;
             
             if(['F', 'D', 'C'].includes(grade)) {
                 html += `<span class="w">&nbsp;&nbsp;&nbsp;&nbsp;-> [!] POTENTIAL TARGET: Weak security headers detected!</span><br>`;
