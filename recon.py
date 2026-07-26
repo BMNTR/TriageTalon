@@ -6,7 +6,7 @@ import time
 import os
 
 # Endpoint Utama
-API_URL = "https://ultimate-attack-surface-recon.p.rapidapi.com/scan"
+API_URL = "https://ultimate-attack-surface-recon-api.p.rapidapi.com/scan"
 RAPIDAPI_KEY = "YOUR_RAPIDAPI_KEY_HERE" 
 
 def get_api_key(args_key):
@@ -21,7 +21,7 @@ def get_api_key(args_key):
 def scan_domain(domain, api_key):
     headers = {
         "x-rapidapi-key": api_key,
-        "x-rapidapi-host": "ultimate-attack-surface-recon.p.rapidapi.com"
+        "x-rapidapi-host": "ultimate-attack-surface-recon-api.p.rapidapi.com"
     }
     querystring = {"domain": domain.strip()}
     
@@ -54,7 +54,7 @@ def scan_domain(domain, api_key):
         print(f"    [-] Unexpected error: {e}")
         return None
 
-def display_result(result):
+def display_result(result, verbose=False):
     """Display all scan results from API response."""
     # Security Grade & Subdomains
     grade = result.get('security_headers', {}).get('grade', 'Unknown')
@@ -64,41 +64,42 @@ def display_result(result):
     if grade in ['C', 'D', 'F']:
         print(f"    -> [!] POTENTIAL TARGET: Weak security headers detected!")
 
-    # DNS Records
-    dns = result.get('dns', {})
-    if dns:
-        a_records = dns.get('a', [])
-        mx_records = dns.get('mx', [])
-        ns_records = dns.get('ns', [])
-        txt_records = dns.get('txt', [])
-        if a_records:
-            print(f"    -> DNS A: {', '.join(a_records[:3])}")
-        if mx_records:
-            print(f"    -> DNS MX: {', '.join(str(r) for r in mx_records[:3])}")
-        if ns_records:
-            print(f"    -> DNS NS: {', '.join(str(r) for r in ns_records[:3])}")
+    if verbose:
+        # DNS Records
+        dns = result.get('dns', {})
+        if dns:
+            a_records = dns.get('a', [])
+            mx_records = dns.get('mx', [])
+            ns_records = dns.get('ns', [])
+            txt_records = dns.get('txt', [])
+            if a_records:
+                print(f"    -> DNS A: {', '.join(a_records[:3])}")
+            if mx_records:
+                print(f"    -> DNS MX: {', '.join(str(r) for r in mx_records[:3])}")
+            if ns_records:
+                print(f"    -> DNS NS: {', '.join(str(r) for r in ns_records[:3])}")
 
-    # SPF/DMARC (Mail Security)
-    mail_sec = result.get('mail_security', {})
-    if mail_sec:
-        spf = mail_sec.get('spf', None)
-        dmarc = mail_sec.get('dmarc', None)
-        if spf is not None:
-            spf_status = "Present" if spf else "MISSING"
-            print(f"    -> SPF: {spf_status}")
-        if dmarc is not None:
-            dmarc_status = "Present" if dmarc else "MISSING"
-            print(f"    -> DMARC: {dmarc_status}")
+        # SPF/DMARC (Mail Security)
+        mail_sec = result.get('mail_security', {})
+        if mail_sec:
+            spf = mail_sec.get('spf', None)
+            dmarc = mail_sec.get('dmarc', None)
+            if spf is not None:
+                spf_status = "Present" if spf else "MISSING"
+                print(f"    -> SPF: {spf_status}")
+            if dmarc is not None:
+                dmarc_status = "Present" if dmarc else "MISSING"
+                print(f"    -> DMARC: {dmarc_status}")
 
-    # WHOIS / RDAP
-    whois = result.get('whois', {})
-    if whois:
-        registrar = whois.get('registrar', '')
-        expiry = whois.get('expiration_date', '')
-        if registrar:
-            print(f"    -> Registrar: {registrar}")
-        if expiry:
-            print(f"    -> Expires: {expiry}")
+        # WHOIS / RDAP
+        whois = result.get('whois', {})
+        if whois:
+            registrar = whois.get('registrar', '')
+            expiry = whois.get('expiration_date', '')
+            if registrar:
+                print(f"    -> Registrar: {registrar}")
+            if expiry:
+                print(f"    -> Expires: {expiry}")
 
     # Sensitive Files
     sensitive = result.get('sensitive_files', {})
@@ -163,7 +164,7 @@ def main():
         result = scan_domain(domain, api_key)
         
         if result:
-            grade, exposures = display_result(result)
+            grade, exposures = display_result(result, verbose=args.verbose)
             stats["exposures"] += exposures
             if grade in ['C', 'D', 'F']:
                 stats["weak"] += 1

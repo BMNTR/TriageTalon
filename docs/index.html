@@ -581,11 +581,11 @@
         output.innerHTML = '<div class="spinner"></div><span class="g">[*] Initializing scan for ' + domain + '...</span>';
         
         try {
-            const response = await fetch(`https://ultimate-attack-surface-recon.p.rapidapi.com/scan?domain=${domain}`, {
+            const response = await fetch(`https://ultimate-attack-surface-recon-api.p.rapidapi.com/scan?domain=${domain}`, {
                 method: 'GET',
                 headers: {
                     'x-rapidapi-key': apiKey,
-                    'x-rapidapi-host': 'ultimate-attack-surface-recon.p.rapidapi.com'
+                    'x-rapidapi-host': 'ultimate-attack-surface-recon-api.p.rapidapi.com'
                 }
             });
             
@@ -614,11 +614,11 @@
                 html += `<span class="w">&nbsp;&nbsp;&nbsp;&nbsp;-> [!] POTENTIAL TARGET: Weak security headers detected!</span><br>`;
             }
             
-            if(scanData.dns?.A) {
-                html += `<span class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> DNS A: ${scanData.dns.A.join(', ')}</span><br>`;
+            if(scanData.dns?.a) {
+                html += `<span class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> DNS A: ${scanData.dns.a.join(', ')}</span><br>`;
             }
             
-            const spf = scanData.mail_security?.spf?.exists ? 'Present' : 'MISSING';
+            const spf = scanData.mail_security?.spf ? 'Present' : 'MISSING';
             html += `<span class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> SPF: ${spf}</span><br>`;
             
             // Print full data for debugging
