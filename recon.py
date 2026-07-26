@@ -17,9 +17,12 @@ def scan_domain(domain, api_key):
     
     try:
         response = requests.get(API_URL, headers=headers, params=querystring)
-        if response.status_code in [401, 403]:
-            print("[!] API Key invalid or quota exceeded.")
-            print("[!] Get your FREE key at: https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api")
+        if response.status_code in [401, 403, 429]:
+            if response.status_code == 429:
+                print("\n[!] ERROR: API Quota Exceeded (Rate Limit or Free Tier Limit reached).")
+            else:
+                print("\n[!] ERROR: API Key invalid or not subscribed.")
+            print("[!] Get or upgrade your key at: https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api")
             sys.exit(1)
             
         data = response.json()
