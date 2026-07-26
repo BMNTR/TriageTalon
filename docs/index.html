@@ -584,7 +584,8 @@
             const response = await fetch(`https://commodore-treat-confining.ngrok-free.dev/recon?domain=${domain}`, {
                 method: 'GET',
                 headers: {
-                    'x-api-key': apiKey
+                    'x-api-key': apiKey,
+                    'ngrok-skip-browser-warning': 'true'
                 }
             });
             
