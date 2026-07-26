@@ -605,7 +605,7 @@
             const scanData = data.data || data;
 
             let html = `<span class="g">[*] Scanning: ${domain}</span><br>`;
-            const grade = scanData.security_headers?.grade || 'N/A';
+            const grade = scanData.security_analysis?.security_score?.grade || 'N/A';
             const subCount = scanData.subdomains?.count || 0;
             const scanDuration = data.scan_duration_seconds ? ` | Time: ${data.scan_duration_seconds}s` : '';
             
