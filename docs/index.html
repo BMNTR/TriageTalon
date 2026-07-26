@@ -601,28 +601,30 @@
                 return;
             }
 
+            // The JSON from OpenCode wraps everything in data.data
+            const scanData = data.data || data;
+
             let html = `<span class="g">[*] Scanning: ${domain}</span><br>`;
-            const grade = data.security_headers?.grade || 'N/A';
-            html += `<span class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> Grade: ${grade} | Subdomains: ${data.subdomains?.count || 0}</span><br>`;
+            const grade = scanData.security_headers?.grade || 'N/A';
+            const subCount = scanData.subdomains?.count || 0;
+            
+            html += `<span class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> Grade: ${grade} | Subdomains: ${subCount}</span><br>`;
             
             if(['F', 'D', 'C'].includes(grade)) {
                 html += `<span class="w">&nbsp;&nbsp;&nbsp;&nbsp;-> [!] POTENTIAL TARGET: Weak security headers detected!</span><br>`;
             }
             
-            if(data.dns?.A) html += `<span class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> DNS A: ${data.dns.A.join(', ')}</span><br>`;
-            
-            const spf = data.mail_security?.spf?.exists ? 'Present' : 'MISSING';
-            html += `<span class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> SPF: ${spf}</span><br>`;
-            
-            if(data.sensitive_files && data.sensitive_files.length > 0) {
-                data.sensitive_files.forEach(f => {
-                    if(f.status === 200) {
-                        html += `<span class="c">&nbsp;&nbsp;&nbsp;&nbsp;-> [!!!] CRITICAL: Exposed ${f.file} found</span><br>`;
-                    }
-                });
+            if(scanData.dns?.A) {
+                html += `<span class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> DNS A: ${scanData.dns.A.join(', ')}</span><br>`;
             }
             
-            html += `<br><span class="g">[*] Scan completed successfully.</span>`;
+            const spf = scanData.mail_security?.spf?.exists ? 'Present' : 'MISSING';
+            html += `<span class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> SPF: ${spf}</span><br>`;
+            
+            // Print full data for debugging
+            html += `<br><span class="y">--- Scan Details ---</span><br>`;
+            html += `<pre style="color:#aaa; white-space:pre-wrap;">${JSON.stringify(scanData, null, 2)}</pre>`;
+            
             output.innerHTML = html;
             
         } catch (err) {
