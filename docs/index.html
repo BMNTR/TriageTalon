@@ -581,7 +581,7 @@
         output.innerHTML = '<div class="spinner"></div><span class="g">[*] Initializing scan for ' + domain + '...</span>';
         
         try {
-            const response = await fetch(`https://commodore-treat-confining.ngrok-free.dev/recon?domain=${domain}`, {
+            const response = await fetch(`https://commodore-treat-confining.ngrok-free.dev/scan?domain=${domain}&key=${apiKey}`, {
                 method: 'GET',
                 headers: {
                     'x-api-key': apiKey,
