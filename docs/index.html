@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>TriageTalon - Advanced Bug Bounty Reconnaissance Tool</title>
+    <meta name="description" content="TriageTalon is a fast, API-driven reconnaissance CLI tool for Bug Bounty hunters. Instantly grade security posture, discover subdomains, detect exposed secrets, and triage targets in under 2 seconds.">
+    <meta name="keywords" content="bug bounty, recon tool, security scanner, subdomain enumeration, attack surface, OSINT, penetration testing, security headers, ethical hacking, vulnerability scanner, TriageTalon, reconnaissance, cybersecurity tool, whois lookup, dns recon">
+    <meta name="author" content="BMNTR">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://bmntr.github.io/TriageTalon/">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="TriageTalon - Advanced Bug Bounty Reconnaissance Tool">
+    <meta property="og:description" content="Lightning-fast recon CLI for Bug Bounty hunters. Grade security posture (A-F), discover subdomains, detect exposed .env and .git files, and triage targets instantly.">
+    <meta property="og:url" content="https://bmntr.github.io/TriageTalon/">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="TriageTalon - Advanced Bug Bounty Reconnaissance Tool">
+    <meta name="twitter:description" content="Lightning-fast recon CLI for Bug Bounty hunters. Grade security posture, discover subdomains, detect exposed secrets.">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #0a0a0a;
+            color: #e6e6e6;
+            min-height: 100vh;
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+        }
+
+        h1 span { color: #ff3e00; }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: #8b949e;
+            max-width: 600px;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.8rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 62, 0, 0.3);
+        }
+
+        .btn-primary {
+            background: #ff3e00;
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #e6e6e6;
+            border: 1px solid #30363d;
+        }
+
+        .terminal {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 0;
+            max-width: 700px;
+            width: 100%;
+            text-align: left;
+            overflow: hidden;
+        }
+
+        .terminal-bar {
+            background: #21262d;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27c93f; }
+
+        .terminal-body {
+            padding: 20px;
+            font-family: 'Fira Code', 'JetBrains Mono', Consolas, monospace;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            color: #8b949e;
+        }
+
+        .terminal-body .cmd { color: #ff8c00; }
+        .terminal-body .alert { color: #ff3e00; }
+        .terminal-body .crit { color: #ff3e00; font-weight: bold; }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            max-width: 900px;
+            width: 100%;
+            margin-top: 3rem;
+        }
+
+        .feature {
+            background: #161b22;
+            border: 1px solid #21262d;
+            border-radius: 10px;
+            padding: 1.5rem;
+            transition: border-color 0.2s;
+        }
+
+        .feature:hover { border-color: #ff3e00; }
+        .feature h3 { color: #ff8c00; margin-bottom: 0.5rem; font-size: 1rem; }
+        .feature p { color: #8b949e; font-size: 0.9rem; line-height: 1.5; }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #484f58;
+            font-size: 0.85rem;
+        }
+
+        footer a { color: #ff3e00; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <h1>Triage<span>Talon</span></h1>
+        <p class="tagline">
+            Advanced reconnaissance and attack surface filtration for Bug Bounty hunters.
+            Grade security posture, discover subdomains, and detect exposed secrets -- all in under 2 seconds.
+        </p>
+
+        <div class="cta-group">
+            <a href="https://github.com/BMNTR/TriageTalon" class="btn btn-primary">View on GitHub</a>
+            <a href="https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api" class="btn btn-secondary">Get Free API Key</a>
+        </div>
+
+        <div class="terminal">
+            <div class="terminal-bar">
+                <div class="dot dot-red"></div>
+                <div class="dot dot-yellow"></div>
+                <div class="dot dot-green"></div>
+            </div>
+            <div class="terminal-body">
+                <div class="cmd">$ python recon.py -d target.com -k YOUR_API_KEY</div>
+                <div>[*] TriageTalon initialized. Scanning 1 targets...</div>
+                <br>
+                <div>[*] Scanning: target.com</div>
+                <div>&nbsp;&nbsp;&nbsp;&nbsp;-> Grade: F | Subdomains: 42</div>
+                <div class="alert">&nbsp;&nbsp;&nbsp;&nbsp;-> [!] POTENTIAL TARGET: Weak security headers detected!</div>
+                <div>&nbsp;&nbsp;&nbsp;&nbsp;-> DNS A: 104.16.99.52</div>
+                <div>&nbsp;&nbsp;&nbsp;&nbsp;-> SPF: MISSING</div>
+                <div class="crit">&nbsp;&nbsp;&nbsp;&nbsp;-> [!!!] CRITICAL: Exposed .env found</div>
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <h3>Security Grading (A-F)</h3>
+                <p>Automated scoring based on HSTS, CSP, X-Frame-Options, and other HTTP security headers.</p>
+            </div>
+            <div class="feature">
+                <h3>Subdomain Discovery</h3>
+                <p>Returns live, resolved subdomains directly from the API in real-time.</p>
+            </div>
+            <div class="feature">
+                <h3>Sensitive Files Detection</h3>
+                <p>Probes for exposed .git, .env, and robots.txt files on the target.</p>
+            </div>
+            <div class="feature">
+                <h3>DNS & WHOIS Intelligence</h3>
+                <p>Maps DNS records (A, MX, NS, TXT), detects missing SPF/DMARC, and queries WHOIS data.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        Built by <a href="https://github.com/BMNTR">BMNTR</a> |
+        Powered by <a href="https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api">Ultimate Attack Surface & Recon API</a>
+    </footer>
+
+    <!-- Structured Data for Google -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "TriageTalon",
+        "description": "Advanced reconnaissance and attack surface filtration CLI tool for Bug Bounty hunters. Instantly grade security posture, discover subdomains, detect exposed secrets like .env and .git files.",
+        "url": "https://github.com/BMNTR/TriageTalon",
+        "applicationCategory": "SecurityApplication",
+        "operatingSystem": "Windows, macOS, Linux",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "author": {
+            "@type": "Person",
+            "name": "BMNTR",
+            "url": "https://github.com/BMNTR"
+        }
+    }
+    </script>
+</body>
+</html>
