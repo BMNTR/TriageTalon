@@ -4,244 +4,463 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="hlh7wXTfzw1B5avXYeybjWt-VvBMiK9Cp4QitWSRCNc" />
-    
-    <!-- SEO Meta Tags -->
     <title>TriageTalon - Advanced Bug Bounty Reconnaissance Tool</title>
     <meta name="description" content="TriageTalon is a fast, API-driven reconnaissance CLI tool for Bug Bounty hunters. Instantly grade security posture, discover subdomains, detect exposed secrets, and triage targets in under 2 seconds.">
-    <meta name="keywords" content="bug bounty, recon tool, security scanner, subdomain enumeration, attack surface, OSINT, penetration testing, security headers, ethical hacking, vulnerability scanner, TriageTalon, reconnaissance, cybersecurity tool, whois lookup, dns recon">
+    <meta name="keywords" content="bug bounty, recon tool, security scanner, subdomain enumeration, attack surface, OSINT, penetration testing, security headers, ethical hacking, vulnerability scanner, TriageTalon">
     <meta name="author" content="BMNTR">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://bmntr.github.io/TriageTalon/">
-
-    <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="TriageTalon - Advanced Bug Bounty Reconnaissance Tool">
-    <meta property="og:description" content="Lightning-fast recon CLI for Bug Bounty hunters. Grade security posture (A-F), discover subdomains, detect exposed .env and .git files, and triage targets instantly.">
+    <meta property="og:description" content="Lightning-fast recon CLI for Bug Bounty hunters. Grade targets, find subdomains, detect exposed secrets.">
     <meta property="og:url" content="https://bmntr.github.io/TriageTalon/">
-    
-    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="TriageTalon - Advanced Bug Bounty Reconnaissance Tool">
-    <meta name="twitter:description" content="Lightning-fast recon CLI for Bug Bounty hunters. Grade security posture, discover subdomains, detect exposed secrets.">
-
+    <meta name="twitter:title" content="TriageTalon - Bug Bounty Recon Tool">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
+        :root {
+            --bg: #050505;
+            --surface: #0c0c0c;
+            --border: #1a1a1a;
+            --text: #a0a0a0;
+            --text-bright: #e0e0e0;
+            --accent: #ff3e00;
+            --accent-dim: rgba(255, 62, 0, 0.08);
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: #0a0a0a;
-            color: #e6e6e6;
-            min-height: 100vh;
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
         }
 
-        .hero {
+        /* --- SCANLINE OVERLAY --- */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(255,62,0,0.015) 2px,
+                rgba(255,62,0,0.015) 4px
+            );
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        a { color: var(--accent); text-decoration: none; }
+
+        /* --- NAV --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            text-align: center;
-            padding: 2rem;
+            padding: 1rem 3rem;
+            background: rgba(5,5,5,0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
         }
 
-        h1 {
-            font-size: 3.5rem;
+        .logo {
+            font-family: 'Inter', sans-serif;
             font-weight: 800;
-            margin-bottom: 0.5rem;
-            letter-spacing: -1px;
+            font-size: 1.1rem;
+            color: var(--text-bright);
+            letter-spacing: -0.5px;
         }
 
-        h1 span { color: #ff3e00; }
+        .logo span { color: var(--accent); }
 
-        .tagline {
-            font-size: 1.2rem;
-            color: #8b949e;
-            max-width: 600px;
-            line-height: 1.6;
-            margin-bottom: 2rem;
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links a {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--text-bright); }
+
+        /* --- HERO --- */
+        .hero {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            padding: 8rem 3rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .cta-group {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-bottom: 3rem;
+        .hero-left h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            line-height: 1.05;
+            color: var(--text-bright);
+            letter-spacing: -2px;
+            margin-bottom: 1.5rem;
         }
+
+        .hero-left h1 span { color: var(--accent); }
+
+        .hero-left p {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--text);
+            max-width: 420px;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-cta { display: flex; gap: 1rem; }
 
         .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.8rem 1.8rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 0.75rem 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-block;
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255, 62, 0, 0.3);
-        }
-
-        .btn-primary {
-            background: #ff3e00;
+        .btn-accent {
+            background: var(--accent);
             color: #fff;
         }
 
-        .btn-secondary {
-            background: transparent;
-            color: #e6e6e6;
-            border: 1px solid #30363d;
+        .btn-accent:hover {
+            background: #e03500;
+            transform: translateY(-1px);
         }
 
+        .btn-ghost {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-ghost:hover {
+            border-color: var(--text);
+            color: var(--text-bright);
+        }
+
+        /* --- TERMINAL --- */
         .terminal {
-            background: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 12px;
-            padding: 0;
-            max-width: 700px;
-            width: 100%;
-            text-align: left;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            line-height: 1.9;
             overflow: hidden;
         }
 
         .terminal-bar {
-            background: #21262d;
-            padding: 12px 16px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
         }
 
-        .dot { width: 12px; height: 12px; border-radius: 50%; }
-        .dot-red { background: #ff5f56; }
-        .dot-yellow { background: #ffbd2e; }
-        .dot-green { background: #27c93f; }
-
-        .terminal-body {
-            padding: 20px;
-            font-family: 'Fira Code', 'JetBrains Mono', Consolas, monospace;
-            font-size: 0.85rem;
-            line-height: 1.8;
-            color: #8b949e;
+        .terminal-bar::after {
+            content: 'hunter@talon:~';
+            margin-left: auto;
+            font-size: 0.65rem;
+            color: #333;
         }
 
-        .terminal-body .cmd { color: #ff8c00; }
-        .terminal-body .alert { color: #ff3e00; }
-        .terminal-body .crit { color: #ff3e00; font-weight: bold; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .d1 { background: #ff5f56; }
+        .d2 { background: #ffbd2e; }
+        .d3 { background: #27c93f; }
 
-        .features {
+        .terminal-body { padding: 16px; color: #555; }
+        .terminal-body .c { color: var(--accent); }
+        .terminal-body .w { color: #ffbd2e; }
+        .terminal-body .g { color: #555; }
+        .terminal-body .dim { color: #333; }
+
+        /* --- STATS --- */
+        .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            max-width: 900px;
-            width: 100%;
-            margin-top: 3rem;
+            grid-template-columns: repeat(4, 1fr);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .feature {
-            background: #161b22;
-            border: 1px solid #21262d;
-            border-radius: 10px;
-            padding: 1.5rem;
-            transition: border-color 0.2s;
-        }
-
-        .feature:hover { border-color: #ff3e00; }
-        .feature h3 { color: #ff8c00; margin-bottom: 0.5rem; font-size: 1rem; }
-        .feature p { color: #8b949e; font-size: 0.9rem; line-height: 1.5; }
-
-        footer {
+        .stat {
+            padding: 3rem;
+            border-right: 1px solid var(--border);
             text-align: center;
-            padding: 2rem;
-            color: #484f58;
-            font-size: 0.85rem;
         }
 
-        footer a { color: #ff3e00; text-decoration: none; }
+        .stat:last-child { border-right: none; }
+
+        .stat-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-bright);
+        }
+
+        .stat-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #444;
+            margin-top: 0.5rem;
+        }
+
+        /* --- FEATURES --- */
+        .features {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .feat {
+            padding: 3rem;
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            transition: background 0.3s;
+        }
+
+        .feat:nth-child(3n) { border-right: none; }
+
+        .feat:hover { background: var(--accent-dim); }
+
+        .feat-idx {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--accent);
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+
+        .feat h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-bright);
+            margin-bottom: 0.75rem;
+        }
+
+        .feat p {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        /* --- INSTALL --- */
+        .install {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 3rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .install h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-bright);
+            letter-spacing: -1px;
+            margin-bottom: 1rem;
+        }
+
+        .install p {
+            line-height: 1.7;
+            color: #555;
+        }
+
+        .install-code {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            line-height: 2;
+            color: #555;
+        }
+
+        .install-code .c { color: var(--accent); }
+
+        /* --- FOOTER --- */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: #333;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        @media (max-width: 768px) {
+            .hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; gap: 2rem; }
+            .hero-left h1 { font-size: 2.5rem; }
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .features { grid-template-columns: 1fr; }
+            .feat { border-right: none; }
+            .install { grid-template-columns: 1fr; padding: 3rem 1.5rem; }
+            nav { padding: 1rem 1.5rem; }
+            footer { flex-direction: column; gap: 0.5rem; }
+        }
     </style>
 </head>
 <body>
-    <section class="hero">
-        <h1>Triage<span>Talon</span></h1>
-        <p class="tagline">
-            Advanced reconnaissance and attack surface filtration for Bug Bounty hunters.
-            Grade security posture, discover subdomains, and detect exposed secrets -- all in under 2 seconds.
-        </p>
 
-        <div class="cta-group">
-            <a href="https://github.com/BMNTR/TriageTalon" class="btn btn-primary">View on GitHub</a>
-            <a href="https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api" class="btn btn-secondary">Get Free API Key</a>
+<nav>
+    <div class="logo">Triage<span>Talon</span></div>
+    <div class="nav-links">
+        <a href="https://github.com/BMNTR/TriageTalon">Source</a>
+        <a href="https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api">API</a>
+        <a href="https://github.com/BMNTR/TriageTalon#installation" class="btn btn-accent">Install</a>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="hero-left">
+        <h1>Hunt where<br>the armor<br>is <span>thinnest.</span></h1>
+        <p>TriageTalon is a reconnaissance CLI that grades your scope targets from A to F in under 2 seconds. Skip hardened infrastructure. Focus on what's exploitable.</p>
+        <div class="hero-cta">
+            <a href="https://github.com/BMNTR/TriageTalon" class="btn btn-accent">View Source</a>
+            <a href="https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api" class="btn btn-ghost">Get API Key</a>
         </div>
-
-        <div class="terminal">
-            <div class="terminal-bar">
-                <div class="dot dot-red"></div>
-                <div class="dot dot-yellow"></div>
-                <div class="dot dot-green"></div>
-            </div>
-            <div class="terminal-body">
-                <div class="cmd">$ python recon.py -d target.com -k YOUR_API_KEY</div>
-                <div>[*] TriageTalon initialized. Scanning 1 targets...</div>
-                <br>
-                <div>[*] Scanning: target.com</div>
-                <div>&nbsp;&nbsp;&nbsp;&nbsp;-> Grade: F | Subdomains: 42</div>
-                <div class="alert">&nbsp;&nbsp;&nbsp;&nbsp;-> [!] POTENTIAL TARGET: Weak security headers detected!</div>
-                <div>&nbsp;&nbsp;&nbsp;&nbsp;-> DNS A: 104.16.99.52</div>
-                <div>&nbsp;&nbsp;&nbsp;&nbsp;-> SPF: MISSING</div>
-                <div class="crit">&nbsp;&nbsp;&nbsp;&nbsp;-> [!!!] CRITICAL: Exposed .env found</div>
-            </div>
+    </div>
+    <div class="terminal">
+        <div class="terminal-bar">
+            <div class="dot d1"></div>
+            <div class="dot d2"></div>
+            <div class="dot d3"></div>
         </div>
-
-        <div class="features">
-            <div class="feature">
-                <h3>Security Grading (A-F)</h3>
-                <p>Automated scoring based on HSTS, CSP, X-Frame-Options, and other HTTP security headers.</p>
-            </div>
-            <div class="feature">
-                <h3>Subdomain Discovery</h3>
-                <p>Returns live, resolved subdomains directly from the API in real-time.</p>
-            </div>
-            <div class="feature">
-                <h3>Sensitive Files Detection</h3>
-                <p>Probes for exposed .git, .env, and robots.txt files on the target.</p>
-            </div>
-            <div class="feature">
-                <h3>DNS & WHOIS Intelligence</h3>
-                <p>Maps DNS records (A, MX, NS, TXT), detects missing SPF/DMARC, and queries WHOIS data.</p>
-            </div>
+        <div class="terminal-body">
+            <div class="c">$ python recon.py -l scope.txt</div>
+            <div class="g">[*] TriageTalon initialized. Scanning 3 targets...</div>
+            <br>
+            <div class="g">[*] Scanning: shop.example.com</div>
+            <div class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> Grade: A | Subdomains: 3</div>
+            <br>
+            <div class="g">[*] Scanning: api.example.com</div>
+            <div class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> Grade: B | Subdomains: 1</div>
+            <br>
+            <div class="g">[*] Scanning: legacy.example.com</div>
+            <div class="w">&nbsp;&nbsp;&nbsp;&nbsp;-> Grade: F | Subdomains: 47</div>
+            <div class="c">&nbsp;&nbsp;&nbsp;&nbsp;-> [!] Weak security headers</div>
+            <div class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> SPF: MISSING</div>
+            <div class="c">&nbsp;&nbsp;&nbsp;&nbsp;-> [!!!] Exposed .env found</div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <footer>
-        Built by <a href="https://github.com/BMNTR">BMNTR</a> |
-        Powered by <a href="https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api">Ultimate Attack Surface & Recon API</a>
-    </footer>
+<div class="stats">
+    <div class="stat">
+        <div class="stat-num">&lt;2s</div>
+        <div class="stat-label">Per Target</div>
+    </div>
+    <div class="stat">
+        <div class="stat-num">A-F</div>
+        <div class="stat-label">Security Grade</div>
+    </div>
+    <div class="stat">
+        <div class="stat-num">6</div>
+        <div class="stat-label">Data Points</div>
+    </div>
+    <div class="stat">
+        <div class="stat-num">0</div>
+        <div class="stat-label">Local Footprint</div>
+    </div>
+</div>
 
-    <!-- Structured Data for Google -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "TriageTalon",
-        "description": "Advanced reconnaissance and attack surface filtration CLI tool for Bug Bounty hunters. Instantly grade security posture, discover subdomains, detect exposed secrets like .env and .git files.",
-        "url": "https://github.com/BMNTR/TriageTalon",
-        "applicationCategory": "SecurityApplication",
-        "operatingSystem": "Windows, macOS, Linux",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-        },
-        "author": {
-            "@type": "Person",
-            "name": "BMNTR",
-            "url": "https://github.com/BMNTR"
-        }
-    }
-    </script>
+<div class="features">
+    <div class="feat">
+        <div class="feat-idx">01</div>
+        <h3>Security Grading</h3>
+        <p>Automated A-F scoring based on HSTS, CSP, X-Frame-Options, and other HTTP response headers.</p>
+    </div>
+    <div class="feat">
+        <div class="feat-idx">02</div>
+        <h3>Subdomain Discovery</h3>
+        <p>Live, resolved subdomains returned directly from the API. No local wordlists needed.</p>
+    </div>
+    <div class="feat">
+        <div class="feat-idx">03</div>
+        <h3>Sensitive File Detection</h3>
+        <p>Probes for exposed .git directories, .env configuration files, and robots.txt.</p>
+    </div>
+    <div class="feat">
+        <div class="feat-idx">04</div>
+        <h3>DNS Intelligence</h3>
+        <p>Maps A, AAAA, MX, NS, TXT records. Flags missing SPF and DMARC configurations.</p>
+    </div>
+    <div class="feat">
+        <div class="feat-idx">05</div>
+        <h3>WHOIS Lookup</h3>
+        <p>Live RDAP queries returning domain registrar, creation date, and expiration timeline.</p>
+    </div>
+    <div class="feat">
+        <div class="feat-idx">06</div>
+        <h3>Pipeline Ready</h3>
+        <p>Clean stdout output designed for piping into nuclei, httpx, or custom bash workflows.</p>
+    </div>
+</div>
+
+<section class="install">
+    <div>
+        <h2>Three commands.<br>Zero config.</h2>
+        <p>Clone the repo, install one dependency, and you're scanning. API key is free — no credit card, no trial period.</p>
+    </div>
+    <div class="install-code">
+        <div class="c">$ git clone https://github.com/BMNTR/TriageTalon.git</div>
+        <div class="c">$ cd TriageTalon</div>
+        <div class="c">$ pip install -r requirements.txt</div>
+        <br>
+        <div class="dim"># Start scanning</div>
+        <div class="c">$ python recon.py -d target.com -k YOUR_KEY</div>
+    </div>
+</section>
+
+<footer>
+    <div>Built by <a href="https://github.com/BMNTR">BMNTR</a></div>
+    <div>Powered by <a href="https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api">Ultimate Attack Surface API</a></div>
+</footer>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "TriageTalon",
+    "description": "Advanced reconnaissance and attack surface filtration CLI tool for Bug Bounty hunters.",
+    "url": "https://github.com/BMNTR/TriageTalon",
+    "applicationCategory": "SecurityApplication",
+    "operatingSystem": "Windows, macOS, Linux",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Person", "name": "BMNTR", "url": "https://github.com/BMNTR" }
+}
+</script>
 </body>
 </html>
