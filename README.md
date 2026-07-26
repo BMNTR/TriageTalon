@@ -113,7 +113,7 @@ Visit the [Ultimate Attack Surface & Recon API](https://rapidapi.com/BMNTR/api/u
 
 **Step 3: Copy Your API Key**
 
-After subscribing, go back to the **Endpoints** tab. On the right side of the page you will see the **API Playground** panel. Look for the field labeled `X-RapidAPI-Key` -- it should now be auto-filled with your key. Click the copy icon next to it.
+After subscribing, look at the left sidebar and click on **Endpoints** (or click **Open playground**). In the middle of the screen, you will see the API testing playground. Look for the Header Parameters section to find the field labeled `X-RapidAPI-Key` -- it should now be auto-filled with your key. Click the copy icon next to it.
 
 > **Tip:** You can test the API directly from the RapidAPI playground before using the CLI. Enter a domain in the `domain` parameter field and click **Test Endpoint** to see a live response.
 
