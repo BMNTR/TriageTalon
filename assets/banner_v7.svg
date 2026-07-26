@@ -100,7 +100,7 @@
     <!-- Line 2: Recon output -->
     <text x="18" y="78" class="font-mono" font-size="13" fill="#8b949e" opacity="0">
       <animate attributeName="opacity" from="0" to="1" dur="0.1s" begin="2s" fill="freeze"/>
-      [*] Scanning: tesla.com
+      [*] Scanning: example.com
     </text>
     
     <!-- Line 3: Audit output -->

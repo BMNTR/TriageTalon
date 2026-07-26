@@ -140,14 +140,14 @@ RAPIDAPI_KEY = "YOUR_API_KEY"
 Scan a single domain to get an immediate posture assessment:
 
 ```bash
-python recon.py -d hackerone.com -k YOUR_API_KEY
+python recon.py -d example.com -k YOUR_API_KEY
 ```
 
 **Expected Output** (illustrative -- actual values will vary depending on the target):
 ```text
 [*] TriageTalon initialized. Scanning 1 targets...
 
-[*] Scanning: hackerone.com
+[*] Scanning: example.com
     -> Grade: F | Subdomains: 42
     -> [!] POTENTIAL TARGET: Weak security headers detected!
     -> DNS A: 104.16.99.52, 104.16.100.52
@@ -156,7 +156,7 @@ python recon.py -d hackerone.com -k YOUR_API_KEY
     -> DMARC: Present
     -> Registrar: MarkMonitor Inc.
     -> Expires: 2027-06-15
-    -> [!!!] CRITICAL: Exposed .env found at https://hackerone.com/.env
+    -> [!!!] CRITICAL: Exposed .env found at https://example.com/.env
 
 ==================================================
 [*] SCAN COMPLETE
