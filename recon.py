@@ -6,7 +6,7 @@ import time
 import os
 
 # Endpoint Utama
-API_URL = "https://ultimate-attack-surface-recon.p.rapidapi.com/api/v1/scan"
+API_URL = "https://ultimate-attack-surface-recon.p.rapidapi.com/scan"
 RAPIDAPI_KEY = "YOUR_RAPIDAPI_KEY_HERE" 
 
 def get_api_key(args_key):
