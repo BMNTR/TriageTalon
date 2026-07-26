@@ -31,9 +31,9 @@
 
 ## Overview
 
-**TriageTalon** is an aggressive, high-speed reconnaissance CLI tool built specifically for the Bug Bounty community. In modern bug hunting, the biggest bottleneck is time—spending days fuzzing and testing hardened infrastructure yields low returns. 
+**TriageTalon** is an aggressive, high-speed reconnaissance CLI tool built specifically for the Bug Bounty community. In modern bug hunting, the biggest bottleneck is time -- spending days fuzzing and testing hardened infrastructure yields low returns. 
 
-TriageTalon flips this paradigm. By leveraging the edge-computed [Ultimate Attack Surface API](https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api), it actively filters out hardened targets and isolates the weakest links in your scope (Grades C, D, and F).
+TriageTalon flips this paradigm. By leveraging the edge-computed [Ultimate Attack Surface & Recon API](https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api), it actively filters out hardened targets and isolates the weakest links in your scope (Grades C, D, and F).
 
 It operates on a simple philosophy: **Hunt where the armor is thinnest.**
 
@@ -41,16 +41,18 @@ It operates on a simple philosophy: **Hunt where the armor is thinnest.**
 
 Traditional recon pipelines require chaining multiple tools (Subfinder, HTTPX, Nuclei) and waiting hours for results. TriageTalon performs instantaneous, API-driven triage:
 
-- **[::] Skip the Noise**: Automatically drops targets with "A" or "B" security grades.
-- **[::] Zero Overhead**: Does not rely on local heavy-lifting or bandwidth exhaustion. The API handles the crawling.
-- **[::] High Signal-to-Noise**: Only alerts you when actionable misconfigurations (like exposed `.env` files or missing critical headers) are definitively proven.
+- **Skip the Noise**: Automatically drops targets with "A" or "B" security grades.
+- **Zero Overhead**: Does not rely on local heavy-lifting or bandwidth exhaustion. The API handles the crawling.
+- **High Signal-to-Noise**: Only alerts you when actionable misconfigurations are definitively proven.
 
 ## Core Features
 
-- **[::] Security Grade Assessment**: Instantly grades the target's security posture based on modern HTTP header configurations (HSTS, CSP, X-Frame-Options, etc.).
-- **[::] Secrets Exposure Hunting**: Actively probes for `.env`, `.git`, `.DS_Store`, and `wp-config.php` exposures in real-time.
-- **[::] Subdomain Discovery Integration**: Returns live, resolved subdomains directly from the API endpoint.
-- **[::] Pipeline Ready**: Designed to be integrated into larger bash scripts or CI/CD recon pipelines.
+- **Security Grading (A-F)**: Automated scoring based on HSTS, CSP, X-Frame-Options, and other HTTP security headers.
+- **Subdomain Discovery**: Returns live, resolved subdomains directly from the API.
+- **Sensitive Files Check**: Probes for exposed `.git`, `.env`, and `robots.txt` files.
+- **DNS & Mail Security**: Maps A, AAAA, MX, NS, and TXT records. Detects missing SPF/DMARC.
+- **WHOIS Intelligence**: Live RDAP queries for domain age, registrar, and expiration dates.
+- **Pipeline Ready**: Designed to integrate into larger bash scripts or CI/CD recon pipelines.
 
 ---
 
@@ -115,9 +117,25 @@ python recon.py -d hackerone.com -k YOUR_API_KEY
 [*] TriageTalon initialized. Scanning 1 targets...
 
 [*] Scanning: hackerone.com
-    ↳ Grade: F | Subdomains: 42
-    ↳ [!] POTENTIAL TARGET: Weak security headers detected!
-    ↳ [!!!] CRITICAL: Exposed env found at https://hackerone.com/.env
+    -> Grade: F | Subdomains: 42
+    -> [!] POTENTIAL TARGET: Weak security headers detected!
+    -> DNS A: 104.16.99.52, 104.16.100.52
+    -> DNS MX: aspmx.l.google.com
+    -> SPF: Present
+    -> DMARC: Present
+    -> Registrar: MarkMonitor Inc.
+    -> Expires: 2027-06-15
+    -> [!!!] CRITICAL: Exposed .env found at https://hackerone.com/.env
+
+==================================================
+[*] SCAN COMPLETE
+==================================================
+    Scanned:   1
+    Weak (C/D/F): 1
+    Strong (A/B): 0
+    Failed:    0
+    Exposures: 1
+==================================================
 ```
 
 ### Batch Processing
@@ -133,20 +151,35 @@ python recon.py -l targets.txt -k YOUR_API_KEY
 
 ## Advanced Integration
 
-For elite hunters, TriageTalon can be hardcoded with your API key so you don't have to pass the `-k` flag every time.
+TriageTalon supports three methods for providing your API key, in order of priority:
+
+**1. CLI Flag (highest priority):**
+```bash
+python recon.py -d target.com -k YOUR_API_KEY
+```
+
+**2. Environment Variable:**
+```bash
+# Linux / macOS
+export RAPIDAPI_KEY="YOUR_API_KEY"
+
+# Windows (PowerShell)
+$env:RAPIDAPI_KEY = "YOUR_API_KEY"
+
+# Then run without -k flag
+python recon.py -d target.com
+```
+
+**3. Hardcode in Script (lowest priority):**
 
 Open `recon.py` and replace the placeholder:
 ```python
 RAPIDAPI_KEY = "YOUR_ACTUAL_API_KEY_HERE"
 ```
 
-Once hardcoded, you can alias it in your `.bashrc` or `.zshrc`:
+Once configured, you can alias it for global access:
 ```bash
 alias talon="python3 /path/to/TriageTalon/recon.py"
-```
-
-Now you can triage targets globally from any directory:
-```bash
 talon -d target.com
 ```
 
