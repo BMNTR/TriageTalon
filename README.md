@@ -8,9 +8,9 @@
 [![Status](https://img.shields.io/badge/Status-Active-47d147.svg)](https://bmntr.github.io/TriageTalon/)
 [![Code Quality](https://img.shields.io/badge/Code_Quality-A+-2ea8ff.svg)]()
 
-*Advanced Reconnaissance & Attack Surface Filtration for Bug Bounty Hunters*
+*Advanced Reconnaissance & Attack Surface Filtration for SecOps, DevOps, & Bug Bounty Hunters*
 
-**🌐 Live Demo & Official Website:** [bmntr.github.io/TriageTalon](https://bmntr.github.io/TriageTalon/)
+**Live Demo & Official Website:** [bmntr.github.io/TriageTalon](https://bmntr.github.io/TriageTalon/)
 
 </div>
 
@@ -34,7 +34,7 @@
 
 ## Overview
 
-**TriageTalon** is an aggressive, high-speed reconnaissance CLI tool built specifically for the Bug Bounty community. In modern bug hunting, the biggest bottleneck is time -- spending days fuzzing and testing hardened infrastructure yields low returns. 
+**TriageTalon** is an aggressive, high-speed reconnaissance CLI tool built for Security Teams, DevOps, and Bug Bounty Hunters. Whether you are monitoring your own corporate infrastructure for misconfigurations or hunting for zero-days, the biggest bottleneck is time -- spending days scanning hardened infrastructure yields low returns. 
 
 TriageTalon flips this paradigm. By leveraging the edge-computed [Ultimate Attack Surface & Recon API](https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api), it actively filters out hardened targets and isolates the weakest links in your scope (Grades C, D, and F).
 
@@ -61,7 +61,7 @@ Traditional recon pipelines require chaining multiple tools (Subfinder, HTTPX, N
 
 ## Workflow Architecture
 
-TriageTalon acts as the vanguard of your recon pipeline. Here is how it fits into a professional Bug Bounty workflow:
+TriageTalon acts as the vanguard of your recon pipeline. Here is how it fits into professional SecOps and Bug Bounty workflows:
 
 ```mermaid
 graph TD
@@ -202,4 +202,4 @@ talon -l scope.txt
 
 ## Disclaimer
 
-This tool is designed **strictly for authorized bug bounty hunting and ethical security research**. The authors are not responsible for any misuse, illegal access, or damage caused by this software. Always ensure you have explicit permission to test the targets in your scope.
+This tool is designed **strictly for authorized security auditing, infrastructure monitoring, and ethical research**. The authors are not responsible for any misuse, illegal access, or damage caused by this software. Always ensure you have explicit permission to test the targets in your scope.
