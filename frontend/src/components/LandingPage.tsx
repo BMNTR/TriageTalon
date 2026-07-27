@@ -48,7 +48,7 @@ export default function LandingPage() {
           <h1 className="display-xl mb-5">Hunt where the armor is thinnest.</h1>
           <p className="body-lg mb-8 max-w-lg">TriageTalon is a reconnaissance CLI that grades your scope targets from A to F in under 2 seconds. Skip hardened infrastructure. Focus on what's exploitable.</p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <Link to="/scanner" className="btn button-primary flex items-center justify-center">Launch Dashboard</Link>
+            <Link to="/scanner" className="btn button-primary flex items-center justify-center">Launch Scanner</Link>
             <a href="https://github.com/BMNTR/TriageTalon" target="_blank" rel="noopener noreferrer" className="btn button-outline-on-dark flex items-center justify-center">View Source</a>
           </div>
         </div>

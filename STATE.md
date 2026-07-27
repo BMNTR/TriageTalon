@@ -48,7 +48,7 @@ Proyek ini terbagi menjadi beberapa komponen yang saling terhubung:
   - **React Router:** Memigrasikan *rendering* SPA kondisional sederhana menjadi rute standar produksi dengan `react-router-dom` (rute `/` dan `/scanner`).
   - **State Management & Local Storage:** Membangun kustom *hook* `useScanHistory` untuk menyimpan 10 riwayat hasil *scan* terakhir ke dalam `localStorage`. Pengguna kini bisa melihat riwayat *scan* (lengkap dengan *Grade*-nya) tanpa takut kehilangan data jika me-*refresh* *browser*.
   - **Utility Features:** Menambahkan tombol **Copy JSON** dan **Export Report (Download JSON)** untuk menyalin atau menyimpan laporan hasil *scan* secara lokal.
-  - Memperbaiki peringatan impor duplikat `React` pada *build* Vite `tsc`.
+  - Memperbaiki peringatan impor duplikat `React` pada *build* Vite `tsc` dan menyeragamkan teks tombol CTA menjadi **Launch Scanner** agar tidak membingungkan pengguna.
 
 - **[2026-07-28] React Web App Migration, Vercel Deployment & PyPI Release:**
   - **React Migration:** Menulis ulang seluruh halaman statis (`docs/index.html`) menjadi aplikasi React SPA modern dengan bundler Vite di dalam folder `frontend/`.
