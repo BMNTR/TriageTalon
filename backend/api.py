@@ -485,6 +485,12 @@ async def health_check():
     return {"status": "healthy", "version": "2.0.0"}
 
 
+import logging
+
+# Configure basic logging for Vercel
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
 @app.get("/scan")
 async def perform_recon(
     request: Request,
@@ -493,14 +499,20 @@ async def perform_recon(
     """
     All-in-one OSINT scan: Subdomains, Security Headers, Sensitive Files, DNS Records, WHOIS, and Tech Stack.
     """
+    client_ip = request.client.host if request.client else "unknown"
+    user_agent = request.headers.get("user-agent", "unknown")
+    
     # Enforce RapidAPI Proxy Secret
     if PROXY_SECRET:
         client_secret = request.headers.get("X-RapidAPI-Proxy-Secret")
         if not client_secret or client_secret != PROXY_SECRET:
+            logger.warning(f"UNAUTHORIZED SCAN ATTEMPT | IP: {client_ip} | Target: {domain} | UA: {user_agent}")
             raise HTTPException(status_code=401, detail="Unauthorized. Direct access forbidden. Please use RapidAPI.")
 
     start_time = time.time()
     domain_lower = domain.lower().strip()
+    
+    logger.info(f"SCAN INITIATED | IP: {client_ip} | Target: {domain_lower} | UA: {user_agent}")
 
     if len(domain_lower) > MAX_DOMAIN_LENGTH:
         raise HTTPException(status_code=400, detail="Domain too long. Maximum 253 characters.")
