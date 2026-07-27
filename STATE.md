@@ -50,7 +50,8 @@ Proyek ini terbagi menjadi beberapa komponen yang saling terhubung:
   - **Pricing Alignment:** Memperbaiki tata letak (layout) kartu *Pricing* menggunakan `flex flex-col` dan `mt-auto` agar tombol *Call-to-Action* selalu simetris di bagian bawah, serta mengubah teks menjadi "Upgrade to Pro".
   - **Content Expansion:** Menambahkan tiga bagian baru yang persuasif: "How it Works" (langkah kerja visual), "Developer First" (contoh intergrasi kode interaktif), dan FAQ bergaya akordion untuk meningkatkan konversi pengguna.
 
-- **[2026-07-28] Technical Polish (404, SEO, Footer & Toast Notifications):**
+- **[2026-07-28] Technical Polish (404, SEO Package, Footer & Toast Notifications):**
+  - **Full SEO Suite:** Menyediakan file `robots.txt` dan `sitemap.xml` di dalam direktori publik, serta menambahkan pengubah judul dokumen dinamis (*dynamic page titles*) pada setiap rute halaman.
   - **Toast Notification System:** Membangun `ToastContext` dan `ToastProvider` global yang menampilkan notifikasi melayang bergaya Voltagent di pojok kanan bawah setiap kali aksi pengguna berhasil (misal: menyalin kode, mengunduh laporan JSON, atau menyelesaikan pemindaian).
   - **Interactive Legal Modals:** Mengubah item navigasi Legal (Acceptable Use, MIT License, Privacy Notice) menjadi tombol interaktif yang memunculkan jendela *Modal Pop-up* bergaya Voltagent lengkap dengan teks syarat dan kebijakan hukum.
   - **Footer Component:** Mengimplementasikan komponen `Footer.tsx` berstandar internasional yang terbagi menjadi 4 kolom (Product, Resources, Legal, dan Status Operasional *real-time*). Komponen ini bersifat *shared* dan muncul di semua halaman.
