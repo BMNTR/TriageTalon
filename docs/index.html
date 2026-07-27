@@ -19,438 +19,408 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="shortcut icon" href="favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            /* Design Tokens */
-            --canvas: #faf9f5;
-            --ink: #141413;
-            --primary: #cc785c;
-            --primary-active: #a9583e;
-            --surface-card: #efe9de;
-            --surface-dark: #181715;
-            --surface-dark-soft: #1f1e1b;
-            --surface-dark-elevated: #252320;
-            --hairline: #e6dfd8;
-            --on-primary: #ffffff;
-            --on-dark: #faf9f5;
-            --on-dark-soft: #a09d96;
-            --muted: #6c6a64;
+            /* Voltagent Structure + TriageTalon Identity Colors */
+            --primary: #ff3e00; /* TriageTalon Neon Orange */
+            --primary-soft: rgba(255, 62, 0, 0.15);
+            --primary-deep: #cc3200;
+            --on-primary: #ffffff; /* White text on orange */
+            
+            --canvas: #101010; /* Voltagent deep dark canvas */
+            --canvas-soft: #1a1a1a;
+            --canvas-text-soft: #f5f6f7;
+            
+            --ink: #f2f2f2;
+            --ink-strong: #ffffff;
+            --body: #bdbdbd;
+            --mute: #8b949e;
+            
+            --hairline: #3d3a39; /* 1px borders */
+            --hairline-soft: #b8b3b0;
 
-            /* Typography */
-            --font-display: 'Cormorant Garamond', 'EB Garamond', serif;
-            --font-body: 'Inter', system-ui, sans-serif;
-            --font-code: 'JetBrains Mono', monospace;
+            /* Typography Settings */
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
 
-            /* Spacing */
-            --spacing-section: 96px;
+            /* Spacing (Voltagent Base 4px) */
+            --spacing-xxs: 2px;
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 12px;
+            --spacing-lg: 16px;
+            --spacing-xl: 20px;
+            --spacing-2xl: 24px;
+            --spacing-3xl: 32px;
+            --spacing-4xl: 40px;
+            --spacing-5xl: 48px;
+            --spacing-6xl: 64px;
+
+            /* Radii */
+            --rounded-none: 0px;
+            --rounded-xs: 4px;
+            --rounded-sm: 6px;
+            --rounded-md: 8px;
+            --rounded-pill: 9999px;
         }
 
         body {
-            font-family: var(--font-body);
+            font-family: var(--font-sans);
             background: var(--canvas);
             color: var(--ink);
             overflow-x: hidden;
-            font-size: 16px;
-            line-height: 1.55;
-            font-weight: 400;
-        }
-
-        /* Typography Styles */
-        h1, h2, h3, .display-font {
-            font-family: var(--font-display);
-            font-weight: 500;
-        }
-
-        h1 {
-            font-size: 64px;
-            line-height: 1.05;
-            letter-spacing: -1.5px;
-        }
-
-        h2 {
-            font-size: 48px;
-            line-height: 1.1;
-            letter-spacing: -1px;
-            margin-bottom: 24px;
-        }
-
-        h3 {
-            font-size: 28px;
-            line-height: 1.2;
-            letter-spacing: -0.3px;
+            -webkit-font-smoothing: antialiased;
         }
 
         a { color: var(--primary); text-decoration: none; }
-        
-        .inline-link {
-            color: var(--primary);
-            font-weight: 500;
+
+        /* Typography Hierarchy (Voltagent specific) */
+        .display-xl {
+            font-family: var(--font-sans);
+            font-size: 60px;
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: -0.65px;
+            color: var(--ink-strong);
         }
-        .inline-link:hover { text-decoration: underline; }
+
+        .display-lg {
+            font-family: var(--font-sans);
+            font-size: 36px;
+            font-weight: 400;
+            line-height: 1.1;
+            letter-spacing: -0.9px;
+        }
+
+        .display-md {
+            font-family: var(--font-sans);
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.33;
+            letter-spacing: -0.6px;
+        }
+
+        .display-sm {
+            font-family: var(--font-sans);
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .eyebrow-mono {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.4;
+            letter-spacing: 2.52px;
+            text-transform: uppercase;
+            color: var(--mute);
+            display: block;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .body-lg { font-size: 18px; font-weight: 400; line-height: 1.55; color: var(--body); }
+        .body-md { font-size: 16px; font-weight: 400; line-height: 1.625; color: var(--body); }
+        .body-sm { font-size: 14px; font-weight: 400; line-height: 1.4; color: var(--body); }
+
+        .code-text {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        /* --- Components --- */
 
         /* Buttons */
         .btn {
-            font-family: var(--font-body);
-            font-size: 14px;
-            font-weight: 500;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.2s;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            height: 40px;
-            text-decoration: none;
             border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            font-family: var(--font-sans);
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 1.5;
         }
 
-        .btn-primary {
+        .button-primary {
             background: var(--primary);
             color: var(--on-primary);
+            border-radius: var(--rounded-sm);
+            padding: var(--spacing-md) var(--spacing-lg);
         }
-        .btn-primary:hover {
-            background: var(--primary-active);
-        }
+        .button-primary:hover { background: var(--primary-deep); }
 
-        .btn-secondary {
+        .button-outline-on-dark {
             background: var(--canvas);
             color: var(--ink);
             border: 1px solid var(--hairline);
+            border-radius: var(--rounded-sm);
+            padding: var(--spacing-md) var(--spacing-lg);
         }
-        .btn-secondary:hover {
-            background: var(--surface-card);
-        }
-
-        .btn-inverted {
-            background: var(--canvas);
-            color: var(--primary);
-        }
-        .btn-inverted:hover {
-            background: #f0f0f0;
-        }
+        .button-outline-on-dark:hover { background: var(--canvas-soft); border-color: var(--body); }
 
         /* Navigation */
-        nav {
+        .nav-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 48px;
-            height: 64px;
             background: var(--canvas);
+            padding: var(--spacing-md) var(--spacing-3xl);
             border-bottom: 1px solid var(--hairline);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .logo {
-            font-family: var(--font-display);
-            font-size: 24px;
-            font-weight: 500;
-            color: var(--ink);
-            letter-spacing: -0.5px;
+            font-family: var(--font-sans);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--ink-strong);
             display: flex;
             align-items: center;
             gap: 8px;
         }
-        
-        /* Anthropic Asterisk logic */
         .logo::before {
-            content: "✸";
-            font-size: 20px;
-            color: var(--ink);
+            content: "⚡"; /* Lightning glyph proxy */
+            font-size: 16px;
+            color: var(--primary);
         }
 
-        .nav-links {
-            display: flex;
-            gap: 24px;
-            align-items: center;
-        }
-        
-        .nav-links a.nav-text {
-            color: var(--muted);
+        .nav-link {
+            color: var(--body);
+            font-family: var(--font-sans);
             font-size: 14px;
             font-weight: 500;
             transition: color 0.2s;
+            margin-right: var(--spacing-2xl);
         }
-        .nav-links a.nav-text:hover { color: var(--ink); }
+        .nav-link:hover { color: var(--ink-strong); }
 
-        /* Hero */
-        .hero {
-            padding: var(--spacing-section) 48px;
-            max-width: 1200px;
+        /* Hero Band */
+        .hero-band {
+            background: var(--canvas);
+            padding: 96px var(--spacing-3xl) 80px;
+            max-width: 1300px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 64px;
+            gap: var(--spacing-6xl);
             align-items: center;
         }
 
-        .hero-left p {
-            font-size: 18px;
-            margin-top: 24px;
-            margin-bottom: 48px;
+        .hero-content p {
+            margin-top: var(--spacing-xl);
+            margin-bottom: var(--spacing-3xl);
             max-width: 480px;
         }
 
-        .hero-cta { display: flex; gap: 16px; }
+        .hero-cta { display: flex; gap: var(--spacing-lg); }
 
-        /* Code Window Card */
-        .code-window-card {
-            background: var(--surface-dark);
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        .terminal {
-            background: var(--surface-dark-soft);
-            border-radius: 8px;
-            font-family: var(--font-code);
-            font-size: 14px;
+        /* Code Mockup */
+        .code-mockup {
+            background: var(--canvas);
+            border: 1px solid var(--hairline);
+            border-radius: var(--rounded-md);
+            padding: var(--spacing-xl);
+            font-family: var(--font-mono);
+            font-size: 13px;
             line-height: 1.6;
-            overflow: hidden;
-            color: var(--on-dark);
+            color: var(--ink);
+            box-shadow: 0 0 15px rgba(255, 62, 0, 0.05); /* Very subtle primary glow */
         }
-
-        .terminal-bar {
+        
+        .code-mockup-bar {
             display: flex;
             align-items: center;
             gap: 6px;
-            padding: 12px 16px;
-            background: var(--surface-dark-elevated);
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 1px solid var(--hairline);
         }
 
         .dot { width: 10px; height: 10px; border-radius: 50%; }
-        .d1 { background: #ff5f56; }
-        .d2 { background: #ffbd2e; }
-        .d3 { background: #27c93f; }
+        .d1 { background: var(--hairline); }
+        .d2 { background: var(--hairline); }
+        .d3 { background: var(--hairline); }
 
-        .terminal-body { padding: 24px; overflow-x: auto; }
-        
-        /* Terminal Syntax Highlight adaptations for editorial dark navy */
-        .terminal-body .c { color: #5db8a6; } /* Accent teal for commands */
-        .terminal-body .w { color: #e8a55a; } /* Accent amber for warnings */
-        .terminal-body .g { color: var(--on-dark-soft); } /* Muted logs */
-        .terminal-body .dim { color: #666; } 
-        .terminal-body .err { color: var(--primary); } /* Coral for errors */
+        .terminal-body { overflow-x: auto; }
+        .terminal-body .c { color: var(--primary); }
+        .terminal-body .w { color: #facc15; }
+        .terminal-body .g { color: var(--mute); }
+        .terminal-body .dim { color: #525252; }
+        .terminal-body .err { color: #ef4444; }
 
         /* Feature Cards */
-        .features-wrapper {
-            background: var(--canvas);
-            padding: var(--spacing-section) 48px;
-        }
-        
-        .features {
-            max-width: 1200px;
+        .content-band {
+            padding: 80px var(--spacing-3xl);
+            max-width: 1300px;
             margin: 0 auto;
+        }
+
+        .section-header { text-align: center; margin-bottom: var(--spacing-6xl); }
+
+        .feature-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 32px;
+            gap: var(--spacing-2xl);
         }
 
-        .feature-card {
-            background: var(--surface-card);
-            border-radius: 12px;
-            padding: 32px;
-        }
-
-        .feature-card h3 {
-            font-family: var(--font-body);
-            font-size: 18px;
-            font-weight: 500;
-            margin-bottom: 12px;
-            letter-spacing: 0;
-        }
-
-        .feature-card p {
-            font-size: 16px;
-            color: var(--muted);
-        }
-
-        /* Live Tester (Dark Product Mockup) */
-        .tester-wrapper {
-            padding: var(--spacing-section) 48px;
+        .card-feature {
             background: var(--canvas);
+            border: 1px solid var(--hairline);
+            border-radius: var(--rounded-md);
+            padding: var(--spacing-2xl);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .card-feature:hover {
+            border-color: var(--body);
+            box-shadow: 0 0 15px rgba(255, 62, 0, 0.08); /* Inset glow hover */
         }
 
-        .tester-container {
-            max-width: 1000px;
+        .card-feature h3 { margin-bottom: var(--spacing-md); }
+
+        /* Live Tester (Auth Form Card Style) */
+        .tester-card {
+            background: var(--canvas-soft);
+            border: 1px solid var(--hairline);
+            border-radius: var(--rounded-md);
+            padding: var(--spacing-3xl);
+            max-width: 900px;
             margin: 0 auto;
-            background: var(--surface-dark);
-            border-radius: 12px;
-            padding: 48px;
-            color: var(--on-dark);
-        }
-
-        .tester-container h2 {
-            color: var(--on-dark);
-            margin-bottom: 16px;
-        }
-
-        .tester-container p {
-            color: var(--on-dark-soft);
-            margin-bottom: 32px;
-            font-size: 16px;
         }
 
         .tester-form {
             display: flex;
-            gap: 16px;
-            margin-bottom: 32px;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-2xl);
             align-items: flex-end;
             flex-wrap: wrap;
         }
 
-        .input-group {
+        .text-input-group {
             flex: 1;
             min-width: 200px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: var(--spacing-sm);
         }
 
-        .input-group label {
-            font-family: var(--font-body);
-            font-size: 13px;
+        .text-input-group label {
+            font-family: var(--font-sans);
+            font-size: 14px;
             font-weight: 500;
-            color: var(--on-dark-soft);
+            color: var(--mute);
         }
 
-        .input-group input {
-            background: var(--surface-dark-soft);
-            border: 1px solid var(--surface-dark-elevated);
-            color: var(--on-dark);
-            border-radius: 8px;
-            padding: 10px 14px;
-            font-family: var(--font-body);
-            font-size: 16px;
-            height: 40px;
+        .text-input {
+            background: var(--canvas-soft);
+            border: 1px solid var(--hairline);
+            color: var(--ink);
+            border-radius: var(--rounded-sm);
+            padding: var(--spacing-md) var(--spacing-lg);
+            font-family: var(--font-sans);
+            font-size: 14px;
+            height: 44px; /* Touch target size */
+            transition: border-color 0.2s;
         }
 
-        .input-group input:focus {
+        .text-input:focus {
             outline: none;
             border-color: var(--primary);
         }
 
         .tester-output {
-            background: var(--surface-dark-soft);
-            border-radius: 8px;
-            padding: 24px;
+            background: var(--canvas);
+            border: 1px solid var(--hairline);
+            border-radius: var(--rounded-md);
+            padding: var(--spacing-xl);
             min-height: 200px;
-            font-family: var(--font-code);
-            font-size: 14px;
+            font-family: var(--font-mono);
+            font-size: 13px;
             overflow-x: auto;
-            line-height: 1.8;
-            color: var(--on-dark);
+            line-height: 1.6;
         }
-        
-        .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(204, 120, 92, 0.3); border-radius: 50%; border-top-color: var(--primary); animation: spin 1s ease-in-out infinite; vertical-align: middle; margin-right: 10px; }
+
+        .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid var(--primary-soft); border-radius: 50%; border-top-color: var(--primary); animation: spin 1s linear infinite; vertical-align: middle; margin-right: 8px; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* Install CTA Coral Band */
-        .install-wrapper {
-            padding: var(--spacing-section) 48px;
-            max-width: 1200px;
-            margin: 0 auto;
+        /* Dividers */
+        .dashed-divider {
+            border-top: 1px dashed rgba(255, 255, 255, 0.15);
+            margin: 0 var(--spacing-3xl);
+        }
+        .green-divider-band {
+            border-top: 2px solid var(--primary);
+            opacity: 0.8;
+            margin-top: var(--spacing-5xl);
+        }
+
+        /* Installation Snippet */
+        .install-band { text-align: center; max-width: 600px; margin: 0 auto; }
+        .install-band h2 { margin-bottom: var(--spacing-2xl); }
+        
+        .code-inline-container {
+            position: relative;
+            background: var(--canvas-soft);
+            border: 1px solid var(--hairline);
+            border-radius: var(--rounded-md);
+            padding: var(--spacing-xl);
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--canvas-text-soft);
+            text-align: left;
+            line-height: 2;
         }
         
-        .install-band {
-            background: var(--primary);
-            border-radius: 12px;
-            padding: 64px;
-            color: var(--on-primary);
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 64px;
-            align-items: center;
-        }
-
-        .install-band h2 {
-            color: var(--on-primary);
-            margin-bottom: 24px;
-        }
-
-        .install-band p {
-            font-size: 18px;
-            margin-bottom: 0;
-            opacity: 0.9;
-        }
-
-        .install-code {
-            background: rgba(20, 20, 19, 0.15); /* Darker translucent for code on coral */
-            border-radius: 8px;
-            padding: 24px;
-            font-family: var(--font-code);
-            font-size: 14px;
-            line-height: 2;
-            color: var(--on-primary);
-            position: relative;
-        }
-
-        .copy-btn {
+        .button-pill-tag {
             position: absolute;
             top: 16px;
             right: 16px;
-            background: transparent;
-            color: var(--on-primary);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 6px;
-            padding: 6px 12px;
-            font-family: var(--font-body);
+            background: var(--canvas);
+            color: var(--ink);
+            border: 1px solid var(--hairline);
+            border-radius: var(--rounded-pill);
+            padding: var(--spacing-xs) var(--spacing-md);
             font-size: 12px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s;
         }
-
-        .copy-btn:hover { background: rgba(255,255,255,0.1); }
-        .install-code .dim { opacity: 0.7; }
+        .button-pill-tag:hover { border-color: var(--body); }
 
         /* Footer */
-        footer {
-            background: var(--surface-dark);
-            padding: 64px 48px;
-            color: var(--on-dark-soft);
+        .footer {
+            background: var(--canvas);
+            padding: var(--spacing-4xl) var(--spacing-3xl);
+            border-top: 1px solid var(--hairline);
         }
         
         .footer-inner {
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .footer-logo {
-            font-family: var(--font-display);
-            font-size: 20px;
-            font-weight: 500;
-            color: var(--on-dark);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .footer-logo::before {
-            content: "✸";
-            font-size: 16px;
-            color: var(--on-dark);
-        }
-
-        footer a {
-            color: var(--on-dark);
-            text-decoration: none;
-            font-family: var(--font-body);
+        .footer-inner a {
+            color: var(--body);
             font-size: 14px;
-            transition: opacity 0.2s;
+            font-weight: 500;
         }
-        
-        footer a:hover { opacity: 0.8; }
+        .footer-inner a:hover { color: var(--ink-strong); }
 
-        /* Animations */
+        /* Utils */
         .reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s ease-out; }
         .reveal.active { opacity: 1; transform: translateY(0); }
         .cursor { animation: blink 1s step-end infinite; }
@@ -458,140 +428,155 @@
 
         /* Responsive */
         @media (max-width: 1024px) {
-            .hero, .install-band { grid-template-columns: 1fr; gap: 48px; }
-            .features { grid-template-columns: repeat(2, 1fr); }
-            h1 { font-size: 48px; }
+            .hero-band { grid-template-columns: 1fr; gap: var(--spacing-4xl); padding-top: var(--spacing-6xl); }
+            .feature-grid { grid-template-columns: repeat(2, 1fr); }
+            .display-xl { font-size: 48px; }
         }
 
         @media (max-width: 768px) {
-            nav, .hero, .features-wrapper, .tester-wrapper, .install-wrapper { padding-left: 24px; padding-right: 24px; }
-            .features { grid-template-columns: 1fr; }
-            .install-band { padding: 40px 24px; }
-            .footer-inner { flex-direction: column; gap: 24px; align-items: flex-start; }
-            .tester-container { padding: 32px 24px; }
+            .nav-bar, .hero-band, .content-band, .footer { padding-left: var(--spacing-xl); padding-right: var(--spacing-xl); }
+            .feature-grid { grid-template-columns: 1fr; }
+            .hero-cta { flex-direction: column; }
+            .hero-cta .btn { width: 100%; }
+            .footer-inner { flex-direction: column; gap: var(--spacing-xl); align-items: flex-start; }
+            .tester-card { padding: var(--spacing-xl); }
         }
     </style>
 </head>
 <body>
 
-<nav>
+<nav class="nav-bar">
     <div class="logo">TriageTalon</div>
-    <div class="nav-links">
-        <a href="https://github.com/BMNTR/TriageTalon" class="nav-text">Source</a>
-        <a href="https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api" class="nav-text">API</a>
-        <a href="https://github.com/BMNTR/TriageTalon#installation" class="btn btn-primary">Install</a>
+    <div>
+        <a href="https://github.com/BMNTR/TriageTalon" class="nav-link">Source</a>
+        <a href="https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api" class="nav-link">API</a>
+        <a href="https://github.com/BMNTR/TriageTalon#installation" class="btn button-primary">Install</a>
     </div>
 </nav>
 
-<section class="hero">
-    <div class="hero-left">
-        <h1>Hunt where the armor is thinnest.</h1>
-        <p>TriageTalon is a reconnaissance CLI that grades your scope targets from A to F in under 2 seconds. Skip hardened infrastructure. Focus on what's exploitable.</p>
+<section class="hero-band">
+    <div class="hero-content">
+        <span class="eyebrow-mono">Attack Surface Discovery</span>
+        <h1 class="display-xl">Hunt where the armor is thinnest.</h1>
+        <p class="body-lg">TriageTalon is a reconnaissance CLI that grades your scope targets from A to F in under 2 seconds. Skip hardened infrastructure. Focus on what's exploitable.</p>
         <div class="hero-cta">
-            <a href="https://github.com/BMNTR/TriageTalon" class="btn btn-primary">View Source</a>
-            <a href="https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api" class="btn btn-secondary">Get API Key</a>
+            <a href="https://github.com/BMNTR/TriageTalon" class="btn button-primary">View Source</a>
+            <a href="https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api" class="btn button-outline-on-dark">Get API Key</a>
         </div>
     </div>
     
-    <div class="code-window-card">
-        <div class="terminal">
-            <div class="terminal-bar">
-                <div class="dot d1"></div>
-                <div class="dot d2"></div>
-                <div class="dot d3"></div>
-            </div>
-            <div class="terminal-body" id="hero-terminal-body">
-                <div class="c">$ python recon.py -l scope.txt</div>
-                <div class="g">[*] TriageTalon initialized. Scanning 3 targets...</div>
-                <br>
-                <div class="g">[*] Scanning: shop.example.com</div>
-                <div class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> Grade: A | Subdomains: 3</div>
-                <br>
-                <div class="g">[*] Scanning: api.example.com</div>
-                <div class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> Grade: B | Subdomains: 1</div>
-                <br>
-                <div class="g">[*] Scanning: legacy.example.com</div>
-                <div class="w">&nbsp;&nbsp;&nbsp;&nbsp;-> Grade: F | Subdomains: 47</div>
-                <div class="err">&nbsp;&nbsp;&nbsp;&nbsp;-> [!] Weak security headers</div>
-                <div class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> SPF: MISSING</div>
-                <div class="err">&nbsp;&nbsp;&nbsp;&nbsp;-> [!!!] Exposed .env found</div>
-            </div>
+    <div class="code-mockup">
+        <div class="code-mockup-bar">
+            <div class="dot d1"></div>
+            <div class="dot d2"></div>
+            <div class="dot d3"></div>
+        </div>
+        <div class="terminal-body code-text" id="hero-terminal-body">
+            <div class="c">$ talon -l scope.txt</div>
+            <div class="g">[*] TriageTalon initialized. Scanning 3 targets...</div>
+            <br>
+            <div class="g">[*] Scanning: shop.example.com</div>
+            <div class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> Grade: A | Subdomains: 3</div>
+            <br>
+            <div class="g">[*] Scanning: api.example.com</div>
+            <div class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> Grade: B | Subdomains: 1</div>
+            <br>
+            <div class="g">[*] Scanning: legacy.example.com</div>
+            <div class="w">&nbsp;&nbsp;&nbsp;&nbsp;-> Grade: F | Subdomains: 47</div>
+            <div class="err">&nbsp;&nbsp;&nbsp;&nbsp;-> [!] Weak security headers</div>
+            <div class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> SPF: MISSING</div>
+            <div class="err">&nbsp;&nbsp;&nbsp;&nbsp;-> [!!!] Exposed .env found</div>
         </div>
     </div>
 </section>
 
-<div class="features-wrapper">
-    <div class="features reveal">
-        <div class="feature-card">
-            <h3>Security Grading</h3>
-            <p>Automated A-F scoring based on HSTS, CSP, X-Frame-Options, and other HTTP response headers.</p>
+<div class="dashed-divider"></div>
+
+<section class="content-band">
+    <div class="section-header reveal">
+        <span class="eyebrow-mono">Everything You Need</span>
+        <h2 class="display-lg">Comprehensive reconnaissance engine.</h2>
+    </div>
+    <div class="feature-grid reveal">
+        <div class="card-feature">
+            <h3 class="display-sm">Security Grading</h3>
+            <p class="body-md">Automated A-F scoring based on HSTS, CSP, X-Frame-Options, and other HTTP response headers.</p>
         </div>
-        <div class="feature-card">
-            <h3>Subdomain Discovery</h3>
-            <p>Live, resolved subdomains returned directly from the API. No local wordlists needed.</p>
+        <div class="card-feature">
+            <h3 class="display-sm">Subdomain Discovery</h3>
+            <p class="body-md">Live, resolved subdomains returned directly from the API. No local wordlists needed.</p>
         </div>
-        <div class="feature-card">
-            <h3>Sensitive File Detection</h3>
-            <p>Probes for exposed .git directories, .env configuration files, and robots.txt.</p>
+        <div class="card-feature">
+            <h3 class="display-sm">Sensitive File Detection</h3>
+            <p class="body-md">Probes for exposed .git directories, .env configuration files, and robots.txt.</p>
         </div>
-        <div class="feature-card">
-            <h3>DNS Intelligence</h3>
-            <p>Maps A, AAAA, MX, NS, TXT records. Flags missing SPF and DMARC configurations.</p>
+        <div class="card-feature">
+            <h3 class="display-sm">DNS Intelligence</h3>
+            <p class="body-md">Maps A, AAAA, MX, NS, TXT records. Flags missing SPF and DMARC configurations.</p>
         </div>
-        <div class="feature-card">
-            <h3>WHOIS Lookup</h3>
-            <p>Live RDAP queries returning domain registrar, creation date, and expiration timeline.</p>
+        <div class="card-feature">
+            <h3 class="display-sm">WHOIS Lookup</h3>
+            <p class="body-md">Live RDAP queries returning domain registrar, creation date, and expiration timeline.</p>
         </div>
-        <div class="feature-card">
-            <h3>Pipeline Ready</h3>
-            <p>Clean stdout output designed for piping into nuclei, httpx, or custom bash workflows.</p>
+        <div class="card-feature">
+            <h3 class="display-sm">Pipeline Ready</h3>
+            <p class="body-md">Clean stdout output designed for piping into nuclei, httpx, or custom bash workflows.</p>
         </div>
     </div>
-</div>
+</section>
 
-<div class="tester-wrapper">
-    <div class="tester-container reveal">
-        <h2>Live API Demo</h2>
-        <p>Test the RapidAPI integration directly from your browser. No backend required.</p>
+<div class="dashed-divider"></div>
+
+<section class="content-band">
+    <div class="tester-card reveal">
+        <span class="eyebrow-mono">Interactive Demo</span>
+        <h2 class="display-md" style="margin-bottom: 8px;">Live API Tester</h2>
+        <p class="body-md" style="margin-bottom: 32px;">Test the RapidAPI integration directly from your browser. No backend required.</p>
+        
         <form class="tester-form" onsubmit="runTest(event)">
-            <div class="input-group">
+            <div class="text-input-group">
                 <label>Target Domain</label>
-                <input type="text" id="testDomain" placeholder="example.com" required>
+                <input type="text" id="testDomain" class="text-input" placeholder="example.com" required>
             </div>
-            <div class="input-group">
+            <div class="text-input-group">
                 <label>RapidAPI Key</label>
-                <input type="password" id="testKey" placeholder="Your X-RapidAPI-Key" required>
+                <input type="password" id="testKey" class="text-input" placeholder="Your X-RapidAPI-Key" required>
             </div>
-            <button type="submit" class="btn btn-primary">Run Scan</button>
+            <button type="submit" class="btn button-primary" style="height: 44px;">Run Scan</button>
         </form>
         <div class="tester-output" id="testOutput">
-            <span class="dim">Ready. Enter target and API key to begin.</span>
+            <span class="g">Ready. Enter target and API key to begin.</span>
         </div>
     </div>
-</div>
+</section>
 
-<div class="install-wrapper reveal">
-    <div class="install-band">
-        <div>
-            <h2>Three commands. Zero config.</h2>
-            <p>Clone the repo, install one dependency, and you're scanning. API key is free — no credit card, no trial period.</p>
-        </div>
-        <div class="install-code">
-            <button class="copy-btn" id="copyBtn" onclick="copyInstallCode()">Copy</button>
-            <div>$ git clone https://github.com/BMNTR/TriageTalon.git</div>
-            <div>$ cd TriageTalon</div>
-            <div>$ pip install -r requirements.txt</div>
-            <br>
-            <div class="dim"># Start scanning</div>
-            <div>$ python recon.py -d target.com -k YOUR_KEY</div>
-        </div>
+<div class="dashed-divider"></div>
+
+<section class="content-band install-band reveal">
+    <span class="eyebrow-mono">Quick Start</span>
+    <h2 class="display-lg">Three commands. Zero config.</h2>
+    <p class="body-md" style="margin-bottom: 32px;">Clone the repo, install one dependency, and you're scanning. API key is free — no credit card, no trial period.</p>
+    
+    <div class="code-inline-container">
+        <button class="button-pill-tag" id="copyBtn" onclick="copyInstallCode()">Copy</button>
+        <div><span class="c">$</span> git clone https://github.com/BMNTR/TriageTalon.git</div>
+        <div><span class="c">$</span> cd TriageTalon</div>
+        <div><span class="c">$</span> pip install -r requirements.txt</div>
+        <br>
+        <div class="g"># Start scanning</div>
+        <div><span class="c">$</span> python recon.py -d target.com -k YOUR_KEY</div>
     </div>
-</div>
+</section>
 
-<footer>
+<div class="green-divider-band"></div>
+
+<footer class="footer">
     <div class="footer-inner">
-        <div class="footer-logo">TriageTalon</div>
-        <div>Built by <a href="https://github.com/BMNTR">BMNTR</a> &nbsp;&nbsp;|&nbsp;&nbsp; Powered by <a href="https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api">Ultimate Attack Surface API</a></div>
+        <div class="logo">TriageTalon</div>
+        <div>
+            <span class="body-sm" style="margin-right: 16px;">Built by <a href="https://github.com/BMNTR">BMNTR</a></span>
+            <span class="body-sm">Powered by <a href="https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api">Ultimate Attack Surface API</a></span>
+        </div>
     </div>
 </footer>
 
@@ -619,7 +604,7 @@
 
     // Terminal Animation
     const heroLines = [
-        { text: "$ python recon.py -l scope.txt", class: "c", delay: 800 },
+        { text: "$ talon -l scope.txt", class: "c", delay: 800 },
         { text: "[*] TriageTalon initialized. Scanning 3 targets...", class: "g", delay: 400 },
         { text: "<br>", delay: 200 },
         { text: "[*] Scanning: shop.example.com", class: "g", delay: 500 },
@@ -696,7 +681,7 @@
 
             const scanData = data.data || data;
 
-            let html = `<span class="g">[*] Scanning: ${domain}</span><br>`;
+            let html = `<span class="c">[*] Scanning: ${domain}</span><br>`;
             const grade = scanData.security_analysis?.security_score?.grade || 'N/A';
             const subCount = scanData.subdomains?.count || 0;
             const scanDuration = data.scan_duration_seconds ? ` | Time: ${data.scan_duration_seconds}s` : '';
@@ -715,7 +700,7 @@
             html += `<span class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> SPF: ${spf}</span><br>`;
             
             html += `<br><span class="g">--- Scan Details ---</span><br>`;
-            html += `<pre style="color:var(--on-dark-soft); white-space:pre-wrap;">${JSON.stringify(scanData, null, 2)}</pre>`;
+            html += `<pre style="color:var(--canvas-text-soft); white-space:pre-wrap;">${JSON.stringify(scanData, null, 2)}</pre>`;
             
             output.innerHTML = html;
             
