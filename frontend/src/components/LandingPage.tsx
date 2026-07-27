@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import Pricing from './Pricing';
 
 const heroLines = [
@@ -18,7 +20,7 @@ const heroLines = [
   { text: "    -> [!!!] Exposed .env found", class: "text-[#ef4444]", delay: 200 }
 ];
 
-export default function LandingPage({ onNavigate }: { onNavigate: (page: 'scanner') => void }) {
+export default function LandingPage() {
   const [terminalLines, setTerminalLines] = useState<any[]>([]);
 
   useEffect(() => {
@@ -34,15 +36,20 @@ export default function LandingPage({ onNavigate }: { onNavigate: (page: 'scanne
   }, []);
 
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.3 }}
+    >
       <section className="bg-[var(--canvas)] pt-24 px-8 pb-20 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         <div>
           <span className="eyebrow-mono">Attack Surface Discovery</span>
           <h1 className="display-xl mb-5">Hunt where the armor is thinnest.</h1>
           <p className="body-lg mb-8 max-w-lg">TriageTalon is a reconnaissance CLI that grades your scope targets from A to F in under 2 seconds. Skip hardened infrastructure. Focus on what's exploitable.</p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <button onClick={() => onNavigate('scanner')} className="btn button-primary">Launch Dashboard</button>
-            <a href="https://github.com/BMNTR/TriageTalon" target="_blank" rel="noopener noreferrer" className="btn button-outline-on-dark">View Source</a>
+            <Link to="/scanner" className="btn button-primary flex items-center justify-center">Launch Dashboard</Link>
+            <a href="https://github.com/BMNTR/TriageTalon" target="_blank" rel="noopener noreferrer" className="btn button-outline-on-dark flex items-center justify-center">View Source</a>
           </div>
         </div>
         
@@ -111,6 +118,6 @@ export default function LandingPage({ onNavigate }: { onNavigate: (page: 'scanne
           </div>
         </div>
       </footer>
-    </div>
+    </motion.div>
   );
 }

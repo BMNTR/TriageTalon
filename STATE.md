@@ -43,7 +43,14 @@ Proyek ini terbagi menjadi beberapa komponen yang saling terhubung:
 ## 📝 Changelog & Riwayat Pembaruan
 *Setiap ada perubahan, perbaikan, atau penambahan fitur, WAJIB ditulis di bawah ini agar riwayat proyek tidak hilang.*
 
-- **[2026-07-28] Web App Migration, Vercel Deployment & PyPI Release:**
+- **[2026-07-28] Production Web Upgrade (Animations, Routing & History):**
+  - **Framer Motion Integration:** Memasang `framer-motion` untuk memberikan transisi halus antar halaman (Landing ke Scanner) dan efek *stagger* pada pemuatan kartu hasil *scan*.
+  - **React Router:** Memigrasikan *rendering* SPA kondisional sederhana menjadi rute standar produksi dengan `react-router-dom` (rute `/` dan `/scanner`).
+  - **State Management & Local Storage:** Membangun kustom *hook* `useScanHistory` untuk menyimpan 10 riwayat hasil *scan* terakhir ke dalam `localStorage`. Pengguna kini bisa melihat riwayat *scan* (lengkap dengan *Grade*-nya) tanpa takut kehilangan data jika me-*refresh* *browser*.
+  - **Utility Features:** Menambahkan tombol **Copy JSON** dan **Export Report (Download JSON)** untuk menyalin atau menyimpan laporan hasil *scan* secara lokal.
+  - Memperbaiki peringatan impor duplikat `React` pada *build* Vite `tsc`.
+
+- **[2026-07-28] React Web App Migration, Vercel Deployment & PyPI Release:**
   - **React Migration:** Menulis ulang seluruh halaman statis (`docs/index.html`) menjadi aplikasi React SPA modern dengan bundler Vite di dalam folder `frontend/`.
   - **Vercel Migration:** Mematikan GitHub Pages dan menghapus folder `docs/`. Proyek *frontend* dipindahkan 100% menggunakan Vercel untuk otomatisasi *build* & CI/CD. URL baru: `triagetalon.vercel.app`.
   - **PyPI Release:** Mempublikasikan proyek ini ke Python Package Index (PyPI) versi 1.0.0. Metode instalasi di *README* diubah sepenuhnya dari `git clone` menjadi sangat instan: `pip install triagetalon`. Memperbarui seluruh `setup.py` untuk membungkus perintah `talon`.

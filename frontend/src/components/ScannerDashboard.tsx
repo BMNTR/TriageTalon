@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import type { FormEvent } from 'react';
 import axios from 'axios';
-import { Search, ShieldAlert, Globe, Server, Code, FileCode } from 'lucide-react';
+import { Search, ShieldAlert, Globe, Server, Code, FileCode, History, Trash2, Copy, Download, CheckCircle2 } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { useScanHistory } from '../hooks/useScanHistory';
 
 export default function ScannerDashboard() {
   const [domain, setDomain] = useState('');
@@ -8,8 +11,11 @@ export default function ScannerDashboard() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
-  const runScan = async (e: React.FormEvent) => {
+  const { history, addScan, clearHistory } = useScanHistory();
+
+  const runScan = async (e: FormEvent) => {
     e.preventDefault();
     if (!domain || !apiKey) return;
     
@@ -24,7 +30,9 @@ export default function ScannerDashboard() {
           'x-rapidapi-host': 'ultimate-attack-surface-recon-api.p.rapidapi.com'
         }
       });
-      setResult(response.data.data || response.data);
+      const data = response.data.data || response.data;
+      setResult(data);
+      addScan(domain, data.security_analysis?.security_score?.grade || 'N/A', data);
     } catch (err: any) {
       if (err.response?.status === 429) {
         setError('Error 429: Rate limit exceeded or free quota reached.');
@@ -36,8 +44,33 @@ export default function ScannerDashboard() {
     }
   };
 
+  const copyToClipboard = () => {
+    if (!result) return;
+    navigator.clipboard.writeText(JSON.stringify(result, null, 2));
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const downloadJson = () => {
+    if (!result) return;
+    const blob = new Blob([JSON.stringify(result, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `recon_${domain.replace(/[^a-zA-Z0-9-]/g, '_')}_${Date.now()}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   return (
-    <div className="min-h-screen bg-[var(--canvas)] text-[var(--ink)] p-8">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className="min-h-screen bg-[var(--canvas)] text-[var(--ink)] p-8"
+    >
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="display-md">Scanner Dashboard</h1>
@@ -72,18 +105,57 @@ export default function ScannerDashboard() {
               {loading ? <div className="spinner"></div> : <><Search className="w-4 h-4 mr-2" /> Scan</>}
             </button>
           </form>
+
+          {history.length > 0 && (
+            <div className="mt-6 pt-4 border-t border-[var(--hairline)] flex flex-wrap gap-2 items-center">
+              <span className="text-sm text-[var(--mute)] flex items-center gap-1 font-medium mr-2">
+                <History className="w-4 h-4" /> Recent Scans:
+              </span>
+              {history.map(item => (
+                <button 
+                  key={item.id} 
+                  onClick={() => { setDomain(item.domain); setResult(item.result); setError(null); }}
+                  className="px-3 py-1 bg-[var(--canvas)] border border-[var(--hairline)] rounded-full text-xs flex items-center gap-2 hover:border-[var(--primary)] transition-colors"
+                >
+                  {item.domain} 
+                  <span className="font-bold" style={{ color: ['A','B'].includes(item.grade) ? 'var(--primary)' : '#ff3e00' }}>
+                    {item.grade}
+                  </span>
+                </button>
+              ))}
+              <button 
+                onClick={clearHistory} 
+                className="text-xs text-[var(--mute)] hover:text-red-500 ml-auto flex items-center gap-1 transition-colors"
+              >
+                <Trash2 className="w-3 h-3" /> Clear History
+              </button>
+            </div>
+          )}
         </div>
 
         {error && (
-          <div className="p-4 mb-8 border border-red-500/30 bg-red-500/10 text-red-500 rounded-md body-sm flex items-start gap-3">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="p-4 mb-8 border border-red-500/30 bg-red-500/10 text-red-500 rounded-md body-sm flex items-start gap-3"
+          >
             <ShieldAlert className="w-5 h-5 shrink-0" />
             <div>{error}</div>
-          </div>
+          </motion.div>
         )}
 
         {result && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-1 space-y-6">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ staggerChildren: 0.1 }}
+            className="grid grid-cols-1 lg:grid-cols-3 gap-6"
+          >
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="lg:col-span-1 space-y-6"
+            >
               {/* Grade Card */}
               <div className="card-feature text-center py-10">
                 <div className="body-sm text-[var(--mute)] uppercase tracking-wider mb-2">Security Grade</div>
@@ -110,27 +182,41 @@ export default function ScannerDashboard() {
                   <div className="font-mono text-right">{result.technologies?.length || 0}</div>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="lg:col-span-2">
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="lg:col-span-2"
+            >
               <div className="card-feature h-full flex flex-col">
                 <div className="flex items-center justify-between mb-4 border-b border-[var(--hairline)] pb-4">
                   <div className="flex items-center gap-2 font-medium">
                     <Code className="w-5 h-5 text-[var(--primary)]" />
                     Raw JSON Output
                   </div>
+                  <div className="flex items-center gap-3">
+                    <button onClick={copyToClipboard} className="text-[var(--mute)] hover:text-white transition-colors flex items-center gap-1 text-sm" title="Copy JSON">
+                      {copied ? <CheckCircle2 className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                      <span className="hidden sm:inline">{copied ? 'Copied!' : 'Copy'}</span>
+                    </button>
+                    <button onClick={downloadJson} className="text-[var(--mute)] hover:text-[var(--primary)] transition-colors flex items-center gap-1 text-sm" title="Download Report">
+                      <Download className="w-4 h-4" />
+                      <span className="hidden sm:inline">Export</span>
+                    </button>
+                  </div>
                 </div>
-                <div className="flex-1 bg-[var(--canvas-soft)] rounded-md border border-[var(--hairline)] p-4 overflow-auto max-h-[600px]">
+                <div className="flex-1 bg-[var(--canvas-soft)] rounded-md border border-[var(--hairline)] p-4 overflow-auto max-h-[600px] relative">
                   <pre className="font-mono text-[13px] text-[var(--canvas-text-soft)] whitespace-pre-wrap">
                     {JSON.stringify(result, null, 2)}
                   </pre>
                 </div>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         )}
 
       </div>
-    </div>
+    </motion.div>
   );
 }
