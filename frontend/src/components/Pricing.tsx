@@ -40,43 +40,46 @@ export default function Pricing() {
           </a>
         </div>
 
-        {/* Pro Tier (Flipped Polarity) */}
-        <div className="card-inverted flex flex-col relative">
-          <div className="flex justify-between items-center">
-            <span className="eyebrow-mono m-0" style={{ color: '#ff3e00' }}>/0.2 - PRO</span>
-            <span className="text-[10px] font-semibold px-2 py-1 bg-[#101010] text-[#ff3e00] rounded-sm tracking-wider">MOST POPULAR</span>
-          </div>
-          <div className="display-lg mt-4 mb-2 text-[#101010]">
-            $15<span className="body-sm text-[#101010]/60"> / MONTH</span>
-          </div>
-          <p className="body-md mb-8 text-[#101010]/80">For professionals ready to hunt.</p>
-
-          <div className="flex-1">
-            <div className="hairline-divider" style={{ borderColor: 'rgba(16,16,16,0.15)' }}></div>
-            <ul className="space-y-4 my-6">
+          {/* Pro Tier (Accent Theme) */}
+          <div className="card-feature relative border-[var(--primary)] border-2">
+            <div className="absolute top-0 right-0 mt-4 mr-4 bg-[var(--primary)] text-white text-[10px] font-bold px-2 py-1 rounded-sm uppercase tracking-wider">
+              Most Popular
+            </div>
+            
+            <div className="eyebrow-mono mb-4 text-[var(--primary)]">/ 0.2 - PRO</div>
+            
+            <div className="mb-4">
+              <span className="text-4xl font-mono font-bold">$15</span>
+              <span className="text-sm font-medium text-[var(--mute)]">/MONTH</span>
+            </div>
+            
+            <p className="body-sm mb-6 text-[var(--mute)]">For professionals ready to hunt.</p>
+            
+            <div className="dashed-divider my-6"></div>
+            
+            <ul className="space-y-4 body-sm mb-8">
               <li className="flex items-center gap-3">
-                <span className="w-2 h-2 rounded-full bg-[#101010]"></span>
-                <span className="body-sm text-[#101010]">Everything in Starter</span>
+                <div className="w-1 h-1 rounded-full bg-[var(--primary)]"></div>
+                Everything in Starter
               </li>
               <li className="flex items-center gap-3">
-                <span className="w-2 h-2 rounded-full bg-[#101010]"></span>
-                <span className="body-sm text-[#101010]">Unlimited API Calls</span>
+                <div className="w-1 h-1 rounded-full bg-[var(--primary)]"></div>
+                Unlimited API Calls
               </li>
               <li className="flex items-center gap-3">
-                <span className="w-2 h-2 rounded-full bg-[#101010]"></span>
-                <span className="body-sm text-[#101010]">Advanced Subdomain Enum</span>
+                <div className="w-1 h-1 rounded-full bg-[var(--primary)]"></div>
+                Advanced Subdomain Enum
               </li>
               <li className="flex items-center gap-3">
-                <span className="w-2 h-2 rounded-full bg-[#101010]"></span>
-                <span className="body-sm text-[#101010]">Priority Support</span>
+                <div className="w-1 h-1 rounded-full bg-[var(--primary)]"></div>
+                Priority Support
               </li>
             </ul>
+            
+            <a href="https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api" target="_blank" rel="noopener noreferrer" className="btn button-primary w-full text-center flex justify-center">
+              Start free trial
+            </a>
           </div>
-
-          <a href="https://rapidapi.com/" target="_blank" rel="noopener noreferrer" className="btn button-inverted w-full mt-8">
-            Start free trial
-          </a>
-        </div>
       </div>
     </section>
   );
