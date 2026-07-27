@@ -19,171 +19,208 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="shortcut icon" href="favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --bg: #050505;
-            --surface: #0c0c0c;
-            --border: #1a1a1a;
-            --text: #a0a0a0;
-            --text-bright: #e0e0e0;
-            --accent: #ff3e00;
-            --accent-dim: rgba(255, 62, 0, 0.08);
+            /* Design Tokens */
+            --canvas: #faf9f5;
+            --ink: #141413;
+            --primary: #cc785c;
+            --primary-active: #a9583e;
+            --surface-card: #efe9de;
+            --surface-dark: #181715;
+            --surface-dark-soft: #1f1e1b;
+            --surface-dark-elevated: #252320;
+            --hairline: #e6dfd8;
+            --on-primary: #ffffff;
+            --on-dark: #faf9f5;
+            --on-dark-soft: #a09d96;
+            --muted: #6c6a64;
+
+            /* Typography */
+            --font-display: 'Cormorant Garamond', 'EB Garamond', serif;
+            --font-body: 'Inter', system-ui, sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+
+            /* Spacing */
+            --spacing-section: 96px;
         }
 
         body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background: var(--bg);
-            color: var(--text);
+            font-family: var(--font-body);
+            background: var(--canvas);
+            color: var(--ink);
             overflow-x: hidden;
+            font-size: 16px;
+            line-height: 1.55;
+            font-weight: 400;
         }
 
-        /* --- SCANLINE OVERLAY --- */
-        body::after {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background: repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 2px,
-                rgba(255,62,0,0.015) 2px,
-                rgba(255,62,0,0.015) 4px
-            );
-            pointer-events: none;
-            z-index: 999;
+        /* Typography Styles */
+        h1, h2, h3, .display-font {
+            font-family: var(--font-display);
+            font-weight: 500;
         }
 
-        a { color: var(--accent); text-decoration: none; }
+        h1 {
+            font-size: 64px;
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+        }
 
-        /* --- NAV --- */
+        h2 {
+            font-size: 48px;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            margin-bottom: 24px;
+        }
+
+        h3 {
+            font-size: 28px;
+            line-height: 1.2;
+            letter-spacing: -0.3px;
+        }
+
+        a { color: var(--primary); text-decoration: none; }
+        
+        .inline-link {
+            color: var(--primary);
+            font-weight: 500;
+        }
+        .inline-link:hover { text-decoration: underline; }
+
+        /* Buttons */
+        .btn {
+            font-family: var(--font-body);
+            font-size: 14px;
+            font-weight: 500;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 40px;
+            text-decoration: none;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--on-primary);
+        }
+        .btn-primary:hover {
+            background: var(--primary-active);
+        }
+
+        .btn-secondary {
+            background: var(--canvas);
+            color: var(--ink);
+            border: 1px solid var(--hairline);
+        }
+        .btn-secondary:hover {
+            background: var(--surface-card);
+        }
+
+        .btn-inverted {
+            background: var(--canvas);
+            color: var(--primary);
+        }
+        .btn-inverted:hover {
+            background: #f0f0f0;
+        }
+
+        /* Navigation */
         nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 100;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 3rem;
-            background: rgba(5,5,5,0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
+            padding: 0 48px;
+            height: 64px;
+            background: var(--canvas);
+            border-bottom: 1px solid var(--hairline);
         }
 
         .logo {
-            font-family: 'Inter', sans-serif;
-            font-weight: 800;
-            font-size: 1.1rem;
-            color: var(--text-bright);
+            font-family: var(--font-display);
+            font-size: 24px;
+            font-weight: 500;
+            color: var(--ink);
             letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Anthropic Asterisk logic */
+        .logo::before {
+            content: "✸";
+            font-size: 20px;
+            color: var(--ink);
         }
 
-        .logo span { color: var(--accent); }
-
-        .nav-links { display: flex; gap: 2rem; align-items: center; }
-        .nav-links a {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--text);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+        
+        .nav-links a.nav-text {
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 500;
             transition: color 0.2s;
         }
-        .nav-links a:hover { color: var(--text-bright); }
+        .nav-links a.nav-text:hover { color: var(--ink); }
 
-        /* --- HERO --- */
+        /* Hero */
         .hero {
-            min-height: 100vh;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-            padding: 8rem 3rem 4rem;
+            padding: var(--spacing-section) 48px;
             max-width: 1200px;
             margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center;
         }
-
-        .hero-left h1 {
-            font-size: 3.8rem;
-            font-weight: 800;
-            line-height: 1.05;
-            color: var(--text-bright);
-            letter-spacing: -2px;
-            margin-bottom: 1.5rem;
-        }
-
-        .hero-left h1 span { color: var(--accent); }
 
         .hero-left p {
-            font-size: 1rem;
-            line-height: 1.7;
-            color: var(--text);
-            max-width: 420px;
-            margin-bottom: 2.5rem;
+            font-size: 18px;
+            margin-top: 24px;
+            margin-bottom: 48px;
+            max-width: 480px;
         }
 
-        .hero-cta { display: flex; gap: 1rem; }
+        .hero-cta { display: flex; gap: 16px; }
 
-        .btn {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            font-weight: 700;
-            padding: 0.75rem 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: inline-block;
+        /* Code Window Card */
+        .code-window-card {
+            background: var(--surface-dark);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
-        .btn-accent {
-            background: var(--accent);
-            color: #fff;
-        }
-
-        .btn-accent:hover {
-            background: #e03500;
-            transform: translateY(-1px);
-        }
-
-        .btn-ghost {
-            background: transparent;
-            color: var(--text);
-            border: 1px solid var(--border);
-        }
-
-        .btn-ghost:hover {
-            border-color: var(--text);
-            color: var(--text-bright);
-        }
-
-        /* --- TERMINAL --- */
         .terminal {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            line-height: 1.9;
+            background: var(--surface-dark-soft);
+            border-radius: 8px;
+            font-family: var(--font-code);
+            font-size: 14px;
+            line-height: 1.6;
             overflow: hidden;
+            color: var(--on-dark);
         }
 
         .terminal-bar {
             display: flex;
             align-items: center;
             gap: 6px;
-            padding: 10px 14px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .terminal-bar::after {
-            content: 'hunter@talon:~';
-            margin-left: auto;
-            font-size: 0.65rem;
-            color: #333;
+            padding: 12px 16px;
+            background: var(--surface-dark-elevated);
         }
 
         .dot { width: 10px; height: 10px; border-radius: 50%; }
@@ -191,277 +228,329 @@
         .d2 { background: #ffbd2e; }
         .d3 { background: #27c93f; }
 
-        .terminal-body { padding: 16px; color: #555; }
-        .terminal-body .c { color: var(--accent); }
-        .terminal-body .w { color: #ffbd2e; }
-        .terminal-body .g { color: #555; }
-        .terminal-body .dim { color: #333; }
+        .terminal-body { padding: 24px; overflow-x: auto; }
+        
+        /* Terminal Syntax Highlight adaptations for editorial dark navy */
+        .terminal-body .c { color: #5db8a6; } /* Accent teal for commands */
+        .terminal-body .w { color: #e8a55a; } /* Accent amber for warnings */
+        .terminal-body .g { color: var(--on-dark-soft); } /* Muted logs */
+        .terminal-body .dim { color: #666; } 
+        .terminal-body .err { color: var(--primary); } /* Coral for errors */
 
-        /* --- STATS --- */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-            max-width: 1200px;
-            margin: 0 auto;
+        /* Feature Cards */
+        .features-wrapper {
+            background: var(--canvas);
+            padding: var(--spacing-section) 48px;
         }
-
-        .stat {
-            padding: 3rem;
-            border-right: 1px solid var(--border);
-            text-align: center;
-        }
-
-        .stat:last-child { border-right: none; }
-
-        .stat-num {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--text-bright);
-        }
-
-        .stat-label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #444;
-            margin-top: 0.5rem;
-        }
-
-        /* --- FEATURES --- */
+        
         .features {
             max-width: 1200px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
         }
 
-        .feat {
-            padding: 3rem;
-            border-right: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-            transition: background 0.3s;
+        .feature-card {
+            background: var(--surface-card);
+            border-radius: 12px;
+            padding: 32px;
         }
 
-        .feat:nth-child(3n) { border-right: none; }
-
-        .feat:hover { background: var(--accent-dim); }
-
-        .feat-idx {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            color: var(--accent);
-            letter-spacing: 2px;
-            margin-bottom: 1rem;
+        .feature-card h3 {
+            font-family: var(--font-body);
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            letter-spacing: 0;
         }
 
-        .feat h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-bright);
-            margin-bottom: 0.75rem;
+        .feature-card p {
+            font-size: 16px;
+            color: var(--muted);
         }
 
-        .feat p {
-            font-size: 0.85rem;
-            line-height: 1.6;
-            color: #555;
+        /* Live Tester (Dark Product Mockup) */
+        .tester-wrapper {
+            padding: var(--spacing-section) 48px;
+            background: var(--canvas);
         }
 
-        /* --- INSTALL --- */
-        .install {
+        .tester-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--surface-dark);
+            border-radius: 12px;
+            padding: 48px;
+            color: var(--on-dark);
+        }
+
+        .tester-container h2 {
+            color: var(--on-dark);
+            margin-bottom: 16px;
+        }
+
+        .tester-container p {
+            color: var(--on-dark-soft);
+            margin-bottom: 32px;
+            font-size: 16px;
+        }
+
+        .tester-form {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 32px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .input-group {
+            flex: 1;
+            min-width: 200px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-family: var(--font-body);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--on-dark-soft);
+        }
+
+        .input-group input {
+            background: var(--surface-dark-soft);
+            border: 1px solid var(--surface-dark-elevated);
+            color: var(--on-dark);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-family: var(--font-body);
+            font-size: 16px;
+            height: 40px;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .tester-output {
+            background: var(--surface-dark-soft);
+            border-radius: 8px;
+            padding: 24px;
+            min-height: 200px;
+            font-family: var(--font-code);
+            font-size: 14px;
+            overflow-x: auto;
+            line-height: 1.8;
+            color: var(--on-dark);
+        }
+        
+        .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(204, 120, 92, 0.3); border-radius: 50%; border-top-color: var(--primary); animation: spin 1s ease-in-out infinite; vertical-align: middle; margin-right: 10px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Install CTA Coral Band */
+        .install-wrapper {
+            padding: var(--spacing-section) 48px;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 5rem 3rem;
+        }
+        
+        .install-band {
+            background: var(--primary);
+            border-radius: 12px;
+            padding: 64px;
+            color: var(--on-primary);
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: start;
+            gap: 64px;
+            align-items: center;
         }
 
-        .install h2 {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--text-bright);
-            letter-spacing: -1px;
-            margin-bottom: 1rem;
+        .install-band h2 {
+            color: var(--on-primary);
+            margin-bottom: 24px;
         }
 
-        .install p {
-            line-height: 1.7;
-            color: #555;
+        .install-band p {
+            font-size: 18px;
+            margin-bottom: 0;
+            opacity: 0.9;
         }
 
         .install-code {
-            background: var(--surface);
-            border: 1px solid var(--border);
+            background: rgba(20, 20, 19, 0.15); /* Darker translucent for code on coral */
+            border-radius: 8px;
             padding: 24px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
+            font-family: var(--font-code);
+            font-size: 14px;
             line-height: 2;
-            color: #555;
+            color: var(--on-primary);
+            position: relative;
         }
 
-        .install-code .c { color: var(--accent); }
-
-        /* --- UTILS --- */
-        .copy-wrapper { position: relative; }
         .copy-btn {
-            position: absolute; top: 1rem; right: 1rem;
-            background: var(--bg); border: 1px solid var(--border);
-            color: var(--text); padding: 0.4rem 0.8rem;
-            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
-            cursor: pointer; text-transform: uppercase; transition: all 0.2s;
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: transparent;
+            color: var(--on-primary);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-family: var(--font-body);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
         }
-        .copy-btn:hover { color: var(--text-bright); border-color: var(--text); }
+
+        .copy-btn:hover { background: rgba(255,255,255,0.1); }
+        .install-code .dim { opacity: 0.7; }
+
+        /* Footer */
+        footer {
+            background: var(--surface-dark);
+            padding: 64px 48px;
+            color: var(--on-dark-soft);
+        }
+        
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            font-family: var(--font-display);
+            font-size: 20px;
+            font-weight: 500;
+            color: var(--on-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .footer-logo::before {
+            content: "✸";
+            font-size: 16px;
+            color: var(--on-dark);
+        }
+
+        footer a {
+            color: var(--on-dark);
+            text-decoration: none;
+            font-family: var(--font-body);
+            font-size: 14px;
+            transition: opacity 0.2s;
+        }
+        
+        footer a:hover { opacity: 0.8; }
+
+        /* Animations */
         .reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s ease-out; }
         .reveal.active { opacity: 1; transform: translateY(0); }
         .cursor { animation: blink 1s step-end infinite; }
         @keyframes blink { 50% { opacity: 0; } }
 
-        /* --- LIVE TESTER --- */
-        .tester-container { max-width: 1200px; margin: 0 auto 4rem; padding: 0 3rem; }
-        .tester-box { border: 1px solid var(--border); background: var(--surface); padding: 3rem; }
-        .tester-box h2 { font-size: 1.5rem; color: var(--text-bright); margin-bottom: 0.5rem; }
-        .tester-box p { color: var(--text); margin-bottom: 2rem; font-size: 0.9rem; }
-        .tester-form { display: flex; gap: 1rem; margin-bottom: 2rem; align-items: flex-end; flex-wrap: wrap; }
-        .input-group { flex: 1; min-width: 250px; display: flex; flex-direction: column; gap: 0.5rem; }
-        .input-group label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--text); text-transform: uppercase; }
-        .input-group input { background: var(--bg); border: 1px solid var(--border); color: var(--text-bright); padding: 0.75rem 1rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; }
-        .input-group input:focus { outline: none; border-color: var(--accent); }
-        .tester-output { background: var(--bg); border: 1px solid var(--border); padding: 1.5rem; min-height: 200px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; overflow-x: auto; line-height: 1.8; }
-        .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255, 62, 0, 0.3); border-radius: 50%; border-top-color: var(--accent); animation: spin 1s ease-in-out infinite; vertical-align: middle; margin-right: 10px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* --- FOOTER --- */
-        footer {
-            border-top: 1px solid var(--border);
-            padding: 2rem 3rem;
-            display: flex;
-            justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            color: #333;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero, .install-band { grid-template-columns: 1fr; gap: 48px; }
+            .features { grid-template-columns: repeat(2, 1fr); }
+            h1 { font-size: 48px; }
         }
 
         @media (max-width: 768px) {
-            .hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; gap: 2rem; }
-            .hero-left h1 { font-size: 2.5rem; }
-            .stats { grid-template-columns: repeat(2, 1fr); }
+            nav, .hero, .features-wrapper, .tester-wrapper, .install-wrapper { padding-left: 24px; padding-right: 24px; }
             .features { grid-template-columns: 1fr; }
-            .feat { border-right: none; }
-            .install { grid-template-columns: 1fr; padding: 3rem 1.5rem; }
-            nav { padding: 1rem 1.5rem; }
-            footer { flex-direction: column; gap: 0.5rem; }
+            .install-band { padding: 40px 24px; }
+            .footer-inner { flex-direction: column; gap: 24px; align-items: flex-start; }
+            .tester-container { padding: 32px 24px; }
         }
     </style>
 </head>
 <body>
 
 <nav>
-    <div class="logo">Triage<span>Talon</span></div>
+    <div class="logo">TriageTalon</div>
     <div class="nav-links">
-        <a href="https://github.com/BMNTR/TriageTalon">Source</a>
-        <a href="https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api">API</a>
-        <a href="https://github.com/BMNTR/TriageTalon#installation" class="btn btn-accent">Install</a>
+        <a href="https://github.com/BMNTR/TriageTalon" class="nav-text">Source</a>
+        <a href="https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api" class="nav-text">API</a>
+        <a href="https://github.com/BMNTR/TriageTalon#installation" class="btn btn-primary">Install</a>
     </div>
 </nav>
 
 <section class="hero">
     <div class="hero-left">
-        <h1>Hunt where<br>the armor<br>is <span>thinnest.</span></h1>
+        <h1>Hunt where the armor is thinnest.</h1>
         <p>TriageTalon is a reconnaissance CLI that grades your scope targets from A to F in under 2 seconds. Skip hardened infrastructure. Focus on what's exploitable.</p>
         <div class="hero-cta">
-            <a href="https://github.com/BMNTR/TriageTalon" class="btn btn-accent">View Source</a>
-            <a href="https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api" class="btn btn-ghost">Get API Key</a>
+            <a href="https://github.com/BMNTR/TriageTalon" class="btn btn-primary">View Source</a>
+            <a href="https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api" class="btn btn-secondary">Get API Key</a>
         </div>
     </div>
-    <div class="terminal">
-        <div class="terminal-bar">
-            <div class="dot d1"></div>
-            <div class="dot d2"></div>
-            <div class="dot d3"></div>
-        </div>
-        <div class="terminal-body" id="hero-terminal-body">
-            <div class="c">$ python recon.py -l scope.txt</div>
-            <div class="g">[*] TriageTalon initialized. Scanning 3 targets...</div>
-            <br>
-            <div class="g">[*] Scanning: shop.example.com</div>
-            <div class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> Grade: A | Subdomains: 3</div>
-            <br>
-            <div class="g">[*] Scanning: api.example.com</div>
-            <div class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> Grade: B | Subdomains: 1</div>
-            <br>
-            <div class="g">[*] Scanning: legacy.example.com</div>
-            <div class="w">&nbsp;&nbsp;&nbsp;&nbsp;-> Grade: F | Subdomains: 47</div>
-            <div class="c">&nbsp;&nbsp;&nbsp;&nbsp;-> [!] Weak security headers</div>
-            <div class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> SPF: MISSING</div>
-            <div class="c">&nbsp;&nbsp;&nbsp;&nbsp;-> [!!!] Exposed .env found</div>
+    
+    <div class="code-window-card">
+        <div class="terminal">
+            <div class="terminal-bar">
+                <div class="dot d1"></div>
+                <div class="dot d2"></div>
+                <div class="dot d3"></div>
+            </div>
+            <div class="terminal-body" id="hero-terminal-body">
+                <div class="c">$ python recon.py -l scope.txt</div>
+                <div class="g">[*] TriageTalon initialized. Scanning 3 targets...</div>
+                <br>
+                <div class="g">[*] Scanning: shop.example.com</div>
+                <div class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> Grade: A | Subdomains: 3</div>
+                <br>
+                <div class="g">[*] Scanning: api.example.com</div>
+                <div class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> Grade: B | Subdomains: 1</div>
+                <br>
+                <div class="g">[*] Scanning: legacy.example.com</div>
+                <div class="w">&nbsp;&nbsp;&nbsp;&nbsp;-> Grade: F | Subdomains: 47</div>
+                <div class="err">&nbsp;&nbsp;&nbsp;&nbsp;-> [!] Weak security headers</div>
+                <div class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> SPF: MISSING</div>
+                <div class="err">&nbsp;&nbsp;&nbsp;&nbsp;-> [!!!] Exposed .env found</div>
+            </div>
         </div>
     </div>
 </section>
 
-<div class="stats reveal">
-    <div class="stat">
-        <div class="stat-num">&lt;2s</div>
-        <div class="stat-label">Per Target</div>
-    </div>
-    <div class="stat">
-        <div class="stat-num">A-F</div>
-        <div class="stat-label">Security Grade</div>
-    </div>
-    <div class="stat">
-        <div class="stat-num">6</div>
-        <div class="stat-label">Data Points</div>
-    </div>
-    <div class="stat">
-        <div class="stat-num">0</div>
-        <div class="stat-label">Local Footprint</div>
-    </div>
-</div>
-
-<div class="features reveal">
-    <div class="feat">
-        <div class="feat-idx">01</div>
-        <h3>Security Grading</h3>
-        <p>Automated A-F scoring based on HSTS, CSP, X-Frame-Options, and other HTTP response headers.</p>
-    </div>
-    <div class="feat">
-        <div class="feat-idx">02</div>
-        <h3>Subdomain Discovery</h3>
-        <p>Live, resolved subdomains returned directly from the API. No local wordlists needed.</p>
-    </div>
-    <div class="feat">
-        <div class="feat-idx">03</div>
-        <h3>Sensitive File Detection</h3>
-        <p>Probes for exposed .git directories, .env configuration files, and robots.txt.</p>
-    </div>
-    <div class="feat">
-        <div class="feat-idx">04</div>
-        <h3>DNS Intelligence</h3>
-        <p>Maps A, AAAA, MX, NS, TXT records. Flags missing SPF and DMARC configurations.</p>
-    </div>
-    <div class="feat">
-        <div class="feat-idx">05</div>
-        <h3>WHOIS Lookup</h3>
-        <p>Live RDAP queries returning domain registrar, creation date, and expiration timeline.</p>
-    </div>
-    <div class="feat">
-        <div class="feat-idx">06</div>
-        <h3>Pipeline Ready</h3>
-        <p>Clean stdout output designed for piping into nuclei, httpx, or custom bash workflows.</p>
+<div class="features-wrapper">
+    <div class="features reveal">
+        <div class="feature-card">
+            <h3>Security Grading</h3>
+            <p>Automated A-F scoring based on HSTS, CSP, X-Frame-Options, and other HTTP response headers.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Subdomain Discovery</h3>
+            <p>Live, resolved subdomains returned directly from the API. No local wordlists needed.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Sensitive File Detection</h3>
+            <p>Probes for exposed .git directories, .env configuration files, and robots.txt.</p>
+        </div>
+        <div class="feature-card">
+            <h3>DNS Intelligence</h3>
+            <p>Maps A, AAAA, MX, NS, TXT records. Flags missing SPF and DMARC configurations.</p>
+        </div>
+        <div class="feature-card">
+            <h3>WHOIS Lookup</h3>
+            <p>Live RDAP queries returning domain registrar, creation date, and expiration timeline.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Pipeline Ready</h3>
+            <p>Clean stdout output designed for piping into nuclei, httpx, or custom bash workflows.</p>
+        </div>
     </div>
 </div>
 
-<div class="tester-container reveal">
-    <div class="tester-box">
+<div class="tester-wrapper">
+    <div class="tester-container reveal">
         <h2>Live API Demo</h2>
         <p>Test the RapidAPI integration directly from your browser. No backend required.</p>
         <form class="tester-form" onsubmit="runTest(event)">
@@ -473,7 +562,7 @@
                 <label>RapidAPI Key</label>
                 <input type="password" id="testKey" placeholder="Your X-RapidAPI-Key" required>
             </div>
-            <button type="submit" class="btn btn-accent btn-run">RUN SCAN</button>
+            <button type="submit" class="btn btn-primary">Run Scan</button>
         </form>
         <div class="tester-output" id="testOutput">
             <span class="dim">Ready. Enter target and API key to begin.</span>
@@ -481,29 +570,33 @@
     </div>
 </div>
 
-<section class="install reveal">
-    <div>
-        <h2>Three commands.<br>Zero config.</h2>
-        <p>Clone the repo, install one dependency, and you're scanning. API key is free — no credit card, no trial period.</p>
+<div class="install-wrapper reveal">
+    <div class="install-band">
+        <div>
+            <h2>Three commands. Zero config.</h2>
+            <p>Clone the repo, install one dependency, and you're scanning. API key is free — no credit card, no trial period.</p>
+        </div>
+        <div class="install-code">
+            <button class="copy-btn" id="copyBtn" onclick="copyInstallCode()">Copy</button>
+            <div>$ git clone https://github.com/BMNTR/TriageTalon.git</div>
+            <div>$ cd TriageTalon</div>
+            <div>$ pip install -r requirements.txt</div>
+            <br>
+            <div class="dim"># Start scanning</div>
+            <div>$ python recon.py -d target.com -k YOUR_KEY</div>
+        </div>
     </div>
-    <div class="install-code copy-wrapper">
-        <button class="copy-btn" id="copyBtn" onclick="copyInstallCode()">Copy</button>
-        <div class="c">$ git clone https://github.com/BMNTR/TriageTalon.git</div>
-        <div class="c">$ cd TriageTalon</div>
-        <div class="c">$ pip install -r requirements.txt</div>
-        <br>
-        <div class="dim"># Start scanning</div>
-        <div class="c">$ python recon.py -d target.com -k YOUR_KEY</div>
-    </div>
-</section>
+</div>
 
 <footer>
-    <div>Built by <a href="https://github.com/BMNTR">BMNTR</a></div>
-    <div>Powered by <a href="https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api">Ultimate Attack Surface API</a></div>
+    <div class="footer-inner">
+        <div class="footer-logo">TriageTalon</div>
+        <div>Built by <a href="https://github.com/BMNTR">BMNTR</a> &nbsp;&nbsp;|&nbsp;&nbsp; Powered by <a href="https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api">Ultimate Attack Surface API</a></div>
+    </div>
 </footer>
 
 <script>
-    // Feature 1: Scroll Reveal
+    // Scroll Reveal
     const reveals = document.querySelectorAll('.reveal');
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -514,17 +607,17 @@
     }, { threshold: 0.1 });
     reveals.forEach(r => observer.observe(r));
 
-    // Feature 2: Copy to Clipboard
+    // Copy to Clipboard
     function copyInstallCode() {
         const code = "git clone https://github.com/BMNTR/TriageTalon.git\ncd TriageTalon\npip install -r requirements.txt";
         navigator.clipboard.writeText(code).then(() => {
             const btn = document.getElementById('copyBtn');
             btn.innerText = 'COPIED!';
-            setTimeout(() => btn.innerText = 'COPY', 2000);
+            setTimeout(() => btn.innerText = 'Copy', 2000);
         }).catch(err => console.error('Failed to copy!', err));
     }
 
-    // Feature 3: Terminal Animation
+    // Terminal Animation
     const heroLines = [
         { text: "$ python recon.py -l scope.txt", class: "c", delay: 800 },
         { text: "[*] TriageTalon initialized. Scanning 3 targets...", class: "g", delay: 400 },
@@ -537,9 +630,9 @@
         { text: "<br>", delay: 200 },
         { text: "[*] Scanning: legacy.example.com", class: "g", delay: 500 },
         { text: "&nbsp;&nbsp;&nbsp;&nbsp;-> Grade: F | Subdomains: 47", class: "w", delay: 400 },
-        { text: "&nbsp;&nbsp;&nbsp;&nbsp;-> [!] Weak security headers", class: "c", delay: 200 },
+        { text: "&nbsp;&nbsp;&nbsp;&nbsp;-> [!] Weak security headers", class: "err", delay: 200 },
         { text: "&nbsp;&nbsp;&nbsp;&nbsp;-> SPF: MISSING", class: "dim", delay: 200 },
-        { text: "&nbsp;&nbsp;&nbsp;&nbsp;-> [!!!] Exposed .env found", class: "c", delay: 200 }
+        { text: "&nbsp;&nbsp;&nbsp;&nbsp;-> [!!!] Exposed .env found", class: "err", delay: 200 }
     ];
 
     async function animateTerminal() {
@@ -571,7 +664,7 @@
     
     animateTerminal();
 
-    // Feature 4: Live API Tester
+    // Live API Tester
     async function runTest(e) {
         e.preventDefault();
         const domain = document.getElementById('testDomain').value;
@@ -590,18 +683,17 @@
             });
             
             if(response.status === 429) {
-                output.innerHTML = '<span class="c">[!] Error 429: Rate limit exceeded or free quota reached.</span>';
+                output.innerHTML = '<span class="err">[!] Error 429: Rate limit exceeded or free quota reached.</span>';
                 return;
             }
             
             const data = await response.json();
             
             if(!response.ok) {
-                output.innerHTML = `<span class="c">[!] Error: ${data.message || response.statusText}</span>`;
+                output.innerHTML = `<span class="err">[!] Error: ${data.message || response.statusText}</span>`;
                 return;
             }
 
-            // The JSON from OpenCode wraps everything in data.data
             const scanData = data.data || data;
 
             let html = `<span class="g">[*] Scanning: ${domain}</span><br>`;
@@ -622,14 +714,13 @@
             const spf = scanData.mail_security?.spf ? 'Present' : 'MISSING';
             html += `<span class="dim">&nbsp;&nbsp;&nbsp;&nbsp;-> SPF: ${spf}</span><br>`;
             
-            // Print full data for debugging
-            html += `<br><span class="y">--- Scan Details ---</span><br>`;
-            html += `<pre style="color:#aaa; white-space:pre-wrap;">${JSON.stringify(scanData, null, 2)}</pre>`;
+            html += `<br><span class="g">--- Scan Details ---</span><br>`;
+            html += `<pre style="color:var(--on-dark-soft); white-space:pre-wrap;">${JSON.stringify(scanData, null, 2)}</pre>`;
             
             output.innerHTML = html;
             
         } catch (err) {
-            output.innerHTML = `<span class="c">[!] Connection Error: ${err.message}</span>`;
+            output.innerHTML = `<span class="err">[!] Connection Error: ${err.message}</span>`;
         }
     }
 </script>
