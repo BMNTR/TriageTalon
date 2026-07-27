@@ -5,6 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python](https://img.shields.io/badge/Python-3.8+-3776AB?logo=python&logoColor=white)](https://python.org)
 [![API](https://img.shields.io/badge/API-RapidAPI-0055FF?logo=rapid&logoColor=white)](https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api)
+[![PyPI](https://img.shields.io/pypi/v/triagetalon.svg)](https://pypi.org/project/triagetalon/)
 [![Status](https://img.shields.io/badge/Status-Active-47d147.svg)](https://bmntr.github.io/TriageTalon/)
 [![Code Quality](https://img.shields.io/badge/Code_Quality-A+-2ea8ff.svg)]()
 
@@ -86,17 +87,27 @@ graph TD
 
 Ensure you have Python 3.8+ installed.
 
+### Option 1: Install via pip (Recommended)
+
+The easiest way to install TriageTalon is directly from PyPI:
+
+```bash
+pip install triagetalon
+
+# Now you can use the 'talon' command anywhere!
+```
+
+### Option 2: Install from Source
+
+If you want to modify the code or run the latest unreleased version:
+
 ```bash
 # Clone the repository
 git clone https://github.com/BMNTR/TriageTalon.git
-
-# Navigate to the directory
 cd TriageTalon
 
-# Install as a global package (Recommended)
+# Install as a global editable package
 pip install -e .
-
-# Now you can use the 'talon' command anywhere!
 ```
 
 ---
@@ -198,7 +209,7 @@ talon -d example.com --json | jq '.[\"example.com\"].subdomains'
 
 ## Pro Tip: Global Command
 
-Since we introduced `setup.py`, you no longer need manual aliases. Just run `pip install -e .` in the project directory, and the `talon` command will be permanently available in your PowerShell or bash terminal!
+By installing via `pip install triagetalon`, the `talon` command is permanently available in your terminal (bash, zsh, or PowerShell). You no longer need manual aliases to run the tool from anywhere!
 
 ---
 
