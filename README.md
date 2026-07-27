@@ -139,41 +139,36 @@ talon -d example.com
 RAPIDAPI_KEY = "YOUR_API_KEY"
 ```
 
-### Basic Scanning
+### 1. Interactive Dashboard (TUI)
 
-Scan a single domain to get an immediate posture assessment (with rich UI):
+The most powerful way to use TriageTalon is via the interactive Textual TUI. Simply run the tool with no arguments:
 
 ```bash
-talon -d example.com -k YOUR_API_KEY
+talon
 ```
 
-**Expected Output** (illustrative -- actual values will vary depending on the target):
-```text
-[*] TriageTalon initialized. Scanning 1 targets...
+This launches a full-screen, dual-card dashboard:
+- **Left Panel (Summary):** View the security grade, exposures, DNS records, and WHOIS intelligence.
+- **Right Panel (Raw JSON):** Explore the complete raw API response with syntax highlighting.
 
-[*] Scanning: example.com
-    -> Grade: F | Subdomains: 42
-    -> [!] POTENTIAL TARGET: Weak security headers detected!
-    -> DNS A: 104.16.99.52, 104.16.100.52
-    -> DNS MX: aspmx.l.google.com
-    -> SPF: Present
-    -> DMARC: Present
-    -> Registrar: MarkMonitor Inc.
-    -> Expires: 2027-06-15
-    -> [!!!] CRITICAL: Exposed .env found at https://example.com/.env
+**TUI Commands:**
+- `example.com` : Type any domain and press Enter to scan.
+- `copy`        : Copies the raw JSON response of the last scan to your clipboard.
+- `copy <#>`    : Copies the JSON response from a specific scan index in history.
+- `history`     : Displays a summary table of all domains scanned in the current session.
+- `help`        : View all available commands.
+- `clear`       : Clears the terminal output screen.
+- `quit`        : Exits the dashboard.
 
-==================================================
-[*] SCAN COMPLETE
-==================================================
-    Scanned:   1
-    Weak (C/D/F): 1
-    Strong (A/B): 0
-    Failed:    0
-    Exposures: 1
-==================================================
+### 2. Single Target CLI Scan
+
+If you prefer standard CLI output without the full-screen interactive dashboard, use the `-d` flag:
+
+```bash
+talon -d example.com
 ```
 
-### Batch Processing & Concurrency
+### 3. Batch Processing & Concurrency
 
 When dealing with a massive scope (e.g., hundreds of wildcard subdomains), feed a text file into TriageTalon. It now supports multi-threading for blazing-fast triage:
 
