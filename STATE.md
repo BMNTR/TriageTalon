@@ -45,6 +45,7 @@ Proyek ini terbagi menjadi beberapa komponen yang saling terhubung:
 
 - **[2026-07-28] Documentation Page:**
   - **DocsPage.tsx:** Menambahkan halaman dokumentasi khusus (`/docs`) yang menampilkan panduan penggunaan CLI, penjelasan detail sistem penilaian (A-F), dan referensi integrasi API menggunakan `curl`.
+  - **Copy to Clipboard:** Menambahkan komponen *CodeBlock* interaktif yang memungkinkan pengunjung menyalin (*copy*) instruksi instalasi dan kode integrasi langsung dari halaman dokumentasi.
   - Halaman dikembangkan secara ketat mengikuti panduan desain *hairline* dan *monospace* (Voltagent) dengan warna dominan Oranye.
 
 - **[2026-07-28] Production Web Upgrade (Animations, Routing & History):**
