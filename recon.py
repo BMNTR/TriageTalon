@@ -622,7 +622,7 @@ def run_scan(domains: list[str], api_key: str, args) -> dict:
             if not args.quiet:
                 console.print(f"[bold {ACCENT}][-] Failed to write output file: {e}[/bold {ACCENT}]")
 
-    if not args.quiet:
+    if not args.quiet and len(domains) > 1:
         console.print()
         console.print(render_summary_table(stats, elapsed))
         offenders = render_top_offenders(all_results)
