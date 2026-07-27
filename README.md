@@ -189,8 +189,11 @@ talon -l scope.txt -q | nuclei -t vulnerabilities/
 # Export results to a JSON file
 talon -l scope.txt -o results.json
 
-# Print raw JSON to stdout and parse it with jq
+# Print raw JSON to stdout and parse it with jq (Linux/macOS)
 talon -d example.com --json | jq '.["example.com"].subdomains'
+
+# Note for Windows PowerShell users: Escape the quotes with backslashes
+talon -d example.com --json | jq '.[\"example.com\"].subdomains'
 ```
 
 ## Pro Tip: Global Command
