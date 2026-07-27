@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import Pricing from './Pricing';
 import { Target, Zap, Award, ChevronDown, CheckCircle2, Copy } from 'lucide-react';
+import { useToast } from '../context/ToastContext';
 
 const heroLines = [
   { text: "$ talon -l scope.txt", class: "text-[var(--primary)]", delay: 800 },
@@ -68,10 +69,12 @@ function FeatureCard({ title, desc }: { title: string, desc: string }) {
 
 function CodeBlock({ code }: { code: string }) {
   const [copied, setCopied] = useState(false);
+  const { showToast } = useToast();
 
   const handleCopy = () => {
     navigator.clipboard.writeText(code);
     setCopied(true);
+    showToast('Code snippet copied to clipboard!');
     setTimeout(() => setCopied(false), 2000);
   };
 

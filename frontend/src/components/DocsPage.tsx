@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Terminal, Shield, Cpu, Copy, CheckCircle2 } from 'lucide-react';
+import { useToast } from '../context/ToastContext';
 
 function CodeBlock({ code, showDots = false }: { code: string, showDots?: boolean }) {
   const [copied, setCopied] = useState(false);
+  const { showToast } = useToast();
 
   const handleCopy = () => {
     navigator.clipboard.writeText(code);
     setCopied(true);
+    showToast('Copied to clipboard!');
     setTimeout(() => setCopied(false), 2000);
   };
 

@@ -5,6 +5,8 @@ import { Search, ShieldAlert, Globe, Server, Code, FileCode, History, Trash2, Co
 import { motion } from 'framer-motion';
 import { useScanHistory } from '../hooks/useScanHistory';
 
+import { useToast } from '../context/ToastContext';
+
 export default function ScannerDashboard() {
   const [domain, setDomain] = useState('');
   const [apiKey, setApiKey] = useState('');
@@ -14,6 +16,7 @@ export default function ScannerDashboard() {
   const [copied, setCopied] = useState(false);
 
   const { history, addScan, clearHistory } = useScanHistory();
+  const { showToast } = useToast();
 
   const runScan = async (e: FormEvent) => {
     e.preventDefault();
@@ -33,12 +36,11 @@ export default function ScannerDashboard() {
       const data = response.data.data || response.data;
       setResult(data);
       addScan(domain, data.security_analysis?.security_score?.grade || 'N/A', data);
+      showToast(`Scan completed for ${domain}!`, 'success');
     } catch (err: any) {
-      if (err.response?.status === 429) {
-        setError('Error 429: Rate limit exceeded or free quota reached.');
-      } else {
-        setError(`Error: ${err.message}`);
-      }
+      const msg = err.response?.status === 429 ? 'Error 429: Rate limit exceeded.' : `Error: ${err.message}`;
+      setError(msg);
+      showToast(msg, 'error');
     } finally {
       setLoading(false);
     }
@@ -48,6 +50,7 @@ export default function ScannerDashboard() {
     if (!result) return;
     navigator.clipboard.writeText(JSON.stringify(result, null, 2));
     setCopied(true);
+    showToast('JSON output copied to clipboard!');
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -62,6 +65,7 @@ export default function ScannerDashboard() {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+    showToast('JSON report downloaded!', 'info');
   };
 
   return (
