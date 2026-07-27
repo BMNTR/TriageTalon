@@ -43,6 +43,10 @@ Proyek ini terbagi menjadi beberapa komponen yang saling terhubung:
 ## 📝 Changelog & Riwayat Pembaruan
 *Setiap ada perubahan, perbaikan, atau penambahan fitur, WAJIB ditulis di bawah ini agar riwayat proyek tidak hilang.*
 
+- **[2026-07-28] Documentation Page:**
+  - **DocsPage.tsx:** Menambahkan halaman dokumentasi khusus (`/docs`) yang menampilkan panduan penggunaan CLI, penjelasan detail sistem penilaian (A-F), dan referensi integrasi API menggunakan `curl`.
+  - Halaman dikembangkan secara ketat mengikuti panduan desain *hairline* dan *monospace* (Voltagent) dengan warna dominan Oranye.
+
 - **[2026-07-28] Production Web Upgrade (Animations, Routing & History):**
   - **Framer Motion Integration:** Memasang `framer-motion` untuk memberikan transisi halus antar halaman (Landing ke Scanner) dan efek *stagger* pada pemuatan kartu hasil *scan*.
   - **React Router:** Memigrasikan *rendering* SPA kondisional sederhana menjadi rute standar produksi dengan `react-router-dom` (rute `/` dan `/scanner`).
