@@ -300,75 +300,7 @@ def format_result(domain: str, result: dict, verbose: bool = False):
     """Render one domain's result as rich Text. Returns (text, grade, exposures)."""
     if "error" in result:
         return None, None, 0
-
-    sec = result.get("security_analysis", {}) or {}
-    grade = sec.get("security_score", {}).get("grade") or "?"
-    subs = result.get("subdomains", {}).get("count", 0)
-    weak = grade in WEAK_GRADES
-
-    symbol = "[!]" if weak else "[+]"
-    lead_style = f"bold {ACCENT}" if weak else "bold white"
-
-    text = Text()
-    text.append(f"{symbol} ", style=lead_style)
-    text.append(f"{domain}", style="bold white")
-    text.append("   ")
-    text.append(f"Grade: {grade}", style=lead_style)
-    text.append(f"   ·   Subdomains: {subs}\n", style="white")
-
-    if weak:
-        text.append("      -> Weak security headers detected\n", style=f"dim {ACCENT}")
-
-    if verbose:
-        dns = result.get("dns_records", {}) or {}
-        a_records = dns.get("A", [])
-        mx_records = dns.get("MX", [])
-        ns_records = dns.get("NS", [])
-        if a_records:
-            text.append(f"      DNS A  : {', '.join(a_records[:3])}\n", style="dim white")
-        if mx_records:
-            text.append(
-                f"      DNS MX : {', '.join(str(r) for r in mx_records[:3])}\n", style="dim white"
-            )
-        if ns_records:
-            text.append(
-                f"      DNS NS : {', '.join(str(r) for r in ns_records[:3])}\n", style="dim white"
-            )
-
-        txt_records = dns.get("TXT", [])
-        if txt_records:
-            spf_present = any("v=spf1" in r.lower() for r in txt_records)
-            dmarc_present = any("v=dmarc1" in r.lower() for r in txt_records)
-            text.append(
-                f"      SPF: {'present' if spf_present else 'MISSING'}   "
-                f"DMARC: {'present' if dmarc_present else 'MISSING'}\n",
-                style="dim white",
-            )
-
-        whois = result.get("whois", {}) or {}
-        registrar = whois.get("registrar", "")
-        expiry = whois.get("expiry_date", "")
-        if registrar and registrar != "Not Available":
-            text.append(f"      Registrar: {registrar}\n", style="dim white")
-        if expiry and expiry != "Not Available":
-            text.append(f"      Expires  : {expiry}\n", style="dim white")
-
-    sensitive = sec.get("sensitive_files", {}) or {}
-    exposures = 0
-    for ftype, info in sensitive.items():
-        if isinstance(info, dict) and info.get("found"):
-            exposures += 1
-            risk = (info.get("risk") or "").upper()
-            note = info.get("note", "")
-            text.append(
-                f"      [!!!] {risk}: Exposed {ftype} detected! {note}\n".rstrip() + "\n",
-                style=f"bold {ACCENT}",
-            )
-
-    if text.plain.endswith("\n"):
-        text = text[:-1]
-
-    return text, grade, exposures
+    return format_result_full(domain, result)
 
 
 def format_result_full(domain: str, result: dict) -> Table:
