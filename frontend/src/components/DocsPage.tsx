@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Terminal, Shield, Cpu, Copy, CheckCircle2 } from 'lucide-react';
 import { useToast } from '../context/ToastContext';
@@ -15,7 +15,7 @@ function CodeBlock({ code, showDots = false }: { code: string, showDots?: boolea
   };
 
   return (
-    <div className="code-mockup mb-6 relative group">
+    <div className="code-mockup relative group shadow-2xl border-[var(--hairline)] hover:border-[var(--body)] transition-colors duration-500 my-4">
       {showDots && (
         <div className="code-mockup-bar">
           <div className="dot d1"></div>
@@ -25,12 +25,12 @@ function CodeBlock({ code, showDots = false }: { code: string, showDots?: boolea
       )}
       <button 
         onClick={handleCopy}
-        className="absolute top-3 right-3 text-[var(--mute)] hover:text-[var(--primary)] transition-colors opacity-0 group-hover:opacity-100 p-1 bg-[var(--canvas)] rounded-md border border-transparent hover:border-[var(--hairline)]"
+        className="absolute top-3 right-3 text-[var(--mute)] hover:text-[var(--primary)] transition-colors opacity-0 group-hover:opacity-100 p-1 bg-[var(--canvas)] rounded-md border border-transparent hover:border-[var(--hairline)] z-20"
         title="Copy to clipboard"
       >
         {copied ? <CheckCircle2 className="w-4 h-4 text-[var(--primary)]" /> : <Copy className="w-4 h-4" />}
       </button>
-      <div className="code-text text-[var(--canvas-text-soft)] overflow-x-auto pr-8">
+      <div className="code-text overflow-x-auto pr-8 text-[var(--canvas-text-soft)]">
         {code}
       </div>
     </div>
@@ -38,6 +38,9 @@ function CodeBlock({ code, showDots = false }: { code: string, showDots?: boolea
 }
 
 export default function DocsPage() {
+  useEffect(() => {
+    document.title = "Documentation | TriageTalon";
+  }, []);
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}

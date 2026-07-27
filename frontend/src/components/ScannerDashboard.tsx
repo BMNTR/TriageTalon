@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { FormEvent } from 'react';
 import axios from 'axios';
 import { Search, ShieldAlert, Globe, Server, Code, FileCode, History, Trash2, Copy, Download, CheckCircle2, Loader2 } from 'lucide-react';
@@ -8,6 +8,9 @@ import { useScanHistory } from '../hooks/useScanHistory';
 import { useToast } from '../context/ToastContext';
 
 export default function ScannerDashboard() {
+  useEffect(() => {
+    document.title = "Scanner Dashboard | TriageTalon";
+  }, []);
   const [domain, setDomain] = useState('');
   const [apiKey, setApiKey] = useState('');
   const [loading, setLoading] = useState(false);

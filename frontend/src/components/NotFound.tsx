@@ -1,8 +1,12 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { TerminalSquare } from 'lucide-react';
 
 export default function NotFound() {
+  useEffect(() => {
+    document.title = "404 Target Not Found | TriageTalon";
+  }, []);
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
