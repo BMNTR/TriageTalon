@@ -26,7 +26,11 @@ export default function Pricing() {
               </li>
               <li className="flex items-center gap-3">
                 <span className="w-2 h-2 rounded-full bg-primary"></span>
-                <span className="body-sm">Basic Security Grading</span>
+                <span className="body-sm">10 Requests / Minute</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="w-2 h-2 rounded-full bg-primary"></span>
+                <span className="body-sm">Standard Recon Engine</span>
               </li>
               <li className="flex items-center gap-3">
                 <span className="w-2 h-2 rounded-full bg-primary"></span>
@@ -60,15 +64,15 @@ export default function Pricing() {
             <ul className="space-y-4 body-sm mb-8">
               <li className="flex items-center gap-3">
                 <div className="w-1 h-1 rounded-full bg-[var(--primary)]"></div>
-                Everything in Starter
+                1,000 API Calls / Month
               </li>
               <li className="flex items-center gap-3">
                 <div className="w-1 h-1 rounded-full bg-[var(--primary)]"></div>
-                Unlimited API Calls
+                No Rate Limits
               </li>
               <li className="flex items-center gap-3">
                 <div className="w-1 h-1 rounded-full bg-[var(--primary)]"></div>
-                Advanced Subdomain Enum
+                Advanced Attack Surface Enum
               </li>
               <li className="flex items-center gap-3">
                 <div className="w-1 h-1 rounded-full bg-[var(--primary)]"></div>
