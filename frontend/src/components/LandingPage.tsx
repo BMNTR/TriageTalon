@@ -95,7 +95,17 @@ export default function LandingPage({ onNavigate }: { onNavigate: (page: 'scanne
 
       <footer className="footer bg-[var(--canvas)] py-10 px-8 border-t border-[var(--hairline)]">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-          <div className="font-bold">⚡ TriageTalon</div>
+          <div className="font-bold flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="16" height="16">
+              <circle cx="50" cy="50" r="25" fill="none" stroke="var(--primary)" strokeWidth="12" />
+              <circle cx="50" cy="50" r="10" fill="var(--primary)" />
+              <line x1="50" y1="0" x2="50" y2="15" stroke="var(--primary)" strokeWidth="12" strokeLinecap="round" />
+              <line x1="50" y1="100" x2="50" y2="85" stroke="var(--primary)" strokeWidth="12" strokeLinecap="round" />
+              <line x1="0" y1="50" x2="15" y2="50" stroke="var(--primary)" strokeWidth="12" strokeLinecap="round" />
+              <line x1="100" y1="50" x2="85" y2="50" stroke="var(--primary)" strokeWidth="12" strokeLinecap="round" />
+            </svg>
+            TriageTalon
+          </div>
           <div className="text-[var(--body)] text-sm">
             Built by <a href="https://github.com/BMNTR" className="hover:text-white transition-colors">BMNTR</a>
           </div>
