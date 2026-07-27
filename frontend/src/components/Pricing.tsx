@@ -11,7 +11,7 @@ export default function Pricing() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Starter Tier */}
         <div className="card-feature flex flex-col">
-          <span className="eyebrow-mono">/0.1 - STARTER</span>
+          <span className="eyebrow-mono">STARTER</span>
           <div className="display-lg mt-4 mb-2">
             $0<span className="body-sm text-mute"> / MONTH</span>
           </div>
@@ -46,7 +46,7 @@ export default function Pricing() {
               Most Popular
             </div>
             
-            <div className="eyebrow-mono mb-4 text-[var(--primary)]">/ 0.2 - PRO</div>
+            <div className="eyebrow-mono mb-4 text-[var(--primary)]">PRO</div>
             
             <div className="mb-4">
               <span className="text-4xl font-mono font-bold">$15</span>
