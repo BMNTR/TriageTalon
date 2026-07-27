@@ -6,12 +6,12 @@
 [![Python](https://img.shields.io/badge/Python-3.8+-3776AB?logo=python&logoColor=white)](https://python.org)
 [![API](https://img.shields.io/badge/API-RapidAPI-0055FF?logo=rapid&logoColor=white)](https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api)
 [![PyPI](https://img.shields.io/pypi/v/triagetalon.svg)](https://pypi.org/project/triagetalon/)
-[![Status](https://img.shields.io/badge/Status-Active-47d147.svg)](https://bmntr.github.io/TriageTalon/)
+[![Status](https://img.shields.io/badge/Status-Active-47d147.svg)](https://triagetalon.vercel.app/)
 [![Code Quality](https://img.shields.io/badge/Code_Quality-A+-2ea8ff.svg)]()
 
 *Advanced Reconnaissance & Attack Surface Filtration for SecOps, DevOps, & Bug Bounty Hunters*
 
-**Live Demo & Official Website:** [bmntr.github.io/TriageTalon](https://bmntr.github.io/TriageTalon/)
+**Live Demo & Official Website:** [triagetalon.vercel.app](https://triagetalon.vercel.app/)
 
 </div>
 
