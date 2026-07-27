@@ -10,7 +10,7 @@ TriageTalon adalah alat OSINT (Open Source Intelligence) dan *Reconnaissance* be
 Proyek ini terbagi menjadi beberapa komponen yang saling terhubung:
 
 1. **Backend API (Vercel)**
-   - **Lokasi Kode:** `C:\BugBounty\rapidapi-recon\api.py` (Python FastAPI)
+   - **Lokasi Kode:** `backend/api.py` (Python FastAPI)
    - **Hosting:** Vercel (URL *deployment* khusus).
    - **Tugas:** Menjalankan logika *scan* OSINT secara asinkron (Subdomain, DNS, Header, dll) dalam waktu kurang dari 10 detik (batas limit Vercel).
    - **Keamanan:** Dilindungi oleh *Proxy Secret*. Menolak semua *request* (401 Unauthorized) kecuali yang memiliki *header* `X-RapidAPI-Proxy-Secret: rahasia_triage_talon_123`.
@@ -19,14 +19,14 @@ Proyek ini terbagi menjadi beberapa komponen yang saling terhubung:
    - **Nama:** Ultimate Attack Surface Recon API
    - **Tugas:** Mengelola *rate-limiting*, langganan berbayar, dan meneruskan *request* pengguna ke Vercel dengan menyuntikkan *header* rahasia.
 
-3. **Frontend Website & Live Demo (GitHub Pages)**
-   - **Lokasi Kode:** `C:\BugBounty\_scripts\TriageTalon\docs\index.html`
+3. **Frontend Website & Live Demo (React + Vercel)**
+   - **Lokasi Kode:** `frontend/` (React + Vite + TailwindCSS)
    - **Repositori GitHub:** `BMNTR/TriageTalon`
-   - **Hosting URL:** `https://bmntr.github.io/TriageTalon/`
-   - **Tugas:** Halaman *landing page* promosi yang berisi dokumentasi instalasi CLI dan **Live API Tester** yang memanggil RapidAPI langsung dari *browser* menggunakan JavaScript (Fetch API).
+   - **Hosting URL:** `https://triagetalon.vercel.app`
+   - **Tugas:** Halaman *landing page* promosi, dokumentasi instalasi CLI, dan **Scanner Dashboard** yang memanggil RapidAPI langsung dari *browser*. Web ini sepenuhnya di-*hosting* di Vercel, meninggalkan konfigurasi GitHub Pages versi lawas.
 
 4. **Command Line Interface (CLI)**
-   - Skrip Python (`recon.py`) di dalam repositori `TriageTalon` yang memungkinkan pengguna untuk mem- *pipe* hasil *scan* langsung ke *tools* *bug bounty* lain di terminal mereka.
+   - Skrip Python (`recon.py`) yang telah dipublikasikan ke PyPI (`pip install triagetalon`) sehingga pengguna tidak perlu melakukan `git clone` secara manual. Memiliki mode antarmuka *Textual* (TUI) interaktif.
 
 ## 🛠️ Fitur Utama API
 - **Subdomain Discovery:** Mengambil data subdomain dan IP (via HackerTarget API).
@@ -42,6 +42,12 @@ Proyek ini terbagi menjadi beberapa komponen yang saling terhubung:
 
 ## 📝 Changelog & Riwayat Pembaruan
 *Setiap ada perubahan, perbaikan, atau penambahan fitur, WAJIB ditulis di bawah ini agar riwayat proyek tidak hilang.*
+
+- **[2026-07-28] Web App Migration, Vercel Deployment & PyPI Release:**
+  - **React Migration:** Menulis ulang seluruh halaman statis (`docs/index.html`) menjadi aplikasi React SPA modern dengan bundler Vite di dalam folder `frontend/`.
+  - **Vercel Migration:** Mematikan GitHub Pages dan menghapus folder `docs/`. Proyek *frontend* dipindahkan 100% menggunakan Vercel untuk otomatisasi *build* & CI/CD. URL baru: `triagetalon.vercel.app`.
+  - **PyPI Release:** Mempublikasikan proyek ini ke Python Package Index (PyPI) versi 1.0.0. Metode instalasi di *README* diubah sepenuhnya dari `git clone` menjadi sangat instan: `pip install triagetalon`. Memperbarui seluruh `setup.py` untuk membungkus perintah `talon`.
+  - **Logo & UI Polish:** Menyelaraskan seluruh elemen visual *website* dengan membuat ikon SVG spesifik *Target Crosshair* oranye (sasaran tembak / ⌖) untuk *favicon*, *navbar*, dan *footer*. Menghilangkan logo-logo sisa bawaan *template* VoltAgent dan menata tipografi *Pricing Card*.
 
 - **[2026-07-27] CLI Visual Refinement & Production Hardening (v2.0.0):**
   - Merapikan tampilan hasil scan agar konsisten dengan filosofi desain monokromatik + aksen `#FF3E00` (aksen kini benar-benar hanya dipakai untuk grade lemah C/D/F dan alert, bukan campuran hijau/kuning/merah).
