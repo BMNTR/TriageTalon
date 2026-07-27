@@ -74,8 +74,8 @@ export default function DocsPage() {
             <CodeBlock code="$ pip install triagetalon" />
 
             <h3 className="body-md-strong mb-4">2. Basic Usage</h3>
-            <p className="body-sm mb-4">Scan a single target using the <code className="text-[var(--primary)] bg-[var(--canvas-soft)] px-1 rounded">-t</code> flag:</p>
-            <CodeBlock code="$ talon -t hackerone.com" />
+            <p className="body-sm mb-4">Scan a single target using the <code className="text-[var(--primary)] bg-[var(--canvas-soft)] px-1 rounded">-d</code> flag:</p>
+            <CodeBlock code="$ talon -d hackerone.com" />
 
             <h3 className="body-md-strong mb-4">3. Bulk Scanning</h3>
             <p className="body-sm mb-4">Provide a text file containing a list of subdomains (one per line) using the <code className="text-[var(--primary)] bg-[var(--canvas-soft)] px-1 rounded">-l</code> flag:</p>

@@ -10,10 +10,26 @@ import httpx
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import RedirectResponse
 
+from fastapi.middleware.cors import CORSMiddleware
+import html
+
+ENVIRONMENT = os.getenv("ENVIRONMENT", "production")
+
 app = FastAPI(
     title="Ultimate Attack Surface API",
     description="High-speed OSINT & Recon API for Bug Bounty and Cybersecurity",
-    version="2.0.0"
+    version="2.0.0",
+    docs_url=None if ENVIRONMENT == "production" else "/docs",
+    redoc_url=None if ENVIRONMENT == "production" else "/redoc"
+)
+
+# Add CORS Middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], # In production, restrict this to RapidAPI and Vercel domains
+    allow_credentials=True,
+    allow_methods=["GET"],
+    allow_headers=["*"],
 )
 
 # Configuration
@@ -29,16 +45,10 @@ USER_AGENTS = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0"
 ]
 
-def get_waf_bypass_headers():
-    """Generate headers designed to bypass poorly configured WAFs and rate limiters."""
+def get_standard_headers():
+    """Generate standard, polite headers without spoofing."""
     return {
         "User-Agent": random.choice(USER_AGENTS),
-        "X-Forwarded-For": "127.0.0.1",
-        "X-Originating-IP": "127.0.0.1",
-        "X-Remote-IP": "127.0.0.1",
-        "Client-IP": "127.0.0.1",
-        "X-Client-IP": "127.0.0.1",
-        "X-Real-IP": "127.0.0.1",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
         "Accept-Language": "en-US,en;q=0.5",
         "Connection": "keep-alive",
@@ -147,38 +157,8 @@ def is_safe_redirect(url: str, original_domain: str) -> bool:
         return False
 
 
-# --- RATE LIMITER ---
-# Note: In Vercel (Serverless), this rate limiter is not effective.
-# In production, rely on RapidAPI's built-in rate limiter.
-rate_limit_store = defaultdict(list)
-RATE_LIMIT_MAX = 10
-RATE_LIMIT_WINDOW = 60
-RATE_LIMIT_CLEANUP_INTERVAL = 300
-_last_cleanup_time = time.time()
-
-
-def is_rate_limited(client_ip: str) -> bool:
-    """Check if this IP has exceeded the request limit."""
-    global _last_cleanup_time
-    now = time.time()
-    
-    # Periodic cleanup
-    if now - _last_cleanup_time > RATE_LIMIT_CLEANUP_INTERVAL:
-        stale_ips = [
-            ip for ip, timestamps in rate_limit_store.items()
-            if not timestamps or (now - max(timestamps)) > RATE_LIMIT_WINDOW
-        ]
-        for ip in stale_ips:
-            del rate_limit_store[ip]
-        _last_cleanup_time = now
-
-    rate_limit_store[client_ip] = [
-        t for t in rate_limit_store[client_ip] if now - t < RATE_LIMIT_WINDOW
-    ]
-    if len(rate_limit_store[client_ip]) >= RATE_LIMIT_MAX:
-        return True
-    rate_limit_store[client_ip].append(now)
-    return False
+# Rate Limiting is handled strictly by the RapidAPI Gateway API.
+# The in-memory limiter has been removed as it is ineffective in Serverless/Vercel environments.
 
 
 async def safe_redirect_get(client, url, domain, headers):
@@ -293,7 +273,7 @@ async def check_security_headers(domain: str) -> dict:
         url = f"{scheme}://{domain}"
         try:
             async with httpx.AsyncClient(timeout=TIMEOUT, verify=False) as client:
-                response = await safe_redirect_get(client, url, domain, get_waf_bypass_headers())
+                response = await safe_redirect_get(client, url, domain, get_standard_headers())
                 headers = response.headers
 
                 for h in check_headers:
@@ -334,7 +314,7 @@ async def check_security_headers(domain: str) -> dict:
                 if "x-generator" in headers:
                     gen = headers.get("x-generator", "")
                     if gen:
-                        detected_tech.append(gen)
+                        detected_tech.append(html.escape(gen))
 
                 break
         except Exception:
@@ -368,7 +348,7 @@ async def check_sensitive_files(domain: str) -> dict:
     async def fetch(name, url):
         try:
             async with httpx.AsyncClient(timeout=TIMEOUT, verify=False) as client:
-                response = await safe_redirect_get(client, url, domain, get_waf_bypass_headers())
+                response = await safe_redirect_get(client, url, domain, get_standard_headers())
                 if response.status_code == 200:
                     content_type = response.headers.get("Content-Type", "").lower()
                     body = response.text[:2000].lower()
@@ -489,62 +469,7 @@ async def fetch_whois_rdap(domain: str) -> dict:
     return whois_data
 
 
-# =====================================================
-# FEATURE 6: ASYNC PORT SCANNER
-# =====================================================
-async def check_port(domain: str, port: int) -> dict:
-    """Attempt a raw TCP connection to a specific port."""
-    try:
-        # Use a short timeout so we don't hang on filtered ports
-        reader, writer = await asyncio.wait_for(
-            asyncio.open_connection(domain, port), timeout=1.5
-        )
-        writer.close()
-        await writer.wait_closed()
-        return {"port": port, "state": "open"}
-    except (asyncio.TimeoutError, ConnectionRefusedError, socket.gaierror, OSError):
-        return {"port": port, "state": "closed_or_filtered"}
-
-async def run_port_scan(domain: str) -> dict:
-    """Scan the top 10 most critical bug bounty ports asynchronously."""
-    # Top 10 critical ports to look for backdoors or exposed services
-    target_ports = [
-        21,    # FTP
-        22,    # SSH
-        80,    # HTTP
-        443,   # HTTPS
-        3306,  # MySQL
-        5432,  # PostgreSQL
-        27017, # MongoDB
-        6379,  # Redis
-        8080,  # Web Admin/Dev
-        8443   # Web Admin/Dev Secure
-    ]
-    
-    # Run all port checks in parallel
-    tasks = [check_port(domain, port) for port in target_ports]
-    results = await asyncio.gather(*tasks)
-    
-    open_ports = [res["port"] for res in results if res["state"] == "open"]
-    
-    # Assess risk based on exposed ports
-    high_risk_ports = {21, 22, 3306, 5432, 27017, 6379}
-    exposed_high_risk = list(set(open_ports).intersection(high_risk_ports))
-    
-    risk_level = "Low"
-    if exposed_high_risk:
-        risk_level = "High"
-    elif len(open_ports) > 2: # Usually just 80 and 443 should be open
-        risk_level = "Medium"
-        
-    return {
-        "scanned_ports": target_ports,
-        "open_ports": open_ports,
-        "exposed_high_risk_services": exposed_high_risk,
-        "risk_level": risk_level
-    }
-
-
+# Port scanning feature removed to adhere to strict passive OSINT guidelines.
 
 # =====================================================
 # ENDPOINTS
@@ -584,9 +509,7 @@ async def perform_recon(
     if await is_private_ip(domain_lower):
         raise HTTPException(status_code=400, detail="Domain resolves to a private/reserved IP address.")
 
-    client_ip = request.client.host if request.client else "unknown"
-    if is_rate_limited(client_ip):
-        raise HTTPException(status_code=429, detail="Too many requests. Max 10 per minute. Please wait and try again.")
+    # RapidAPI handles rate limiting. Local fake rate limiter removed.
 
     # Wrap the gathering of tasks in a global timeout to survive Vercel's 10s limit
     async def gather_all():
@@ -595,13 +518,12 @@ async def perform_recon(
             check_security_headers(domain_lower),
             check_sensitive_files(domain_lower),
             fetch_dns_records(domain_lower),
-            fetch_whois_rdap(domain_lower),
-            run_port_scan(domain_lower)
+            fetch_whois_rdap(domain_lower)
         )
 
     try:
         results = await asyncio.wait_for(gather_all(), timeout=9.0)
-        subdomains_result, security_result, files, dns_records, whois_data, port_scan_results = results
+        subdomains_result, security_result, files, dns_records, whois_data = results
     except asyncio.TimeoutError:
         # If it times out, we return partial/failed data but survive the crash!
         subdomains_result = {"count": 0, "list": [], "truncated": True, "note": "Timeout exceeded. Target too slow."}
@@ -612,7 +534,6 @@ async def perform_recon(
         files = {}
         dns_records = {}
         whois_data = {}
-        port_scan_results = {"scanned_ports": [], "open_ports": [], "exposed_high_risk_services": [], "risk_level": "Unknown", "note": "Timeout exceeded."}
 
     elapsed = round(time.time() - start_time, 2)
 
@@ -622,7 +543,6 @@ async def perform_recon(
         "scan_duration_seconds": elapsed,
         "data": {
             "subdomains": subdomains_result,
-            "port_scan": port_scan_results,
             "dns_records": dns_records,
             "whois": whois_data,
             "security_analysis": {
