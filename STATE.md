@@ -47,7 +47,7 @@ Proyek ini terbagi menjadi beberapa komponen yang saling terhubung:
   - **React Migration:** Menulis ulang seluruh halaman statis (`docs/index.html`) menjadi aplikasi React SPA modern dengan bundler Vite di dalam folder `frontend/`.
   - **Vercel Migration:** Mematikan GitHub Pages dan menghapus folder `docs/`. Proyek *frontend* dipindahkan 100% menggunakan Vercel untuk otomatisasi *build* & CI/CD. URL baru: `triagetalon.vercel.app`.
   - **PyPI Release:** Mempublikasikan proyek ini ke Python Package Index (PyPI) versi 1.0.0. Metode instalasi di *README* diubah sepenuhnya dari `git clone` menjadi sangat instan: `pip install triagetalon`. Memperbarui seluruh `setup.py` untuk membungkus perintah `talon`.
-  - **Logo & UI Polish:** Menyelaraskan seluruh elemen visual *website* dengan membuat ikon SVG spesifik *Target Crosshair* oranye (sasaran tembak / ⌖) untuk *favicon*, *navbar*, dan *footer*. Menghilangkan logo-logo sisa bawaan *template* VoltAgent dan menata tipografi *Pricing Card*.
+  - **Logo & UI Polish:** Menyelaraskan seluruh elemen visual *website* dengan membuat ikon SVG spesifik *Target Crosshair* oranye (sasaran tembak / ⌖) untuk *favicon*, *navbar*, dan *footer*. Menghilangkan logo-logo sisa bawaan *template* VoltAgent dan menata tipografi *Pricing Card*. Memperbaiki *link* tombol harga dan meluruskan deskripsi *benefit* agar akurat 100% dengan limit *RapidAPI* (100 *req/mo* untuk Starter, 1000 *req/mo* untuk Pro).
 
 - **[2026-07-27] CLI Visual Refinement & Production Hardening (v2.0.0):**
   - Merapikan tampilan hasil scan agar konsisten dengan filosofi desain monokromatik + aksen `#FF3E00` (aksen kini benar-benar hanya dipakai untuk grade lemah C/D/F dan alert, bukan campuran hijau/kuning/merah).
