@@ -7,7 +7,14 @@ export default function Navbar({ onNavigate }: { onNavigate: (page: 'landing' | 
         className="font-sans text-xl font-bold text-[var(--ink-strong)] flex items-center gap-2 cursor-pointer"
         onClick={() => onNavigate('landing')}
       >
-        <span className="text-[var(--primary)] text-base">✦</span>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="18" height="18">
+          <circle cx="50" cy="50" r="25" fill="none" stroke="var(--primary)" stroke-width="12" />
+          <circle cx="50" cy="50" r="10" fill="var(--primary)" />
+          <line x1="50" y1="0" x2="50" y2="15" stroke="var(--primary)" stroke-width="12" stroke-linecap="round" />
+          <line x1="50" y1="100" x2="50" y2="85" stroke="var(--primary)" stroke-width="12" stroke-linecap="round" />
+          <line x1="0" y1="50" x2="15" y2="50" stroke="var(--primary)" stroke-width="12" stroke-linecap="round" />
+          <line x1="100" y1="50" x2="85" y2="50" stroke="var(--primary)" stroke-width="12" stroke-linecap="round" />
+        </svg>
         TriageTalon
       </div>
       <div className="flex items-center gap-6">
