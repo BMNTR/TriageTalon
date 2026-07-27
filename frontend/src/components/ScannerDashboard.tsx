@@ -30,7 +30,7 @@ export default function ScannerDashboard() {
     setResult(null);
 
     try {
-      const response = await axios.get(`https://ultimate-attack-surface-recon-api.p.rapidapi.com/scan?domain=${domain}`, {
+      const response = await axios.get(`https://ultimate-attack-surface-recon-api.p.rapidapi.com/scan?domain=${encodeURIComponent(domain)}`, {
         headers: {
           'x-rapidapi-key': apiKey,
           'x-rapidapi-host': 'ultimate-attack-surface-recon-api.p.rapidapi.com'

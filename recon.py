@@ -10,7 +10,6 @@ import argparse
 import json
 import os
 import re
-import json
 import logging
 import sys
 import time

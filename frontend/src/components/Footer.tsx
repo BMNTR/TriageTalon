@@ -84,8 +84,8 @@ Our Data Handling Principles:
             <ul className="space-y-2 body-sm text-[var(--mute)]">
               <li><Link to="/scanner" className="hover:text-[var(--ink-strong)] transition-colors">Scanner Dashboard</Link></li>
               <li><Link to="/docs" className="hover:text-[var(--ink-strong)] transition-colors">CLI & Documentation</Link></li>
-              <li><a href="/#features" className="hover:text-[var(--ink-strong)] transition-colors">Key Features</a></li>
-              <li><a href="/#pricing" className="hover:text-[var(--ink-strong)] transition-colors">Pricing Tiers</a></li>
+              <li><Link to="/#features" className="hover:text-[var(--ink-strong)] transition-colors">Key Features</Link></li>
+              <li><Link to="/#pricing" className="hover:text-[var(--ink-strong)] transition-colors">Pricing Tiers</Link></li>
             </ul>
           </div>
 

@@ -169,6 +169,11 @@ async def safe_redirect_get(client, url, domain, headers):
         redirect_url = str(response.next_request.url) if response.next_request else None
         if not redirect_url or not is_safe_redirect(redirect_url, domain):
             break
+        
+        parsed = urlparse(redirect_url)
+        if parsed.hostname and await is_private_ip(parsed.hostname):
+            break
+            
         response = await client.get(redirect_url, headers=headers, follow_redirects=False)
         redirects_followed += 1
     return response

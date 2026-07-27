@@ -5,7 +5,7 @@ export default function Pricing() {
     <section className="py-20 px-8 max-w-5xl mx-auto">
       <div className="text-center mb-16">
         <h2 className="display-lg">Pricing Tiers</h2>
-        <p className="body-md mt-4 text-mute">Simple pricing. Scale as you grow.</p>
+        <p className="body-md mt-4 text-[var(--mute)]">Simple pricing. Scale as you grow.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -13,7 +13,7 @@ export default function Pricing() {
         <div className="card-feature flex flex-col">
           <span className="eyebrow-mono">STARTER</span>
           <div className="display-lg mt-4 mb-2">
-            $0<span className="body-sm text-mute"> / MONTH</span>
+            $0<span className="body-sm text-[var(--mute)]"> / MONTH</span>
           </div>
           <p className="body-md mb-8">For individuals getting started.</p>
 
