@@ -177,16 +177,20 @@ When dealing with a massive scope (e.g., hundreds of wildcard subdomains), feed 
 talon -l targets.txt -t 10
 ```
 
-### Bug Bounty Pipelines (Silent Mode & Export)
+### 4. Bug Bounty Pipelines (Silent Mode & JSON Export)
 
-TriageTalon is built to be chained with other tools. Use Quiet Mode (`-q`) to suppress the UI and only print vulnerable domains (Grades C, D, F). You can also export the full raw JSON (`-o`) for further processing:
+TriageTalon is built to be chained with other tools. Use Quiet Mode (`-q`) to suppress the UI and only print vulnerable domains (Grades C, D, F). 
+You can also export the full raw JSON (`-o`) or print raw JSON directly to stdout (`--json`) for pipelining with `jq`:
 
 ```bash
 # Pipe vulnerable targets directly to nuclei
 talon -l scope.txt -q | nuclei -t vulnerabilities/
 
-# Export results to JSON
+# Export results to a JSON file
 talon -l scope.txt -o results.json
+
+# Print raw JSON to stdout and parse it with jq
+talon -d example.com --json | jq '.example_com.subdomains'
 ```
 
 ## Pro Tip: Global Command

@@ -655,6 +655,9 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("-o", "--output", help="Export full results to a JSON file")
     parser.add_argument(
+        "--json", action="store_true", help="Print raw JSON to stdout (implies --quiet and --no-banner)"
+    )
+    parser.add_argument(
         "-t",
         "--threads",
         type=int,
@@ -1052,6 +1055,10 @@ def main() -> None:
     parser = build_parser()
     args = parser.parse_args()
 
+    if getattr(args, "json", False):
+        args.quiet = True
+        args.no_banner = True
+
     if args.threads < 1:
         args.threads = 1
     elif args.threads > MAX_THREADS:
@@ -1073,7 +1080,10 @@ def main() -> None:
     if args.domain or args.list:
         print_banner(no_banner=args.no_banner or args.quiet)
         domains = resolve_domains(args)
-        stats, _ = run_scan(domains, api_key, args)
+        stats, all_results = run_scan(domains, api_key, args)
+
+        if getattr(args, "json", False):
+            print(json.dumps(all_results, indent=2, ensure_ascii=False))
 
         exit_code = 0
         if stats.get("fatal"):
