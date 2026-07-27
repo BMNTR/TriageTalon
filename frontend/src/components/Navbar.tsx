@@ -7,7 +7,7 @@ export default function Navbar({ onNavigate }: { onNavigate: (page: 'landing' | 
         className="font-sans text-xl font-bold text-[var(--ink-strong)] flex items-center gap-2 cursor-pointer"
         onClick={() => onNavigate('landing')}
       >
-        <span className="text-[var(--primary)] text-base">⚡</span>
+        <span className="text-[var(--primary)] text-base">✦</span>
         TriageTalon
       </div>
       <div className="flex items-center gap-6">
