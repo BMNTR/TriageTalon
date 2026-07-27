@@ -15,6 +15,7 @@ export default function Navbar() {
         TriageTalon
       </Link>
       <div className="flex items-center gap-6">
+        <Link to="/docs" className="text-[var(--body)] text-sm font-medium hover:text-[var(--ink-strong)] transition-colors">Docs</Link>
         <a href="https://github.com/BMNTR/TriageTalon" target="_blank" rel="noopener noreferrer" className="text-[var(--body)] text-sm font-medium hover:text-[var(--ink-strong)] transition-colors">Source</a>
         <a href="https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api" target="_blank" rel="noopener noreferrer" className="text-[var(--body)] text-sm font-medium hover:text-[var(--ink-strong)] transition-colors">API</a>
         <Link to="/scanner" className="btn button-primary h-[36px] text-sm px-4 flex items-center">Launch Scanner</Link>

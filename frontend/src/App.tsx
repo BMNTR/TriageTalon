@@ -3,6 +3,7 @@ import { AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
 import LandingPage from './components/LandingPage';
 import ScannerDashboard from './components/ScannerDashboard';
+import DocsPage from './components/DocsPage';
 
 function App() {
   const location = useLocation();
@@ -14,6 +15,7 @@ function App() {
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<LandingPage />} />
           <Route path="/scanner" element={<ScannerDashboard />} />
+          <Route path="/docs" element={<DocsPage />} />
         </Routes>
       </AnimatePresence>
     </div>
