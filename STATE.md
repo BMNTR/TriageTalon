@@ -48,6 +48,7 @@ Proyek ini terbagi menjadi beberapa komponen yang saling terhubung:
   - **Faded Cyber Grid:** Menyematkan latar belakang *dot-matrix* redup (`.bg-grid-pattern`) dengan *radial gradient mask* yang memudar di tepi layar untuk menambah kedalaman hero section.
   - **Staggered Entry Animation:** Memperhalus animasi masuk seluruh elemen hero menggunakan `framer-motion` sehingga teks dan terminal *mockup* muncul bergantian dengan mulus.
   - **Pricing Alignment:** Memperbaiki tata letak (layout) kartu *Pricing* menggunakan `flex flex-col` dan `mt-auto` agar tombol *Call-to-Action* selalu simetris di bagian bawah, serta mengubah teks menjadi "Upgrade to Pro".
+  - **Content Expansion:** Menambahkan tiga bagian baru yang persuasif: "How it Works" (langkah kerja visual), "Developer First" (contoh intergrasi kode interaktif), dan FAQ bergaya akordion untuk meningkatkan konversi pengguna.
 
 - **[2026-07-28] Documentation Page:**
   - **DocsPage.tsx:** Menambahkan halaman dokumentasi khusus (`/docs`) yang menampilkan panduan penggunaan CLI, penjelasan detail sistem penilaian (A-F), dan referensi integrasi API menggunakan `curl`.
