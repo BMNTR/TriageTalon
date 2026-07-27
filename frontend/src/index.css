@@ -212,9 +212,9 @@
   }
 
   .dot { width: 10px; height: 10px; border-radius: 50%; }
-  .d1 { background: var(--hairline); }
-  .d2 { background: var(--hairline); }
-  .d3 { background: var(--hairline); }
+  .d1 { background: #ff5f56; }
+  .d2 { background: #ffbd2e; }
+  .d3 { background: #27c93f; }
 }
 
 /* Animations */
