@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import LandingPage from './components/LandingPage';
 import ScannerDashboard from './components/ScannerDashboard';
 import DocsPage from './components/DocsPage';
+import NotFound from './components/NotFound';
 
 function App() {
   const location = useLocation();
@@ -16,6 +17,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/scanner" element={<ScannerDashboard />} />
           <Route path="/docs" element={<DocsPage />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </AnimatePresence>
     </div>
