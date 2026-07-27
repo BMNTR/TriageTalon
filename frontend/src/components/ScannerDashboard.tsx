@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import axios from 'axios';
-import { Search, ShieldAlert, Globe, Server, Code, FileCode, History, Trash2, Copy, Download, CheckCircle2 } from 'lucide-react';
+import { Search, ShieldAlert, Globe, Server, Code, FileCode, History, Trash2, Copy, Download, CheckCircle2, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useScanHistory } from '../hooks/useScanHistory';
 
@@ -102,7 +102,7 @@ export default function ScannerDashboard() {
               />
             </div>
             <button type="submit" className="btn button-primary w-full md:w-auto px-8 flex items-center justify-center min-w-[140px]" disabled={loading}>
-              {loading ? <div className="spinner"></div> : <><Search className="w-4 h-4 mr-2" /> Scan</>}
+              {loading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Scanning...</> : <><Search className="w-4 h-4 mr-2" /> Scan</>}
             </button>
           </form>
 
