@@ -50,6 +50,10 @@ Proyek ini terbagi menjadi beberapa komponen yang saling terhubung:
   - **Pricing Alignment:** Memperbaiki tata letak (layout) kartu *Pricing* menggunakan `flex flex-col` dan `mt-auto` agar tombol *Call-to-Action* selalu simetris di bagian bawah, serta mengubah teks menjadi "Upgrade to Pro".
   - **Content Expansion:** Menambahkan tiga bagian baru yang persuasif: "How it Works" (langkah kerja visual), "Developer First" (contoh intergrasi kode interaktif), dan FAQ bergaya akordion untuk meningkatkan konversi pengguna.
 
+- **[2026-07-28] Technical Polish (404 & SEO):**
+  - **NotFound Page:** Mengimplementasikan komponen `NotFound.tsx` dengan desain terminal *mockup* interaktif yang mensimulasikan pesan kesalahan DNS (`NXDOMAIN`) jika pengguna nyasar ke rute yang salah.
+  - **SEO & OpenGraph:** Menyematkan *meta tags* (deskripsi, *keywords*, penanda X/Twitter, dan gambar *preview* OG) di dalam `index.html` agar tautan TriageTalon terlihat profesional saat dibagikan di media sosial.
+
 - **[2026-07-28] Documentation Page:**
   - **DocsPage.tsx:** Menambahkan halaman dokumentasi khusus (`/docs`) yang menampilkan panduan penggunaan CLI, penjelasan detail sistem penilaian (A-F), dan referensi integrasi API menggunakan `curl`.
   - **Copy to Clipboard:** Menambahkan komponen *CodeBlock* interaktif yang memungkinkan pengunjung menyalin (*copy*) instruksi instalasi dan kode integrasi langsung dari halaman dokumentasi.
