@@ -35,7 +35,7 @@ export default function Pricing() {
             </ul>
           </div>
           
-          <a href="https://rapidapi.com/" target="_blank" rel="noopener noreferrer" className="btn button-outline-on-dark w-full mt-8">
+          <a href="https://rapidapi.com/BMNTR/api/ultimate-attack-surface-recon-api" target="_blank" rel="noopener noreferrer" className="btn button-outline-on-dark w-full mt-8">
             Get started
           </a>
         </div>
