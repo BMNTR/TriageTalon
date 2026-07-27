@@ -43,6 +43,11 @@ Proyek ini terbagi menjadi beberapa komponen yang saling terhubung:
 ## 📝 Changelog & Riwayat Pembaruan
 *Setiap ada perubahan, perbaikan, atau penambahan fitur, WAJIB ditulis di bawah ini agar riwayat proyek tidak hilang.*
 
+- **[2026-07-28] Landing Page Premium Enhancements:**
+  - **Mouse-Tracking Spotlight:** Menambahkan interaksi kursor tingkat lanjut (`onMouseMove`) ke komponen *FeatureCard*, menciptakan efek pendaran cahaya oranye lembut yang menempel dan mengikuti posisi *mouse* pengguna (ala desain enterprise Vercel).
+  - **Faded Cyber Grid:** Menyematkan latar belakang *dot-matrix* redup (`.bg-grid-pattern`) dengan *radial gradient mask* yang memudar di tepi layar untuk menambah kedalaman hero section.
+  - **Staggered Entry Animation:** Memperhalus animasi masuk seluruh elemen hero menggunakan `framer-motion` sehingga teks dan terminal *mockup* muncul bergantian dengan mulus.
+
 - **[2026-07-28] Documentation Page:**
   - **DocsPage.tsx:** Menambahkan halaman dokumentasi khusus (`/docs`) yang menampilkan panduan penggunaan CLI, penjelasan detail sistem penilaian (A-F), dan referensi integrasi API menggunakan `curl`.
   - **Copy to Clipboard:** Menambahkan komponen *CodeBlock* interaktif yang memungkinkan pengunjung menyalin (*copy*) instruksi instalasi dan kode integrasi langsung dari halaman dokumentasi.
