@@ -93,8 +93,10 @@ git clone https://github.com/BMNTR/TriageTalon.git
 # Navigate to the directory
 cd TriageTalon
 
-# Install dependencies
-pip install -r requirements.txt
+# Install as a global package (Recommended)
+pip install -e .
+
+# Now you can use the 'talon' command anywhere!
 ```
 
 ---
@@ -125,24 +127,24 @@ Pass the key to TriageTalon using any of these methods:
 
 ```bash
 # Option A: Pass directly via flag (quickest for trying it out)
-python recon.py -d target.com -k YOUR_API_KEY
+talon -d example.com -k YOUR_API_KEY
 
 # Option B: Set as environment variable (recommended for daily use,
 # so you don't have to type your key every time)
 export RAPIDAPI_KEY="YOUR_API_KEY"    # Linux/macOS
 $env:RAPIDAPI_KEY = "YOUR_API_KEY"    # Windows PowerShell
-python recon.py -d target.com
+talon -d example.com
 
-# Option C: Hardcode in script (edit line 10 of recon.py)
+# Option C: Hardcode in script (edit line 22 of recon.py)
 RAPIDAPI_KEY = "YOUR_API_KEY"
 ```
 
 ### Basic Scanning
 
-Scan a single domain to get an immediate posture assessment:
+Scan a single domain to get an immediate posture assessment (with rich UI):
 
 ```bash
-python recon.py -d example.com -k YOUR_API_KEY
+talon -d example.com -k YOUR_API_KEY
 ```
 
 **Expected Output** (illustrative -- actual values will vary depending on the target):
@@ -171,32 +173,30 @@ python recon.py -d example.com -k YOUR_API_KEY
 ==================================================
 ```
 
-### Batch Processing
+### Batch Processing & Concurrency
 
-When dealing with a massive scope (e.g., hundreds of wildcard subdomains), feed a text file into TriageTalon to let it do the heavy lifting:
-
-```bash
-# targets.txt should contain one domain per line
-python recon.py -l targets.txt -k YOUR_API_KEY
-```
-
-## Pro Tip: Global Alias
-
-Once your API key is configured (via env var or hardcode), you can create a global alias to run TriageTalon from anywhere:
+When dealing with a massive scope (e.g., hundreds of wildcard subdomains), feed a text file into TriageTalon. It now supports multi-threading for blazing-fast triage:
 
 ```bash
-# Linux / macOS (~/.bashrc or ~/.zshrc)
-alias talon="python3 /path/to/TriageTalon/recon.py"
-
-# Windows PowerShell ($PROFILE)
-function talon { python C:\path\to\TriageTalon\recon.py @args }
+# Scan with 10 concurrent threads (default is 5)
+talon -l targets.txt -t 10
 ```
 
-Now you can triage from any directory:
+### Bug Bounty Pipelines (Silent Mode & Export)
+
+TriageTalon is built to be chained with other tools. Use Quiet Mode (`-q`) to suppress the UI and only print vulnerable domains (Grades C, D, F). You can also export the full raw JSON (`-o`) for further processing:
+
 ```bash
-talon -d target.com
-talon -l scope.txt
+# Pipe vulnerable targets directly to nuclei
+talon -l scope.txt -q | nuclei -t vulnerabilities/
+
+# Export results to JSON
+talon -l scope.txt -o results.json
 ```
+
+## Pro Tip: Global Command
+
+Since we introduced `setup.py`, you no longer need manual aliases. Just run `pip install -e .` in the project directory, and the `talon` command will be permanently available in your PowerShell or bash terminal!
 
 ---
 

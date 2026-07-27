@@ -43,6 +43,38 @@ Proyek ini terbagi menjadi beberapa komponen yang saling terhubung:
 ## 📝 Changelog & Riwayat Pembaruan
 *Setiap ada perubahan, perbaikan, atau penambahan fitur, WAJIB ditulis di bawah ini agar riwayat proyek tidak hilang.*
 
+- **[2026-07-27] CLI Visual Refinement & Production Hardening (v2.0.0):**
+  - Merapikan tampilan hasil scan agar konsisten dengan filosofi desain monokromatik + aksen `#FF3E00` (aksen kini benar-benar hanya dipakai untuk grade lemah C/D/F dan alert, bukan campuran hijau/kuning/merah).
+  - Menambahkan kolom `MofNCompleteColumn` dan `TimeElapsedColumn` pada progress bar, serta tabel **Top Vulnerable Targets** (diurutkan F > D > C, lalu jumlah exposure) di akhir scan.
+  - Tabel Scan Summary kini menampilkan Elapsed Time dan Throughput (req/s).
+  - Validasi & normalisasi domain (`normalize_domain`): membuang skema URL/port/trailing slash, menolak format domain tidak valid, dan deduplikasi otomatis saat membaca `-l/--list`; baris tidak valid dilaporkan (bukan diam-diam diproses).
+  - `requests.Session` dengan retry/backoff (urllib3 `Retry`) untuk error transient (500/502/503/504) serta penanganan eksplisit untuk timeout dan connection error.
+  - Penanganan Ctrl+C yang lebih baik (tidak lagi menampilkan traceback mentah) baik saat scan berjalan, saat prompt API key, maupun pada mode interaktif.
+  - `~/.triagetalon.json` kini disimpan dengan permission `0600` (owner-only) agar API key tidak bisa dibaca user lain di sistem multi-user.
+  - Penghapusan konstanta placeholder `YOUR_RAPIDAPI_KEY_HERE` yang rawan salah paham; kunci hardcode kini opsional (`None` secara default).
+  - `-d/--domain` dan `-l/--list` dibuat mutually exclusive di argparse.
+  - Fitur baru: `--timeout` (per-request timeout), `--fail-on-weak` (exit code 1 jika ditemukan grade C/D/F, untuk CI gating), `--no-banner`, `--version`.
+  - Perbaikan bug laten pada pemotongan newline akhir di `format_result` (sebelumnya bergantung pada indexing karakter `Text` yang rapuh).
+  - Penanganan *fatal error* (401/403/429) kini menyimpan hasil parsial dan tetap mencetak ringkasan, alih-alih langsung `return` tanpa output.
+
+- **[2026-07-27] Textual TUI Full-Screen Migration & Double-Card Results:**
+  - Memigrasikan alur interaktif `recon.py` ke framework **Textual** sehingga aplikasi berjalan 100% di dalam *Alternate Screen Buffer* layar penuh.
+  - Memperbarui teks *placeholder* kotak input menggunakan domain contoh resmi standar RFC 2606 (`example.com`): `Enter target domain to start recon (e.g. example.com)...`.
+  - Menambahkan fitur **Clipboard Auto-Copy (`copy` command)**: pengguna dapat mengetik `copy` (salin scan terakhir), `copy 2` (salin scan nomor 2 dari riwayat), atau `copy <domain>` (salin scan domain tertentu) secara instan ke system clipboard tanpa perlu memblok teks manual.
+  - Mematikan fitur **Command Palette (`COMMAND_PALETTE = False`)** agar menu pencarian perintah popup dan tombol `^P palette` di sudut bawah tidak lagi muncul atau mengganggu pengguna.
+  - Merapikan baris `SubHelp` tip sehingga hanya menampilkan petunjuk ringkas `help`, `clear`, dan `quit`.
+  - Menambahkan log status *real-time* di TUI (`[*] Querying RapidAPI & gathering WHOIS/DNS/Headers...`) saat scan berjalan agar pengguna tahu proses HTTP request sedang aktif bekerja di latar belakang.
+  - Memperbaiki penanganan pesan error jika API key belum diatur atau terjadi masalah koneksi.
+  - Mengubah tampilan hasil *scan* menjadi 2 Card berurutan berksen oranye kemerahan (`#FF3E00`) yang setema dengan Talon: Card JSON murni dengan *github-dark muted syntax highlighting* diikuti tabel ringkasan (*Target Summary*) dengan `title_style="none"` agar tidak memiliki kotak latar belakang putih secara terpisah.
+  - Menambahkan fitur **Responsive Banner / Compact Mode** di TUI: jika ukuran jendela terminal kurang dari 85 kolom, logo ASCII otomatis beralih ke mode ringkas 1 baris (`TRIAGETALON v2.0.0`) agar tidak patah.
+  - Memperbaiki parser argumen TUI sehingga mendukung opsi `scan -t <domain>` (hanya tampilkan tabel ringkasan) dan `scan -l <file>` (baca daftar domain).
+- **[2026-07-27] CLI UI Overhaul & Interactive Continuous Scanning:**
+  - Mengubah desain visual `recon.py` dari gaya warna-warni (box) menjadi UI *hacker-style* profesional yang minimalis dan monokromatik dengan aksen oranye kemerahan (`#FF3E00`) hanya untuk *alert*.
+  - Mengubah huruf N pada logo *banner* Talon agar benar-benar terlihat seperti huruf N kapital dalam format balok.
+  - Memperbaiki sistem *font rendering* ASCII untuk PowerShell di Windows dengan memaksa `sys.stdout.reconfigure(encoding='utf-8')`.
+  - Mengubah mekanisme input RapidAPI Key menjadi *prompt* interaktif yang dilengkapi fitur *Auto-Open Browser* menggunakan modul `webbrowser`.
+  - Menambahkan fitur *Config Saver* yang otomatis menyimpan API Key pengguna ke dalam file lokal `~/.triagetalon.json`.
+  - Menambahkan fitur **Continuous Looping / Interactive Mode**, di mana jika perintah `talon` dipanggil tanpa parameter, skrip akan terus berulang meminta input target secara berurutan dan mengaktifkan mode *Verbose* secara *default*.
 - **[2026-07-27] Frontend UI Fix & Timer Addition:**
   - Mengubah kode JavaScript di `index.html` untuk memunculkan `scan_duration_seconds` di hasil *live demo* *website*.
   - Memperbaiki *bug* pada penilaian Grade yang selalu memunculkan `N/A` karena kesalahan alur baca JSON (dari `security_headers?.grade` menjadi `security_analysis?.security_score?.grade`). 

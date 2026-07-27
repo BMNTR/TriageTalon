@@ -1,0 +1,14 @@
+Metadata-Version: 2.4
+Name: triagetalon
+Version: 1.0.0
+Summary: Advanced Reconnaissance & Attack Surface Filtration for Bug Bounty Hunters
+Author: BMNTR
+License-File: LICENSE
+Requires-Dist: requests
+Requires-Dist: rich
+Requires-Dist: prompt_toolkit>=3.0.0
+Requires-Dist: click>=8.0.0
+Dynamic: author
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: summary
