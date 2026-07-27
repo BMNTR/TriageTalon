@@ -1,5 +1,38 @@
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Terminal, Shield, Cpu } from 'lucide-react';
+import { Terminal, Shield, Cpu, Copy, CheckCircle2 } from 'lucide-react';
+
+function CodeBlock({ code, showDots = false }: { code: string, showDots?: boolean }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="code-mockup mb-6 relative group">
+      {showDots && (
+        <div className="code-mockup-bar">
+          <div className="dot d1"></div>
+          <div className="dot d2"></div>
+          <div className="dot d3"></div>
+        </div>
+      )}
+      <button 
+        onClick={handleCopy}
+        className="absolute top-3 right-3 text-[var(--mute)] hover:text-[var(--primary)] transition-colors opacity-0 group-hover:opacity-100 p-1 bg-[var(--canvas)] rounded-md border border-transparent hover:border-[var(--hairline)]"
+        title="Copy to clipboard"
+      >
+        {copied ? <CheckCircle2 className="w-4 h-4 text-[var(--primary)]" /> : <Copy className="w-4 h-4" />}
+      </button>
+      <div className="code-text text-[var(--canvas-text-soft)] overflow-x-auto pr-8">
+        {code}
+      </div>
+    </div>
+  );
+}
 
 export default function DocsPage() {
   return (
@@ -32,27 +65,15 @@ export default function DocsPage() {
           <div className="card-feature mb-8">
             <h3 className="body-md-strong mb-4">1. Installation</h3>
             <p className="body-sm mb-4">Install the package directly from PyPI:</p>
-            <div className="code-mockup mb-6">
-              <div className="code-text text-[var(--canvas-text-soft)]">
-                $ pip install triagetalon
-              </div>
-            </div>
+            <CodeBlock code="$ pip install triagetalon" />
 
             <h3 className="body-md-strong mb-4">2. Basic Usage</h3>
             <p className="body-sm mb-4">Scan a single target using the <code className="text-[var(--primary)] bg-[var(--canvas-soft)] px-1 rounded">-t</code> flag:</p>
-            <div className="code-mockup mb-6">
-              <div className="code-text text-[var(--canvas-text-soft)]">
-                $ talon -t hackerone.com
-              </div>
-            </div>
+            <CodeBlock code="$ talon -t hackerone.com" />
 
             <h3 className="body-md-strong mb-4">3. Bulk Scanning</h3>
             <p className="body-sm mb-4">Provide a text file containing a list of subdomains (one per line) using the <code className="text-[var(--primary)] bg-[var(--canvas-soft)] px-1 rounded">-l</code> flag:</p>
-            <div className="code-mockup">
-              <div className="code-text text-[var(--canvas-text-soft)]">
-                $ talon -l scope.txt --output results.json
-              </div>
-            </div>
+            <CodeBlock code="$ talon -l scope.txt --output results.json" />
           </div>
         </section>
 
@@ -107,19 +128,13 @@ export default function DocsPage() {
               All requests require the <code>X-RapidAPI-Key</code> header. You can obtain your key by subscribing on the RapidAPI hub.
             </p>
             
-            <div className="code-mockup mt-6">
-              <div className="code-mockup-bar">
-                <div className="dot d1"></div>
-                <div className="dot d2"></div>
-                <div className="dot d3"></div>
-              </div>
-              <div className="code-text text-[var(--canvas-text-soft)] overflow-x-auto">
-{`curl --request GET \\
+            <CodeBlock 
+              showDots={true}
+              code={`curl --request GET \\
   --url 'https://ultimate-attack-surface-recon-api.p.rapidapi.com/scan?domain=example.com' \\
   --header 'x-rapidapi-host: ultimate-attack-surface-recon-api.p.rapidapi.com' \\
-  --header 'x-rapidapi-key: YOUR_API_KEY'`}
-              </div>
-            </div>
+  --header 'x-rapidapi-key: YOUR_API_KEY'`} 
+            />
           </div>
         </section>
       </div>
